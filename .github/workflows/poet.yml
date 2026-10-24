@@ -111,6 +111,14 @@ jobs:
         if: env.MODE != 'check' && (env.MODE != 'tick' || steps.gate.outputs.work == 'true')
         run: npx playwright install --with-deps chromium
 
+      # Reels are encoded with ffmpeg: the npm ffmpeg-static binary, or the system one if npm skipped its download.
+      - name: Ensure ffmpeg
+        if: env.MODE != 'check' && env.MODE != 'refresh-token' && (env.MODE != 'tick' || steps.gate.outputs.work == 'true')
+        run: |
+          if node -e 'const p = require("ffmpeg-static"); process.exit(p && require("fs").existsSync(p) ? 0 : 1)'; then echo "ffmpeg-static binary present"
+          elif command -v ffmpeg >/dev/null; then echo "using system ffmpeg"
+          else sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null && echo "installed system ffmpeg"; fi
+
       - name: Run
         id: run
         if: env.MODE != 'tick' || steps.gate.outputs.work == 'true'

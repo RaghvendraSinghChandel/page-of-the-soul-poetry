@@ -18,7 +18,8 @@ const FADE = 0.7;
 export function ffmpegPath(configured = "") {
   if (configured) return configured;
   try {
-    return createRequire(import.meta.url)("ffmpeg-static") || "ffmpeg";
+    const bundled = createRequire(import.meta.url)("ffmpeg-static");
+    return bundled && fs.existsSync(bundled) ? bundled : "ffmpeg";
   } catch {
     return "ffmpeg";
   }
