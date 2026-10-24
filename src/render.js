@@ -135,6 +135,25 @@ export function buildSlides(post, { brandName, seed = 1 }) {
   return { slides, look };
 }
 
+/** The Reel's closing card: an invitation to like, share and follow, in the post's own paper colours. */
+export function buildOutroSlide(post, { brandName, seed = 1 }) {
+  const look = scene(post.scene, seed);
+  const p = look.paper;
+  const css = `${paperCss(p)}
+.outro{position:absolute;top:250px;left:90px;right:90px;bottom:250px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:${p.ink}}
+.outro .ask{font:italic 400 50px/1.4 "Lora";margin:0 0 56px}
+.outro .acts{font:600 34px "Mukta";letter-spacing:.2em;text-transform:uppercase;color:${p.accent};margin:0 0 56px}
+.outro .acts span{margin:0 18px}
+.outro .follow{font:400 38px/1.5 "Lora";margin:0}
+.outro .handle{display:block;margin-top:18px;font:600 40px "Mukta";letter-spacing:.04em;color:${p.accent}}`;
+  return page({
+    css,
+    body: `${brand(brandName)}<div class="outro"><p class="ask">Kavita dil ko chhoo gayi?</p>
+      <p class="acts"><span>Like</span>·<span>Share</span></p>
+      <p class="follow">Aisi aur kavitaon ke liye follow karein<span class="handle">@${esc(brandName)}</span></p></div>`,
+  });
+}
+
 // Shrinks every .fit element (and its children) 1px at a time until nothing overflows; returns what still does.
 const FIT_SCRIPT = `(() => {
   const over = el => el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1 ||
