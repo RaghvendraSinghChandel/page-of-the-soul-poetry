@@ -100,7 +100,7 @@ export async function renderCinematicReel({ photos, cards, frame, audio, audioDe
     filters.push(`[${base}][p${i}]xfade=transition=fade:duration=${XFADE}:offset=${offset.toFixed(2)}[x${i}]`);
     base = `x${i}`;
   }
-  filters.push(`[${base}]noise=alls=6:allf=t,format=yuv420p[graded]`);
+  filters.push(`[${base}]noise=alls=4:allf=t,format=yuv420p[graded]`);
 
   let next = photos.length;
   inputs.push("-loop", "1", "-t", total.toFixed(2), "-i", frame);
@@ -125,7 +125,8 @@ export async function renderCinematicReel({ photos, cards, frame, audio, audioDe
     "-v", "error", "-y", ...inputs,
     "-filter_complex", filters.join(";"),
     "-map", `[${layer}]`, "-map", "[aout]", "-t", total.toFixed(2), "-r", String(FPS),
-    "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-profile:v", "high", "-pix_fmt", "yuv420p",
+    // capped bitrate: moving film grain otherwise makes a 50 s Reel 60–100 MB (GitHub rejects files over 100 MB)
+    "-c:v", "libx264", "-preset", "medium", "-crf", "21", "-maxrate", "3500k", "-bufsize", "7000k", "-profile:v", "high", "-pix_fmt", "yuv420p",
     "-c:a", "aac", "-b:a", "192k", "-ar", "44100", "-ac", "2", "-movflags", "+faststart", file,
   ];
   try {

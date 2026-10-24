@@ -224,6 +224,12 @@ async function main() {
       const started = Date.now();
       try {
         const seconds = await makeReel(post, { stateDir, outDir: path.join(voiceDir, "voice", post.id), gemini, browser, footage });
+        // GitHub refuses files over 100 MB: squeeze any Reel that came out too big before pushing
+        const reel = path.join(voiceDir, "voice", post.id, "reel.mp4");
+        if (fs.statSync(reel).size > 60 * 1048576) {
+          await ffmpeg(["-i", reel, "-c:v", "libx264", "-preset", "medium", "-crf", "23", "-maxrate", "2500k", "-bufsize", "5000k", "-pix_fmt", "yuv420p", "-c:a", "copy", "-movflags", "+faststart", `${reel}.small.mp4`]);
+          fs.renameSync(`${reel}.small.mp4`, reel);
+        }
         await pushVoices(voiceDir, `Voice Reel: ${post.id} ${post.title}`);
         logger.info("Voice Reel ready", { post: post.id, title: post.title, seconds, minutes: Math.round((Date.now() - started) / 60000) });
       } catch (error) {
