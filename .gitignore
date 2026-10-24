@@ -11,3 +11,4 @@ assets/voice/*
 .voice-env/
 .voice-work/
 __pycache__/
+.vscode/
