@@ -36,14 +36,11 @@ export function loadConfig(source = process.env) {
     metaAppSecret: env("META_APP_SECRET_POETRY"),
     // Master switch. While false, posts are only drafted (nothing is uploaded or published).
     publishEnabled: bool("PUBLISH_TO_INSTAGRAM", false),
-    // Each post also goes out as a Reel (slides + Indian instrumental music). Videos are hosted on the
-    // MEDIA_BRANCH of GITHUB_REPOSITORY (public), so GITHUB_TOKEN is needed to publish them.
+    // After its carousel, each post goes out as a Reel recited in the owner's voice — when the Mac has made
+    // one (scripts/voice-worker.mjs keeps them on VOICE_BRANCH of GITHUB_REPOSITORY, a public repo).
     reelsEnabled: bool("REELS_ENABLED", true),
+    voiceBranch: env("VOICE_BRANCH", "poet-voice"),
     ffmpegPath: env("FFMPEG_PATH"),
-    // Reel music is composed per post by Google Lyria, which needs billing on its API key's project.
-    // A separate LYRIA_API_KEY keeps the writing (GEMINI_API_KEY) on the free tier.
-    lyriaApiKey: env("LYRIA_API_KEY") || env("GEMINI_API_KEY"),
-    lyriaModel: env("LYRIA_MODEL", "lyria-3-clip-preview"),
 
     mediaHost: oneOf("MEDIA_HOST", ["facebook", "github"], "facebook"),
     facebookPageId: env("FACEBOOK_PAGE_ID"),
@@ -61,6 +58,8 @@ export function loadConfig(source = process.env) {
 
     // Content
     postsPerRun: int("POSTS_PER_RUN", 3, 1, 5),
+    // Drafts kept waiting, so the Mac can voice them days ahead.
+    draftBuffer: int("DRAFT_BUFFER", 10, 1, 30),
     brandName: env("BRAND_NAME", "page_of_the__soul"),
     brandHandle: env("BRAND_HANDLE"),
 
@@ -82,7 +81,7 @@ export function loadConfig(source = process.env) {
 
 /** Values that must never appear in logs. */
 export function secretValues(config) {
-  return [config.instagramToken, config.metaAppSecret, config.facebookPageToken, config.githubToken, config.geminiApiKey, config.lyriaApiKey].filter(Boolean);
+  return [config.instagramToken, config.metaAppSecret, config.facebookPageToken, config.githubToken, config.geminiApiKey].filter(Boolean);
 }
 
 /** Returns { errors, warnings }. `publishing` adds the checks a live publish needs. */

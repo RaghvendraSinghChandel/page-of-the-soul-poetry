@@ -13,7 +13,7 @@ import { JobError } from "./util.js";
 const run = promisify(execFile);
 export const REEL = { width: 1080, height: 1920, fps: 30 };
 const FG = { width: 972, height: 1215, top: 200 }; // 90% of a 1080×1350 slide
-const FADE = 0.7;
+export const FADE = 0.7;
 
 export function ffmpegPath(configured = "") {
   if (configured) return configured;

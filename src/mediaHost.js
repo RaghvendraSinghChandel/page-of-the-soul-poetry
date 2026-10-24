@@ -3,6 +3,7 @@ import path from "node:path";
 
 import { classifyMetaError } from "./instagramPublisher.js";
 import { jpegSize } from "./render.js";
+import { voiceTextHash } from "./voice.js";
 import { JobError, sleep } from "./util.js";
 
 // Instagram downloads media from a public HTTPS URL, so each JPEG is hosted for free before publishing:
@@ -95,32 +96,26 @@ function githubHost(config, { fetchImpl, logger }) {
 }
 
 /**
- * Hosts a Reel video for Instagram to fetch: an orphan commit holding only this file on the media branch of
- * the (public) repo, force-pushed through the GitHub API, so videos never pile up in the repo's history.
- * The URL names the commit, so it is served at once (branch URLs are cached for minutes).
+ * The voice Reels the Mac makes ahead (scripts/voice-worker.mjs) live on the VOICE_BRANCH of the public repo
+ * as voice/<post-id>/reel.mp4 + meta.json. find(post) returns { url, meta } for a Reel made from the post's
+ * current text, or null. The URL names the commit, so Instagram fetches exactly that file.
  */
-export function createVideoHost(config, { fetchImpl = fetch } = {}) {
+export function createVoiceReels(config, { fetchImpl = fetch } = {}) {
   const repo = config.githubRepository;
-  const branch = config.mediaBranch;
-  const headers = { authorization: `Bearer ${config.githubToken}`, accept: "application/vnd.github+json", "x-github-api-version": "2022-11-28" };
-  const api = async (method, url, body) => {
-    const res = await fetchImpl(`https://api.github.com/repos/${repo}${url}`, { method, headers, body: body && JSON.stringify(body), signal: AbortSignal.timeout(120000) });
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok && !(method === "PATCH" && res.status === 422)) {
-      throw new JobError(`GitHub video upload failed (${method} ${url}): HTTP ${res.status} ${json.message || ""}`, { kind: res.status === 401 || res.status === 403 ? "permanent" : "retryable" });
-    }
-    return { ok: res.ok, json };
-  };
+  const headers = { accept: "application/vnd.github+json", ...(config.githubToken ? { authorization: `Bearer ${config.githubToken}` } : {}) };
   return {
-    available: Boolean(config.githubToken && repo),
-    async upload(file, name) {
-      const target = `media/${name}/${path.basename(file)}`;
-      const blob = await api("POST", "/git/blobs", { content: fs.readFileSync(file).toString("base64"), encoding: "base64" });
-      const tree = await api("POST", "/git/trees", { tree: [{ path: target, mode: "100644", type: "blob", sha: blob.json.sha }] });
-      const commit = await api("POST", "/git/commits", { message: `Reel video: ${target}`, tree: tree.json.sha, parents: [] });
-      const moved = await api("PATCH", `/git/refs/heads/${branch}`, { sha: commit.json.sha, force: true });
-      if (!moved.ok) await api("POST", "/git/refs", { ref: `refs/heads/${branch}`, sha: commit.json.sha });
-      return { url: `https://raw.githubusercontent.com/${repo}/${commit.json.sha}/${target}`, ref: commit.json.sha };
+    async find(post) {
+      if (!repo) return null;
+      const ref = await fetchImpl(`https://api.github.com/repos/${repo}/git/ref/heads/${config.voiceBranch}`, { headers, signal: AbortSignal.timeout(30000) });
+      if (ref.status === 404) return null;
+      if (!ref.ok) throw new JobError(`Voice branch lookup failed: HTTP ${ref.status}`, { kind: "retryable" });
+      const sha = (await ref.json()).object?.sha;
+      const base = `https://raw.githubusercontent.com/${repo}/${sha}/voice/${post.id}`;
+      const res = await fetchImpl(`${base}/meta.json`, { signal: AbortSignal.timeout(30000) });
+      if (res.status === 404) return null;
+      if (!res.ok) throw new JobError(`Voice Reel lookup failed: HTTP ${res.status}`, { kind: "retryable" });
+      const meta = await res.json();
+      return meta.textHash === voiceTextHash(post) ? { url: `${base}/reel.mp4`, meta } : null;
     },
   };
 }

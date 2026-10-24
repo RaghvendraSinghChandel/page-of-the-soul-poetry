@@ -7,7 +7,7 @@ It runs on **GitHub Actions** (`.github/workflows/poet.yml`), so the Mac can be 
 | When | What happens |
 |---|---|
 | **18:15:00** daily | Publishes the oldest draft as a carousel, then the same post as a Reel |
-| **23:00:00** daily | Publishes the next draft as a carousel and a Reel, then writes `POSTS_PER_RUN` (2) new drafts for the next day |
+| **23:00:00** daily | Publishes the next draft as a carousel and a Reel, then tops the queue back up to `DRAFT_BUFFER` (10) drafts, `POSTS_PER_RUN` (3) at a time |
 | Once a week (inside a slot run) | Renews the 60-day Instagram token |
 
 How "on time, every day" is achieved:
@@ -41,29 +41,30 @@ To pause publishing, set the repository variable `PUBLISH_TO_INSTAGRAM=false`.
 
 Set up or update the cron-job.org triggers with `npm run cron:setup`. It needs `CRONJOB_ORG_API_KEY` and `GH_DISPATCH_TOKEN` (a fine-grained token with access to this repo and **Actions: Read and write**) in `.env`.
 
-The old Mac schedule (`npm run schedule:install`, launchd) still works for local use, but do not run it alongside GitHub Actions: the two keep separate histories and would post the same drafts twice.
+The Mac's only scheduled job is the voice worker (`npm run voice:install`). It also removes the old Mac publishing agents, which would post twice if they ran alongside GitHub Actions.
 
-## Reels and music
+## Voice Reels (made on the Mac)
 
-Each post also goes out as a **Reel**: a 1080×1920 video of the same slides with slow zooms and fades, set to background music.
-- **Music.** It is a new Bollywood-style instrumental composed for that post by **Google Lyria** (Gemini API). The prompt follows the post's **mood** (`src/music.js`):
-
-  | Mood | Instruments |
-  |---|---|
-  | udaas | bansuri over piano |
-  | pyaar | santoor, guitar, tabla |
-  | ghar | sitar, harmonium |
-  | josh | sitar, dhol, strings |
-  | dosti | guitar, bansuri |
-  | soch | Sufi harmonium, sarangi |
-
-  Every piece is instrumental only. The Reel caption says the music is AI-made for the page.
-- **Billing.** Lyria is not on the Gemini free tier. Put a key from a **billed** Google AI Studio project in the `LYRIA_API_KEY` secret. The writing keeps using the free `GEMINI_API_KEY`.
-- **Bollywood suggestion.** Both captions add `Is kavita ke saath suniye: "<gaana>" — <film> (<saal>)`. The song comes from the hand-checked list in `src/songs.js`, picked by the writer.
-  - Only the song's name is printed. Real film audio is never used: the Instagram API cannot attach Instagram's licensed music, and uploading a film song ourselves would be copyright infringement.
-- **Hosting.** Reel videos are hosted for Instagram on the `ig-media` branch of this public repo. It holds a single orphan commit, replaced each time.
-- **If something fails.** If the music or the Reel fails, the carousel still goes out on time. Backup runs retry the Reel. A missing Lyria billing setup stops further retries.
-- **Off switch.** Set the repository variable `REELS_ENABLED=false` to post carousels only.
+After its carousel, each post goes out as a **Reel recited in the page owner's voice**, if the Mac has made one.
+- **Who does what.** The Mac only makes the voice Reels. GitHub Actions does everything else: drafting, publishing and keeping `DRAFT_BUFFER` (10) drafts waiting.
+- **The voice worker.** `scripts/voice-worker.mjs` runs from launchd at login and every 30 minutes (`npm run voice:install`). It skips work on battery below 40%. For each of the next 10 drafts without a Reel it does this:
+  1. Writes the post in Devanagari (Gemini), so the voice model pronounces it right.
+  2. Recites it **page by page** in the owner's voice, cloned with AI4Bharat **IndicF5** (MIT) from `assets/voice/reference.wav` (`scripts/voice/speak.py`, Mac GPU, ~10 minutes a post):
+     - **Cover:** the title, slower and stronger, then the hook (or the couplet).
+     - **Bhavarth:** read out when the post has a couplet.
+     - **Poem:** recited like shers. Pairs get a short pause inside and a longer one between them, and the last line comes once more, slower.
+     - **Outro:** a cheerful *like, share aur follow* on a closing card.
+  3. Lays a light **self-made background bed** under the poem only (`src/bed.js`). It is a kalimba-like pentatonic arpeggio, a soft pad and a faint water hush, so there is nothing to license. It is ducked under the voice and silent during the outro.
+  4. Pushes the Reel to the **`poet-voice`** branch as `voice/<post-id>/reel.mp4`. The branch is one orphan commit holding only the Reels still needed.
+- **If the Mac is off.** Up to 10 Reels made earlier keep going out. A post with no Reel goes out as a carousel only (`reel.status = "skipped"`), and nothing is missed.
+- **Caption.** It says the voice is AI-made, as Instagram asks for realistic AI audio: *"Awaaz: page_of_the__soul ki apni awaaz par AI (IndicF5) se bani"*.
+- **Privacy.** The voice sample stays on the Mac. `assets/voice/` is git-ignored, and so are `.voice-env/` (the Python environment) and `.voice-work/`.
+- **Mac setup, once.**
+  1. Create the Python environment: `python3.11 -m venv .voice-env && .voice-env/bin/pip install git+https://github.com/ai4bharat/IndicF5.git "datasets==3.2.0" "transformers==4.48.3" "pyarrow==16.1.0" "numpy==1.26.4"`.
+  2. Accept the model's terms on Hugging Face and put `HF_TOKEN` in `.env`.
+  3. Add the reference recording and its transcript (`reference.wav` / `reference.txt`).
+- **Bollywood suggestion.** Both captions add `Is kavita ke saath suniye: "<gaana>" — <film> (<saal>)` from the hand-checked list in `src/songs.js`. Only the name is printed, never the song.
+- **Off switch.** Set `REELS_ENABLED=false` (repository variable) to post carousels only.
 
 ## What one post contains
 

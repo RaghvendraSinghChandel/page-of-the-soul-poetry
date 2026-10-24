@@ -9,3 +9,4 @@ posts_log.csv
 assets/voice/*
 !assets/voice/README.md
 .voice-env/
+.voice-work/

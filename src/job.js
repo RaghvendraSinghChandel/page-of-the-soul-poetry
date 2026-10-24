@@ -5,21 +5,20 @@ import { createGemini } from "./gemini.js";
 import { createHistory } from "./history.js";
 import { createInstagram } from "./instagramPublisher.js";
 import { safeErrorText } from "./logger.js";
-import { createMediaHost, createVideoHost, validatePublicMedia } from "./mediaHost.js";
-import { audioName, composeMusic, musicCredit, voiceCredit } from "./music.js";
-import { ffmpegPath, renderReel, slideDurations } from "./reel.js";
+import { createMediaHost, createVoiceReels, validatePublicMedia } from "./mediaHost.js";
+import { audioName, voiceCredit } from "./music.js";
 import { SIZE, buildSlides, displayLine, formPhrase, launchBrowser, renderJpeg } from "./render.js";
 import { loadCorpus } from "./sources.js";
 import { pickCategories } from "./themes.js";
 import { planSlots } from "./slots.js";
 import { CATEGORY_MOOD, songById, songLine, songsFor } from "./songs.js";
-import { JobError, localDate, sleep } from "./util.js";
+import { localDate, sleep } from "./util.js";
 import { writePost } from "./writer.js";
 
 // generate: drafts POSTS_PER_RUN posts (different categories), saves slides, the Reel (slides + music) and
 //           post.md under output/<date>/<post-id>/ and records them in state/history.json and posts_log.csv.
 // publishNext: when PUBLISH_TO_INSTAGRAM=true, publishes the oldest draft as an Instagram carousel and,
-//           right after it, as a Reel.
+//           right after it, its Reel in the owner's voice, if the Mac has made one (scripts/voice-worker.mjs).
 // tick: what the schedule runs; publishes one draft per daily slot (18:15 and 23:00), exactly on time.
 
 const FORM_ROMAN = { "साखी": "sakhi", "दोहा": "doha", "सोरठा": "sortha" };
@@ -37,32 +36,16 @@ export function fullCaption(post, brand, { reel = false } = {}) {
     post.couplet
       ? `${FORM_ROMAN[post.couplet.form] || "doha"}: ${post.couplet.poetRoman} · ${post.couplet.workRoman} (${post.couplet.year}), ${post.couplet.number}\nKavita: mool rachna — ${brand}`
       : `Mool rachna — ${brand}`,
-    reel ? (post.reel?.voice ? voiceCredit(brand) : musicCredit(post.reel?.music, brand)) : "",
+    reel ? voiceCredit(brand) : "",
   ].filter(Boolean);
   return [post.caption, songLine(post.song), credits.join("\n"), post.hashtags.join(" ")].filter(Boolean).join("\n\n");
 }
 
-/** Adds what older drafts lack: a mood, a suggested song and the Reel (composed music + video). */
-async function ensureReelParts(post, { config, history, logger, render = renderReel, compose = composeMusic }) {
-  const recent = history.recent().filter(p => p.id !== post.id);
-  const changes = {};
+/** Adds what older drafts lack: a mood and a suggested song. */
+function ensureSong(post, { history }) {
+  if (post.mood && post.song) return post;
   const mood = post.mood || CATEGORY_MOOD[post.category] || "soch";
-  if (!post.mood) changes.mood = mood;
-  if (!post.song) changes.song = songsFor(mood, recent)[0] || null;
-  if (config.reelsEnabled && !(post.reel?.file && fs.existsSync(post.reel.file))) {
-    const dir = path.dirname(post.slides[0]);
-    let music = post.reel?.music?.file && fs.existsSync(post.reel.music.file) ? post.reel.music : null;
-    if (!music) {
-      music = await compose({ apiKey: config.lyriaApiKey, model: config.lyriaModel, mood, dir });
-      history.update(post.id, { reel: { ...post.reel, status: post.reel?.status || "draft", music } });
-      logger.info("Music composed", { post: post.id, mood, model: music.model });
-    }
-    const file = path.join(dir, "reel.mp4");
-    const { seconds } = await render({ slides: post.slides, durations: slideDurations(post), music: music.file, file, ffmpeg: ffmpegPath(config.ffmpegPath) });
-    changes.reel = { ...post.reel, status: post.reel?.status || "draft", file, seconds, music };
-    logger.info("Reel rendered", { post: post.id, seconds });
-  }
-  return Object.keys(changes).length ? history.update(post.id, changes) : post;
+  return history.update(post.id, { mood, song: post.song || songsFor(mood, history.recent().filter(p => p.id !== post.id))[0] || null });
 }
 
 function shuffle(items, random) {
@@ -102,13 +85,8 @@ ${post.poem.map(line => `> ${line}`).join("\n")}
 ${fullCaption(post, brand)}
 
 ## E. Reel
-${
-  post.reel?.file
-    ? `- **Video:** ${path.basename(post.reel.file)} (1080×1920, ${post.reel.seconds}s), wahi slides + music
-- **Music:** ${path.basename(post.reel.music.file)}, mood "${post.reel.music.mood}" par ${post.reel.music.model} se banayi gayi nayi dhun (koi film gaana nahi)
-- **Reel caption ka music credit:** ${musicCredit(post.reel.music, brand)}`
-    : "- Reel abhi nahi bani (publish se pehle ban jaayegi)."
-}
+- Aapki awaaz wali Reel Mac par banti hai (scripts/voice-worker.mjs) aur ${"`poet-voice`"} branch par rakhi jaati hai. Taiyaar na ho toh sirf carousel jaata hai.
+- **Reel caption ka credit:** ${voiceCredit(brand)}
 - **Mood:** ${post.mood || "-"}  ·  **Sujhaya gaana:** ${post.song ? `${post.song.title} — ${post.song.film} (${post.song.year}); sirf naam caption mein, gaana post mein nahi` : "-"}
 
 ## Visual
@@ -190,15 +168,9 @@ export async function generate({ config, logger, count = config.postsPerRun, now
           song: songById(draft.songId),
         };
         history.add(post);
-        let ready = post;
-        try {
-          ready = await ensureReelParts(post, { config, history, logger: log, render: deps.renderReel, compose: deps.composeMusic });
-        } catch (error) {
-          log.warn("Reel could not be rendered now; it is tried again before publishing", { error });
-        }
-        fs.writeFileSync(path.join(dir, "post.md"), postMarkdown(ready, config.brandName));
-        made.push(ready);
-        log.info("Draft ready", { title: post.title, couplet: c?.id || "none", slides: files.length, reel: Boolean(ready.reel?.file), song: post.song?.id, dir });
+        fs.writeFileSync(path.join(dir, "post.md"), postMarkdown(post, config.brandName));
+        made.push(post);
+        log.info("Draft ready", { title: post.title, couplet: c?.id || "none", slides: files.length, song: post.song?.id, dir });
       } catch (error) {
         log.error("Post could not be drafted", { error });
       }
@@ -221,10 +193,8 @@ export async function rerenderDrafts({ config, logger, deps = {} }) {
       const { slides } = buildSlides({ ...post, couplet }, { brandName: config.brandName, seed: [...post.id].reduce((a, ch) => a * 31 + ch.charCodeAt(0), 7) });
       const dir = path.dirname(post.slides[0]);
       for (const [i, html] of slides.entries()) await renderJpeg(browser, { html, file: path.join(dir, `slide-${i + 1}.jpg`) });
-      if (post.reel?.file) fs.rmSync(post.reel.file, { force: true });
-      const fresh = await ensureReelParts(post, { config, history, logger }).catch(error => (logger.warn("Reel not re-rendered", { post: post.id, error }), post));
-      fs.writeFileSync(path.join(dir, "post.md"), postMarkdown(fresh, config.brandName));
-      logger.info("Draft re-rendered", { post: post.id, brand: config.brandName, reel: Boolean(fresh.reel?.file) });
+      fs.writeFileSync(path.join(dir, "post.md"), postMarkdown(post, config.brandName));
+      logger.info("Draft re-rendered", { post: post.id, brand: config.brandName });
     }
   } finally {
     await browser.close();
@@ -280,11 +250,7 @@ export async function publishNext({ config, logger, publishAt, deps = {} }) {
       log.warn("Instagram API publishing limit reached; trying again next run", limit);
       return null;
     }
-    try {
-      post = await ensureReelParts(post, { config, history, logger: log, render: deps.renderReel, compose: deps.composeMusic });
-    } catch (error) {
-      log.warn("Reel could not be rendered; the carousel goes alone and the Reel is retried", { error });
-    }
+    post = ensureSong(post, { history });
     const children = [];
     for (const file of post.slides) {
       const media = await host.upload(file);
@@ -296,7 +262,7 @@ export async function publishNext({ config, logger, publishAt, deps = {} }) {
     const containerId = await ig.createCarousel(children, fullCaption(post, config.brandName));
     await ig.waitForContainer(containerId);
     reelContainer = await prepareReel(post, { config, ig, log, deps }).catch(error => {
-      log.warn("Reel not ready; the carousel goes alone and the Reel is retried", { error });
+      log.warn("Reel could not be prepared; it is tried again right after the carousel", { error });
       return null;
     });
     const wait = publishAt ? publishAt.getTime() - Date.now() : 0;
@@ -306,7 +272,7 @@ export async function publishNext({ config, logger, publishAt, deps = {} }) {
     }
     history.update(post.id, { status: "publishing", containerId });
     const done = await finish(post, containerId);
-    return reelContainer ? await publishReel(done, { config, logger: log, deps: { ...deps, history, instagram: ig }, container: reelContainer }) : done;
+    return config.reelsEnabled ? await publishReel(done, { config, logger: log, deps: { ...deps, history, instagram: ig }, container: reelContainer }) : done;
   } catch (error) {
     if (error.kind === "ambiguous") {
       log.warn("Publish outcome unknown; the next run checks the container before doing anything else", { error });
@@ -336,13 +302,17 @@ export async function publishNext({ config, logger, publishAt, deps = {} }) {
   }
 }
 
-/** Uploads the post's Reel video and returns a FINISHED Reel container id (null when Reels are off). */
+const REEL_DONE = ["published", "failed", "skipped"];
+
+/**
+ * A FINISHED Reel container for the post's voice Reel (made on the Mac, kept on the poet-voice branch),
+ * or null when Reels are off or no voice Reel is ready for this post.
+ */
 async function prepareReel(post, { config, ig, log, deps }) {
-  if (!config.reelsEnabled || !post.reel?.file || ["published", "failed"].includes(post.reel.status)) return null;
-  const videos = deps.videoHost || createVideoHost(config);
-  if (!videos.available) throw new JobError("GITHUB_TOKEN and GITHUB_REPOSITORY are needed to host the Reel video", { kind: "permanent" });
-  const { url } = await videos.upload(post.reel.file, post.id);
-  const id = await ig.createReel({ videoUrl: url, caption: fullCaption(post, config.brandName, { reel: true }), audioName: audioName(config.brandName, { voice: Boolean(post.reel.voice) }) });
+  if (!config.reelsEnabled || REEL_DONE.includes(post.reel?.status)) return null;
+  const voice = await (deps.voiceReels || createVoiceReels(config)).find(post);
+  if (!voice) return null;
+  const id = await ig.createReel({ videoUrl: voice.url, caption: fullCaption(post, config.brandName, { reel: true }), audioName: audioName(config.brandName, { voice: true }) });
   await ig.waitForContainer(id, { timeoutMs: 600000, intervalMs: 8000 });
   log.info("Reel ready", { container: id });
   return id;
@@ -357,6 +327,7 @@ export async function publishReel(post, { config, logger, container = null, deps
   const ig = deps.instagram || createInstagram({ host: config.instagramApiHost, version: config.graphApiVersion, userId: config.instagramUserId, token: config.instagramToken, appSecret: config.metaAppSecret });
   const log = logger.child({ post: post.id, part: "reel" });
   let reel = post.reel || {};
+  if (REEL_DONE.includes(reel.status)) return post;
   try {
     // An earlier publish whose answer was lost: check before posting again.
     if (reel.status === "publishing" && reel.containerId) {
@@ -369,10 +340,11 @@ export async function publishReel(post, { config, logger, container = null, deps
       if (code === "FINISHED") container = reel.containerId;
     }
     if (!container) {
-      post = await ensureReelParts(post, { config, history, logger: log, render: deps.renderReel, compose: deps.composeMusic });
-      reel = post.reel || {};
       container = await prepareReel(post, { config, ig, log, deps });
-      if (!container) return post;
+      if (!container) {
+        log.info("No voice Reel ready for this post (the Mac makes them); the carousel went alone");
+        return history.update(post.id, { reel: { ...reel, status: "skipped", reason: "awaaz wali Reel taiyaar nahi thi" } });
+      }
     }
     history.update(post.id, { reel: { ...reel, status: "publishing", containerId: container } });
     const mediaId = await ig.publishContainer(container);
@@ -418,12 +390,14 @@ export async function tick({ config, logger, now = () => new Date(), checkOnly =
     ran.push({ key: next.key, status: await runSlot(next, { config, logger, history, deps }) });
   }
 
-  // Draft the next posts right after the last one goes out, so a slow Gemini or a source outage never delays a slot.
-  if (ran.some(r => ["published", "reel_pending"].includes(r.status)) && !history.load().some(p => p.status === "draft")) {
+  // Keep DRAFT_BUFFER drafts waiting (POSTS_PER_RUN at a time): the Mac voices them ahead, so Reels keep
+  // going out on days it is off, and a slow Gemini or a source outage never delays a slot.
+  const waiting = history.load().filter(p => p.status === "draft").length;
+  if (ran.length && waiting < config.draftBuffer) {
     try {
-      await generate({ config, logger, deps: { ...deps, history } });
+      await generate({ config, logger, count: Math.min(config.postsPerRun, config.draftBuffer - waiting), deps: { ...deps, history } });
     } catch (error) {
-      logger.error("Next drafts could not be written; the next slot run writes one before publishing", { error });
+      logger.error("Next drafts could not be written; the next slot run tries again", { error });
     }
   }
   return { ran, missed };
@@ -455,7 +429,7 @@ async function runSlot(slot, { config, logger, history, deps }) {
       }
       history.update(post.id, { slot: slot.key });
     }
-    const reelDone = !config.reelsEnabled || ["published", "failed"].includes(post.reel?.status);
+    const reelDone = !config.reelsEnabled || REEL_DONE.includes(post.reel?.status);
     const status = reelDone ? "published" : "reel_pending";
     history.updateSlot(slot.key, { status, post: post.id, permalink: post.permalink, publishedAt: post.publishedAt, reel: post.reel?.permalink || post.reel?.status || "", lastError: post.reel?.lastError || "" });
     return status;

@@ -7,9 +7,9 @@ import test from "node:test";
 import { loadConfig } from "../src/config.js";
 import { createHistory } from "../src/history.js";
 import { fullCaption, publishNext, publishReel, tick } from "../src/job.js";
-import { composeMusic, musicPrompt } from "../src/music.js";
 import { reelArgs, slideDurations } from "../src/reel.js";
 import { SONGS, songLine } from "../src/songs.js";
+import { buildVoiceScript, voiceTextHash } from "../src/voice.js";
 import { silentLogger } from "../src/logger.js";
 import { displayLine, formPhrase } from "../src/render.js";
 import { planSlots } from "../src/slots.js";
@@ -188,63 +188,72 @@ test("tick publishes the due slot exactly at its time, once, and drafts the next
   }
 });
 
-test("each post goes out as a carousel and then as a Reel whose caption credits the music", async () => {
+test("each post goes out as a carousel and then as its Mac-made voice Reel, credited in the caption", async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "echoes-"));
   const history = createHistory({ stateDir: dir });
-  history.add({ id: "d1", status: "draft", category: "love", caption: "Pehli post?", hashtags: ["#Yaadein"], couplet: null, poem: ["a", "b", "c", "d"], slides: [path.join(dir, "o/slide-1.jpg"), path.join(dir, "o/slide-2.jpg")] });
+  const base = { status: "draft", category: "love", hashtags: ["#Yaadein"], couplet: null, poem: ["a", "b", "c", "d"], slides: ["a.jpg", "b.jpg"] };
+  history.add({ ...base, id: "d1", caption: "Pehli post?" });
+  history.add({ ...base, id: "d2", caption: "Doosri post?" });
   const created = [];
   const published = [];
   const instagram = {
     checkAccount: async () => ({}),
     publishingLimit: async () => ({ used: 0, total: 50 }),
     createCarouselItem: async url => `item-${url}`,
-    createCarousel: async (children, caption) => (created.push(["carousel", caption]), "carousel-1"),
+    createCarousel: async (children, caption) => (created.push(["carousel", caption]), `carousel-${published.length}`),
     createReel: async ({ videoUrl, caption, audioName }) => (created.push(["reel", caption, videoUrl, audioName]), "reel-1"),
     waitForContainer: async () => "FINISHED",
     publishContainer: async id => (published.push(id), `media-${id}`),
     mediaInfo: async id => ({ permalink: `https://instagram.com/p/${id}`, timestamp: "2026-10-25T12:45:00Z" }),
   };
-  const renderReel = async ({ file, music }) => (assert.ok(fs.existsSync(music), "music file exists"), fs.mkdirSync(path.dirname(file), { recursive: true }), fs.writeFileSync(file, "mp4"), { file, seconds: 15 });
-  const composeMusic = async ({ mood, dir }) => (fs.mkdirSync(dir, { recursive: true }), fs.writeFileSync(path.join(dir, "music.mp3"), "mp3"), { file: path.join(dir, "music.mp3"), model: "lyria-test", mood });
-  const deps = {
-    history,
-    instagram,
-    renderReel,
-    composeMusic,
-    mediaHost: { upload: async file => ({ url: `https://cdn/${file}`, ref: file }), remove: async () => {} },
-    videoHost: { available: true, upload: async (file, name) => ({ url: `https://raw/${name}/reel.mp4` }) },
-    validateMedia: async () => ({}),
-  };
+  // the Mac has voiced d1 only
+  const voiceReels = { find: async post => (post.id === "d1" ? { url: "https://raw/sha/voice/d1/reel.mp4", meta: {} } : null) };
+  const deps = { history, instagram, voiceReels, mediaHost: { upload: async file => ({ url: `https://cdn/${file}`, ref: file }), remove: async () => {} }, validateMedia: async () => ({}) };
   const config = loadConfig({ GEMINI_API_KEY: "x", PUBLISH_TO_INSTAGRAM: "true", INSTAGRAM_USER_ID_POETRY: "1", INSTAGRAM_ACCESS_TOKEN_POETRY: "t" });
-  const done = await publishNext({ config, logger: silentLogger, deps });
-  assert.deepEqual(published, ["carousel-1", "reel-1"]);
-  assert.equal(done.status, "published");
-  assert.equal(done.reel.status, "published");
-  assert.equal(done.reel.permalink, "https://instagram.com/p/media-reel-1");
-  assert.equal(done.mood, "pyaar");
+
+  const first = await publishNext({ config, logger: silentLogger, deps });
+  assert.deepEqual(published, ["carousel-0", "reel-1"]);
+  assert.equal(first.reel.status, "published");
+  assert.equal(first.mood, "pyaar");
   const [, carouselCaption] = created.find(c => c[0] === "carousel");
   const [, reelCaption, videoUrl, audio] = created.find(c => c[0] === "reel");
   assert.match(carouselCaption, /Is kavita ke saath suniye: ".+" — .+ \(\d{4}\)/);
-  assert.doesNotMatch(carouselCaption, /Dhun:/);
-  assert.match(reelCaption, /Dhun: page_of_the__soul ke liye AI \(Google Lyria\) se banayi gayi/);
-  assert.equal(done.reel.music.mood, "pyaar");
-  assert.equal(videoUrl, "https://raw/d1/reel.mp4");
-  assert.ok(audio.length > 3);
+  assert.doesNotMatch(carouselCaption, /Awaaz:/);
+  assert.match(reelCaption, /Awaaz: page_of_the__soul ki apni awaaz par AI \(IndicF5\) se bani/);
+  assert.equal(videoUrl, "https://raw/sha/voice/d1/reel.mp4");
+  assert.equal(audio, "Kavita path — page_of_the__soul");
   // a later run does not post the Reel again
-  assert.equal((await publishReel(history.load()[0], { config, logger: silentLogger, deps })).reel.status, "published");
-  assert.deepEqual(published, ["carousel-1", "reel-1"]);
+  await publishReel(history.load()[0], { config, logger: silentLogger, deps });
+  assert.equal(published.length, 2);
+
+  // no voice Reel for d2 (Mac was off): the carousel still goes, the Reel is skipped, nothing fails
+  const second = await publishNext({ config, logger: silentLogger, deps });
+  assert.equal(second.status, "published");
+  assert.equal(second.reel.status, "skipped");
+  assert.deepEqual(published, ["carousel-0", "reel-1", "carousel-2"]);
 });
 
-test("Lyria music: Bollywood-style instrumental prompt per mood; audio saved; missing billing is reported clearly", async () => {
-  assert.match(musicPrompt("udaas"), /no vocals.*Bollywood.*bansuri/s);
-  assert.ok(new Set(["udaas", "pyaar", "ghar", "josh", "dosti", "soch"].map(musicPrompt)).size === 6);
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "echoes-"));
-  const ok = async () => ({ ok: true, status: 200, json: async () => ({ candidates: [{ content: { parts: [{ text: "x" }, { inlineData: { mimeType: "audio/mpeg", data: Buffer.from("ID3").toString("base64") } }] } }] }) });
-  const music = await composeMusic({ apiKey: "k", mood: "pyaar", dir, fetchImpl: ok });
-  assert.equal(path.basename(music.file), "music.mp3");
-  assert.equal(fs.readFileSync(music.file, "utf8"), "ID3");
-  const noBilling = async () => ({ ok: false, status: 429, json: async () => ({ error: { message: "Quota exceeded for metric: x, limit: 0, model: lyria-3-clip" } }) });
-  await assert.rejects(composeMusic({ apiKey: "k", mood: "pyaar", dir, fetchImpl: noBilling }), e => e.kind === "permanent" && /enable billing/.test(e.message));
+test("voice script: cover, poem as recited pairs with the last line once more, then a cheerful outro", () => {
+  const post = { id: "x", title: "Badalte Rishte", hook: "Kuch dost badal jaate hain.", poem: ["a,", "b.", "c,", "d.", "e,", "f."], couplet: null };
+  const deva = { title: "बदलते रिश्ते", hook: "कुछ दोस्त बदल जाते हैं।", bhavarth: "", poem: ["क,", "ख।", "ग,", "घ।", "च, छ,", "ज।"] };
+  const { segments, slides, outroSlide } = buildVoiceScript(post, deva);
+  assert.equal(slides, 2);
+  assert.equal(outroSlide, 3);
+  assert.deepEqual(segments.filter(s => s.slide === 1).map(s => s.text), ["बदलते रिश्ते।", "कुछ दोस्त बदल जाते हैं।"]);
+  const poem = segments.filter(s => s.slide === 2);
+  assert.deepEqual(poem.map(s => s.pause), [0.55, 1.1, 1.4, 1.1, 0.55, 0.9, 1.6]);
+  assert.equal(poem.at(-1).text, "ज।");
+  assert.ok(poem.at(-1).speed < poem.at(-2).speed);
+  assert.match(segments.filter(s => s.slide === 3).map(s => s.text).join(" "), /लाइक और शेयर.*फ़ॉलो/);
+  // a couplet post: couplet on the cover, its bhavarth, then title + poem
+  const withCouplet = buildVoiceScript({ ...post, couplet: { lines: ["रहिमन धागा प्रेम का॥१॥", "मत तोड़ो॥"] }, bhavarth: "x" }, { ...deva, bhavarth: "भावार्थ" });
+  assert.equal(withCouplet.slides, 3);
+  assert.equal(withCouplet.segments[0].text, "रहिमन धागा प्रेम का॥");
+  assert.equal(withCouplet.segments.find(s => s.slide === 2).text, "भावार्थ");
+  assert.notEqual(voiceTextHash(post), voiceTextHash({ ...post, poem: [...post.poem, "g"] }));
+});
+
+test("captions: song suggestions come from the checked list, by name only", () => {
   assert.equal(songLine(SONGS[0]), 'Is kavita ke saath suniye: "Kahin Door Jab Din Dhal Jaaye" — Anand (1971)');
   assert.equal(new Set(SONGS.map(s => s.id)).size, SONGS.length);
 });

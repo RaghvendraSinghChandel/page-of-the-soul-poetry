@@ -15,8 +15,9 @@
     "history": "node src/cli.js history",
     "check": "for f in $(find src tests scripts -name '*.js'); do node --check $f || exit 1; done",
     "test": "node --test tests/*.test.js",
-    "schedule:install": "sh scripts/install-launchd.sh",
-    "schedule:remove": "sh scripts/install-launchd.sh --remove"
+    "voice": "node scripts/voice-worker.mjs",
+    "voice:install": "sh scripts/install-launchd.sh",
+    "voice:remove": "sh scripts/install-launchd.sh --remove"
   },
   "engines": {
     "node": ">=22.13"

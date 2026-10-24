@@ -19,7 +19,7 @@ on:
     - cron: "40 17 * * *"   # 23:10 IST  fallback for 23:00
 
 permissions:
-  contents: write   # save history, drafts and the encrypted token to poet-state; host Reel videos on ig-media
+  contents: write   # save history, drafts and the encrypted token to the poet-state branch
   actions: write    # keep the schedule from being auto-disabled
 
 concurrency:
@@ -38,10 +38,10 @@ jobs:
       LOG_DIR: logs
       TIMEZONE: Asia/Kolkata
       PUBLISH_TO_INSTAGRAM: ${{ vars.PUBLISH_TO_INSTAGRAM || 'true' }}
-      POSTS_PER_RUN: ${{ vars.POSTS_PER_RUN || '2' }}
+      POSTS_PER_RUN: ${{ vars.POSTS_PER_RUN || '3' }}
+      DRAFT_BUFFER: ${{ vars.DRAFT_BUFFER || '10' }}
       REELS_ENABLED: ${{ vars.REELS_ENABLED || 'true' }}
-      LYRIA_MODEL: ${{ vars.LYRIA_MODEL || 'lyria-3-clip-preview' }}
-      MEDIA_BRANCH: ig-media
+      VOICE_BRANCH: poet-voice
       BRAND_NAME: ${{ vars.BRAND_NAME || 'page_of_the__soul' }}
       PREPARE_AHEAD_MINUTES: ${{ vars.PREPARE_AHEAD_MINUTES || '30' }}
       RUN_GRACE_MINUTES: ${{ vars.RUN_GRACE_MINUTES || '120' }}
@@ -54,11 +54,10 @@ jobs:
       BOT_CONTACT: ${{ vars.BOT_CONTACT || 'page_of_the__soul poetry page (non-commercial, ~3 requests/day)' }}
       INSTAGRAM_USER_ID_POETRY: ${{ secrets.INSTAGRAM_USER_ID_POETRY }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      LYRIA_API_KEY: ${{ secrets.LYRIA_API_KEY }}   # billed key for Reel music (optional; falls back to GEMINI_API_KEY)
       FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
       FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
       TOKEN_STATE_KEY: ${{ secrets.TOKEN_STATE_KEY }}
-      GITHUB_TOKEN: ${{ github.token }}   # Reel videos: Instagram fetches them from raw.githubusercontent.com
+      GITHUB_TOKEN: ${{ github.token }}   # reads the voice Reels the Mac keeps on the poet-voice branch
 
     steps:
       - uses: actions/checkout@v4
@@ -112,14 +111,6 @@ jobs:
       - name: Install Chromium
         if: env.MODE != 'check' && (env.MODE != 'tick' || steps.gate.outputs.work == 'true')
         run: npx playwright install --with-deps chromium
-
-      # Reels are encoded with ffmpeg: the npm ffmpeg-static binary, or the system one if npm skipped its download.
-      - name: Ensure ffmpeg
-        if: env.MODE != 'check' && env.MODE != 'refresh-token' && (env.MODE != 'tick' || steps.gate.outputs.work == 'true')
-        run: |
-          if node -e 'const p = require("ffmpeg-static"); process.exit(p && require("fs").existsSync(p) ? 0 : 1)'; then echo "ffmpeg-static binary present"
-          elif command -v ffmpeg >/dev/null; then echo "using system ffmpeg"
-          else sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null && echo "installed system ffmpeg"; fi
 
       - name: Run
         id: run

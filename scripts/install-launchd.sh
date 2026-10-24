@@ -1,56 +1,48 @@
 #!/bin/sh
-# Installs (or with --remove, removes) three launchd agents for this Mac user:
-#   com.echoes.poet.generate  every day 07:00  → drafts POSTS_PER_RUN posts into output/<date>/
-#   com.echoes.poet.publish   09:00, 14:00, 20:30 → publishes the oldest draft (does nothing while
-#                                                    PUBLISH_TO_INSTAGRAM=false)
-#   com.echoes.poet.refresh   Sunday 23:30       → renews the 60-day Instagram token in .env
-# Times are the Mac's local time. A run missed while the Mac sleeps starts when it wakes.
+# Installs (or with --remove, removes) the Mac's only job: the voice worker.
+#   com.echoes.poet.voice   at login and every 30 minutes → keeps voice Reels ready for the next drafts
+#                           (scripts/voice-worker.mjs; logs in logs/voice.*.log)
+# Drafting and publishing run on GitHub Actions. The old Mac publishing agents (generate / publish /
+# refresh) are removed here too: running them as well would post twice.
 set -e
 
 DIR="$(cd "$(dirname "$0")/.." && pwd)"
 AGENTS="$HOME/Library/LaunchAgents"
 NODE="$(command -v node)"
-GEN="com.echoes.poet.generate"
-PUB="com.echoes.poet.publish"
-REF="com.echoes.poet.refresh"
+VOICE="com.echoes.poet.voice"
 
 unload() { launchctl bootout "gui/$(id -u)/$1" 2>/dev/null || true; rm -f "$AGENTS/$1.plist"; }
 
+for old in com.echoes.poet.generate com.echoes.poet.publish com.echoes.poet.refresh; do unload "$old"; done
+
 if [ "$1" = "--remove" ]; then
-  unload "$GEN"; unload "$PUB"; unload "$REF"
-  echo "Removed $GEN, $PUB and $REF."
+  unload "$VOICE"
+  echo "Removed $VOICE."
   exit 0
 fi
 
 [ -n "$NODE" ] || { echo "node not found in PATH" >&2; exit 1; }
 mkdir -p "$AGENTS" "$DIR/logs"
-
-plist() { # label, command, calendar-dicts
-  cat > "$AGENTS/$1.plist" <<EOF
+cat > "$AGENTS/$VOICE.plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>Label</key><string>$1</string>
+  <key>Label</key><string>$VOICE</string>
   <key>WorkingDirectory</key><string>$DIR</string>
   <key>ProgramArguments</key>
-  <array><string>$NODE</string><string>$DIR/src/cli.js</string><string>$2</string></array>
-  <key>StartCalendarInterval</key>
-  <array>$3</array>
-  <key>StandardOutPath</key><string>$DIR/logs/$2.out.log</string>
-  <key>StandardErrorPath</key><string>$DIR/logs/$2.err.log</string>
+  <array><string>$NODE</string><string>$DIR/scripts/voice-worker.mjs</string></array>
+  <key>EnvironmentVariables</key>
+  <dict><key>PATH</key><string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string></dict>
+  <key>RunAtLoad</key><true/>
+  <key>StartInterval</key><integer>1800</integer>
+  <key>LowPriorityIO</key><true/>
+  <key>Nice</key><integer>10</integer>
+  <key>StandardOutPath</key><string>$DIR/logs/voice.out.log</string>
+  <key>StandardErrorPath</key><string>$DIR/logs/voice.err.log</string>
 </dict>
 </plist>
 EOF
-  unload_only() { launchctl bootout "gui/$(id -u)/$1" 2>/dev/null || true; }
-  unload_only "$1"
-  launchctl bootstrap "gui/$(id -u)" "$AGENTS/$1.plist"
-}
-
-at() { echo "<dict>${3:+<key>Weekday</key><integer>$3</integer>}<key>Hour</key><integer>$1</integer><key>Minute</key><integer>$2</integer></dict>"; }
-
-plist "$GEN" generate "$(at 7 0)"
-plist "$PUB" publish-next "$(at 9 0)$(at 14 0)$(at 20 30)"
-plist "$REF" refresh-token "$(at 23 30 0)"
-echo "Installed $GEN (daily 07:00), $PUB (09:00, 14:00, 20:30) and $REF (Sunday 23:30)."
-launchctl print "gui/$(id -u)/$GEN" | grep -E "state|path" | head -3
+launchctl bootout "gui/$(id -u)/$VOICE" 2>/dev/null || true
+launchctl bootstrap "gui/$(id -u)" "$AGENTS/$VOICE.plist"
+echo "Installed $VOICE (at login and every 30 minutes)."
