@@ -8,11 +8,13 @@ import path from "node:path";
 import { promisify } from "node:util";
 
 import { writeBed } from "../src/bed.js";
+import { frameHtml, renderCinematicReel, textCards } from "../src/cinema.js";
 import { loadConfig, secretValues } from "../src/config.js";
+import { createFootage } from "../src/footage.js";
 import { createGemini } from "../src/gemini.js";
 import { createLogger, registerSecrets } from "../src/logger.js";
 import { FADE, renderReel } from "../src/reel.js";
-import { buildOutroSlide, launchBrowser, renderJpeg } from "../src/render.js";
+import { buildOutroSlide, launchBrowser, overlayPage, renderJpeg, renderPng } from "../src/render.js";
 import { buildVoiceScript, toDevanagari, voiceTextHash } from "../src/voice.js";
 
 // Mac voice worker (launchd, every 30 minutes and at login; npm run voice):
@@ -91,7 +93,25 @@ function durationsFor(timings, slideCount) {
   return durations;
 }
 
-async function makeReel(post, { stateDir, outDir, gemini, browser }) {
+/**
+ * Photo sections: the cover (and bhavarth), the poem in halves, the outro, as [from, to) in Reel seconds.
+ * Cards: each text card from the start of its first voice segment to the end of its last.
+ */
+function cinematicTimeline(post, timings, script) {
+  const segs = timings.segments.map(s => ({ start: LEAD + s.start, end: LEAD + s.end }));
+  const total = LEAD + timings.seconds + 0.6;
+  const cards = textCards({ ...post, brand: config.brandName }).map(c => ({ ...c, from: segs[c.from].start, to: c.to === segs.length - 1 ? total : segs[c.to].end }));
+  const at = i => segs[i].start - 0.2;
+  const poemSlide = script.segments.findIndex(x => x.slide === script.slides);
+  const firstPoem = poemSlide + (post.couplet ? 1 : 0); // a couplet post says the title first on that slide
+  const half = firstPoem + Math.ceil(post.poem.length / 2);
+  const outro = script.segments.findIndex(x => x.slide === script.outroSlide);
+  const cuts = [0, ...(post.couplet ? [at(script.segments.findIndex(x => x.slide === 2))] : []), at(firstPoem), at(half), at(outro)];
+  const sections = cuts.map((from, i) => ({ from, to: cuts[i + 1] ?? total }));
+  return { cards, sections, total };
+}
+
+async function makeReel(post, { stateDir, outDir, gemini, browser, footage }) {
   const tmp = fs.mkdtempSync(path.join(WORK, `${post.id}-`));
   try {
     const deva = await toDevanagari({ gemini, post });
@@ -119,6 +139,31 @@ async function makeReel(post, { stateDir, outDir, gemini, browser }) {
       `[0:a]aformat=channel_layouts=mono,asplit[v1][v2];[1:a]aformat=channel_layouts=mono,atrim=0:${bedEnd.toFixed(2)},afade=t=out:st=${(bedEnd - 2.5).toFixed(2)}:d=2.5,volume=-15dB,apad[b];[b][v1]sidechaincompress=threshold=0.03:ratio=4:attack=20:release=400[bd];[v2][bd]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.95[out]`,
       "-map", "[out]", "-ac", "2", "-ar", "44100", "-c:a", "aac", "-b:a", "192k", mix,
     ]);
+
+    if (footage?.available) {
+      const { cards, sections, total } = cinematicTimeline(post, timings, script);
+      const photos = await footage.photosFor(post, sections.length, path.join(tmp, "photos"));
+      const cardFiles = [];
+      for (const card of cards) {
+        const file = path.join(tmp, `card-${card.name}.png`);
+        await renderPng(browser, { html: overlayPage(card.html), file });
+        cardFiles.push({ file, from: card.from, to: card.to });
+      }
+      const frame = await renderPng(browser, { html: overlayPage(frameHtml(config.brandName)), file: path.join(tmp, "frame.png") });
+      fs.mkdirSync(outDir, { recursive: true });
+      const { seconds } = await renderCinematicReel({
+        photos: sections.map((s, i) => ({ ...s, file: photos[i].file })),
+        cards: cardFiles,
+        frame,
+        audio: mix,
+        audioDelay: LEAD,
+        total,
+        file: path.join(outDir, "reel.mp4"),
+      });
+      const reference = crypto.createHash("sha1").update(fs.readFileSync(REF_AUDIO)).digest("hex").slice(0, 10);
+      fs.writeFileSync(path.join(outDir, "meta.json"), `${JSON.stringify({ postId: post.id, title: post.title, textHash: voiceTextHash(post), seconds, style: "cinematic", photos: photos.map(p => p.id), reference, device: timings.device, createdAt: new Date().toISOString() }, null, 2)}\n`);
+      return seconds;
+    }
 
     const seed = [...post.id].reduce((a, ch) => a * 31 + ch.charCodeAt(0), 7);
     const outro = path.join(tmp, "slide-outro.jpg");
@@ -169,12 +214,14 @@ async function main() {
 
   const gemini = createGemini({ apiKey: config.geminiApiKey, model: config.geminiModel, fallbackModels: config.geminiFallbackModels });
   const browser = await launchBrowser({ chromiumPath: config.chromiumPath });
+  const footage = createFootage({ accessKey: (process.env.UNSPLASH_ACCESS_KEY || "").trim(), usedFile: path.join(WORK, "used-photos.json") });
+  if (!footage.available) logger.warn("UNSPLASH_ACCESS_KEY missing: Reels use the slides instead of real photos");
   try {
     for (const post of todo) {
       if (!(await powerOk())) return logger.info("Battery got low: stopping until the charger is in");
       const started = Date.now();
       try {
-        const seconds = await makeReel(post, { stateDir, outDir: path.join(voiceDir, "voice", post.id), gemini, browser });
+        const seconds = await makeReel(post, { stateDir, outDir: path.join(voiceDir, "voice", post.id), gemini, browser, footage });
         await pushVoices(voiceDir, `Voice Reel: ${post.id} ${post.title}`);
         logger.info("Voice Reel ready", { post: post.id, title: post.title, seconds, minutes: Math.round((Date.now() - started) / 60000) });
       } catch (error) {

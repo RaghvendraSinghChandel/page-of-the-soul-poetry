@@ -181,6 +181,28 @@ export async function launchBrowser({ chromiumPath } = {}) {
   return chromium.launch(chromiumPath ? { executablePath: chromiumPath } : {});
 }
 
+/** A transparent full-screen Reel overlay page (1080×1920) with the slides' fonts. */
+export function overlayPage({ css, body }) {
+  return `<!doctype html><html><head><meta charset="utf-8"><style>${fonts()}
+*{box-sizing:border-box}html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:transparent}
+${css}</style></head><body>${body}</body></html>`;
+}
+
+/** Renders an overlay page to a transparent PNG. */
+export async function renderPng(browser, { html, file, width = 1080, height = 1920 }) {
+  const context = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 1 });
+  try {
+    const tab = await context.newPage();
+    await tab.setContent(html, { waitUntil: "load" });
+    await tab.evaluate(() => document.fonts.ready);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    await tab.screenshot({ path: file, type: "png", omitBackground: true, clip: { x: 0, y: 0, width, height } });
+    return file;
+  } finally {
+    await context.close();
+  }
+}
+
 /** Renders `html` to a JPEG at `file`; fails if any text block still overflows after shrinking. */
 export async function renderJpeg(browser, { html, file }) {
   const context = await browser.newContext({ viewport: SIZE, deviceScaleFactor: 1 });

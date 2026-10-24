@@ -6,7 +6,7 @@ Usage:
 script.json: {"segments": [{"text": "देवनागरी", "slide": 1, "speed": 0.8, "pause": 1.0, "gain": 2}, …]}
 Each segment is spoken on its own at its own pace (a title slower and stronger, poem lines like a recited
 sher), followed by its pause. Writes the voice and <out>.json with when each slide's part starts and ends,
-so the Reel shows each slide while its text is spoken. The reference clip (≤ 15 s) and its exact transcript
+and each segment starts and ends, so the Reel shows each slide (or line) while it is spoken. The reference clip (≤ 15 s) and its exact transcript
 decide the voice. Needs HF_TOKEN (the model is gated: accept its terms on huggingface.co once).
 """
 
@@ -85,7 +85,7 @@ def main():
     model.vocoder.to(device)
     ref_audio, ref_text = preprocess_ref_audio_text(args.ref_audio, args.ref_text, show_info=lambda *a: None)
 
-    pieces, slides, cursor = [], {}, 0
+    pieces, slides, timeline, cursor = [], {}, [], 0
     for seg in segments:
         audio, _, _ = infer_process(
             ref_audio, ref_text, seg["text"], model.ema_model, model.vocoder,
@@ -95,10 +95,12 @@ def main():
         audio = trim(np.asarray(audio, dtype=np.float32)) * (10 ** (seg.get("gain", 0) / 20))
         pause = np.zeros(int(RATE * seg.get("pause", 0.5)), dtype=np.float32)
         slide = slides.setdefault(str(seg.get("slide", 1)), {"start": cursor / RATE})
+        entry = {"slide": seg.get("slide", 1), "start": cursor / RATE}
         cursor += len(audio)
-        slide["spoken_end"] = cursor / RATE
+        slide["spoken_end"] = entry["spoken_end"] = cursor / RATE
         cursor += len(pause)
-        slide["end"] = cursor / RATE
+        slide["end"] = entry["end"] = cursor / RATE
+        timeline.append(entry)
         pieces += [audio, pause]
 
     voice = np.concatenate(pieces)
@@ -107,7 +109,7 @@ def main():
         voice = voice * (0.98 / peak)
     sf.write(args.out, voice, samplerate=RATE)
     with open(f"{args.out}.json", "w", encoding="utf-8") as f:
-        json.dump({"seconds": len(voice) / RATE, "slides": slides, "device": device}, f, indent=2)
+        json.dump({"seconds": len(voice) / RATE, "slides": slides, "segments": timeline, "device": device}, f, indent=2)
     print(f"voice: {args.out} ({len(voice) / RATE:.1f}s, {len(segments)} segments, {device}, {time.time() - started:.0f}s)", file=sys.stderr)
 
 
