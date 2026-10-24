@@ -19,7 +19,7 @@ LANGUAGE (sabse zaroori):
 
 TONE: gehra, sachcha, relatable; literary lekin simple. Drama, clichés ("time heals everything", "stay strong"), manipulation ya dard ko exploit karna nahi.
 POEM: 4–10 lines, har line ka apna kaam ho, asli zindagi ki chhoti, dekhi hui details (chai, phone, purani photo, office ki late shaam). Aakhri line reader ko rukne par majboor kare. Har line 46 characters se chhoti.
-CAPTION: chhota aur matlab bhara, 25–60 shabd: 2–3 vaakya jo poem ka gehra matlab kholein aur reader ko apni life se jodein (poem dohraana nahi), aakhir mein ek sochne wala sawaal. 2–4 emojis jo bhaav se mel khayein (jaise 🤍 🌙 ☕ 🍂 ✨ 🕊️ 💭 🌧️), vaakyon ke beech ya aakhir mein; har line par nahi. Poem mein emojis nahi.
+CAPTION: chhota aur matlab bhara, 25–60 shabd: 2–3 vaakya jo poem ka gehra matlab kholein aur reader ko apni life se jodein (poem dohraana nahi), aakhir mein ek sochne wala sawaal. 2–4 emojis jo isi post ke bhaav aur cheezon se mel khayein (yaadein 🍂📷, raat 🌙, baarish 🌧️, chai ☕, safar 🛤️, ghar 🏡, maa-papa 👨‍👩‍👦, dosti 🤝, sukoon 🕊️, umeed 🌅, dil 💔/🤍), vaakyon ke beech jahan bhaav ho; har post mein wahi emojis mat dohraao, aur sab ek jagah dher mat karo. Poem mein emojis nahi.
 AUTHENTICITY: classical doha sirf diye gaye candidates mein se id se chuno, apni yaad se kabhi nahi. Doha tabhi lo jab uska seedha arth (upma nahi) topic se aam reader ko turant jude; warna coupletId "" rakho. Bina doha ki mool rachna bilkul theek hai. Apni poem ko kisi kavi ke naam se kabhi mat jodo.`;
 
 const SCHEMA = {
