@@ -52,7 +52,8 @@ export function reelArgs({ slides, durations, music, file }) {
     filters.push(`[${last}][v${i}]xfade=transition=fade:duration=${FADE}:offset=${offset.toFixed(2)}[x${i}]`);
     last = `x${i}`;
   }
-  filters.push(`[${n}:a]atrim=0:${total.toFixed(2)},asetpts=N/SR/TB,afade=t=in:d=1.2,afade=t=out:st=${(total - 2.5).toFixed(2)}:d=2.5[aout]`);
+  // apad: a clip shorter than the video ends in silence (under the fade) instead of cutting the video short
+  filters.push(`[${n}:a]apad,atrim=0:${total.toFixed(2)},asetpts=N/SR/TB,afade=t=in:d=1.2,afade=t=out:st=${(total - 2.5).toFixed(2)}:d=2.5[aout]`);
   return {
     total,
     args: [

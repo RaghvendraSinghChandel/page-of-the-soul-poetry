@@ -6,7 +6,7 @@ import { createHistory } from "./history.js";
 import { createInstagram } from "./instagramPublisher.js";
 import { safeErrorText } from "./logger.js";
 import { createMediaHost, createVideoHost, validatePublicMedia } from "./mediaHost.js";
-import { audioName, loadTracks, musicCredit, pickTrack } from "./music.js";
+import { audioName, composeMusic, musicCredit } from "./music.js";
 import { ffmpegPath, renderReel, slideDurations } from "./reel.js";
 import { SIZE, buildSlides, displayLine, formPhrase, launchBrowser, renderJpeg } from "./render.js";
 import { loadCorpus } from "./sources.js";
@@ -37,24 +37,30 @@ export function fullCaption(post, brand, { reel = false } = {}) {
     post.couplet
       ? `${FORM_ROMAN[post.couplet.form] || "doha"}: ${post.couplet.poetRoman} · ${post.couplet.workRoman} (${post.couplet.year}), ${post.couplet.number}\nKavita: mool rachna — ${brand}`
       : `Mool rachna — ${brand}`,
-    reel ? musicCredit(post.reel?.track) : "",
+    reel ? musicCredit(post.reel?.music, brand) : "",
   ].filter(Boolean);
   return [post.caption, songLine(post.song), credits.join("\n"), post.hashtags.join(" ")].filter(Boolean).join("\n\n");
 }
 
-/** Adds what older drafts lack: a mood, a suggested song and the Reel (music track + video). */
-async function ensureReelParts(post, { config, history, logger, random = Math.random, render = renderReel }) {
+/** Adds what older drafts lack: a mood, a suggested song and the Reel (composed music + video). */
+async function ensureReelParts(post, { config, history, logger, render = renderReel, compose = composeMusic }) {
   const recent = history.recent().filter(p => p.id !== post.id);
   const changes = {};
   const mood = post.mood || CATEGORY_MOOD[post.category] || "soch";
   if (!post.mood) changes.mood = mood;
   if (!post.song) changes.song = songsFor(mood, recent)[0] || null;
   if (config.reelsEnabled && !(post.reel?.file && fs.existsSync(post.reel.file))) {
-    const track = loadTracks().find(t => t.id === post.reel?.track?.id) || pickTrack(mood, recent, random);
-    const file = path.join(path.dirname(post.slides[0]), "reel.mp4");
-    const { seconds } = await render({ slides: post.slides, durations: slideDurations(post), music: track.path, file, ffmpeg: ffmpegPath(config.ffmpegPath) });
-    changes.reel = { ...post.reel, status: post.reel?.status || "draft", file, seconds, track: { ...track, path: undefined } };
-    logger.info("Reel rendered", { post: post.id, seconds, track: track.id });
+    const dir = path.dirname(post.slides[0]);
+    let music = post.reel?.music?.file && fs.existsSync(post.reel.music.file) ? post.reel.music : null;
+    if (!music) {
+      music = await compose({ apiKey: config.lyriaApiKey, model: config.lyriaModel, mood, dir });
+      history.update(post.id, { reel: { ...post.reel, status: post.reel?.status || "draft", music } });
+      logger.info("Music composed", { post: post.id, mood, model: music.model });
+    }
+    const file = path.join(dir, "reel.mp4");
+    const { seconds } = await render({ slides: post.slides, durations: slideDurations(post), music: music.file, file, ffmpeg: ffmpegPath(config.ffmpegPath) });
+    changes.reel = { ...post.reel, status: post.reel?.status || "draft", file, seconds, music };
+    logger.info("Reel rendered", { post: post.id, seconds });
   }
   return Object.keys(changes).length ? history.update(post.id, changes) : post;
 }
@@ -99,8 +105,8 @@ ${fullCaption(post, brand)}
 ${
   post.reel?.file
     ? `- **Video:** ${path.basename(post.reel.file)} (1080×1920, ${post.reel.seconds}s), wahi slides + music
-- **Music:** "${post.reel.track.title}"${post.reel.track.artist ? ` — ${post.reel.track.artist}` : ""} · ${post.reel.track.license} · ${post.reel.track.source}
-- **Reel caption ka music credit:** ${musicCredit(post.reel.track)}`
+- **Music:** ${path.basename(post.reel.music.file)}, mood "${post.reel.music.mood}" par ${post.reel.music.model} se banayi gayi nayi dhun (koi film gaana nahi)
+- **Reel caption ka music credit:** ${musicCredit(post.reel.music, brand)}`
     : "- Reel abhi nahi bani (publish se pehle ban jaayegi)."
 }
 - **Mood:** ${post.mood || "-"}  ·  **Sujhaya gaana:** ${post.song ? `${post.song.title} — ${post.song.film} (${post.song.year}); sirf naam caption mein, gaana post mein nahi` : "-"}
@@ -186,7 +192,7 @@ export async function generate({ config, logger, count = config.postsPerRun, now
         history.add(post);
         let ready = post;
         try {
-          ready = await ensureReelParts(post, { config, history, logger: log, random, render: deps.renderReel });
+          ready = await ensureReelParts(post, { config, history, logger: log, render: deps.renderReel, compose: deps.composeMusic });
         } catch (error) {
           log.warn("Reel could not be rendered now; it is tried again before publishing", { error });
         }
@@ -275,7 +281,7 @@ export async function publishNext({ config, logger, publishAt, deps = {} }) {
       return null;
     }
     try {
-      post = await ensureReelParts(post, { config, history, logger: log, render: deps.renderReel });
+      post = await ensureReelParts(post, { config, history, logger: log, render: deps.renderReel, compose: deps.composeMusic });
     } catch (error) {
       log.warn("Reel could not be rendered; the carousel goes alone and the Reel is retried", { error });
     }
@@ -336,7 +342,7 @@ async function prepareReel(post, { config, ig, log, deps }) {
   const videos = deps.videoHost || createVideoHost(config);
   if (!videos.available) throw new JobError("GITHUB_TOKEN and GITHUB_REPOSITORY are needed to host the Reel video", { kind: "permanent" });
   const { url } = await videos.upload(post.reel.file, post.id);
-  const id = await ig.createReel({ videoUrl: url, caption: fullCaption(post, config.brandName, { reel: true }), audioName: audioName(post.reel.track) });
+  const id = await ig.createReel({ videoUrl: url, caption: fullCaption(post, config.brandName, { reel: true }), audioName: audioName(config.brandName) });
   await ig.waitForContainer(id, { timeoutMs: 600000, intervalMs: 8000 });
   log.info("Reel ready", { container: id });
   return id;
@@ -363,7 +369,7 @@ export async function publishReel(post, { config, logger, container = null, deps
       if (code === "FINISHED") container = reel.containerId;
     }
     if (!container) {
-      post = await ensureReelParts(post, { config, history, logger: log, render: deps.renderReel });
+      post = await ensureReelParts(post, { config, history, logger: log, render: deps.renderReel, compose: deps.composeMusic });
       reel = post.reel || {};
       container = await prepareReel(post, { config, ig, log, deps });
       if (!container) return post;

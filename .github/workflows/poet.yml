@@ -40,6 +40,7 @@ jobs:
       PUBLISH_TO_INSTAGRAM: ${{ vars.PUBLISH_TO_INSTAGRAM || 'true' }}
       POSTS_PER_RUN: ${{ vars.POSTS_PER_RUN || '2' }}
       REELS_ENABLED: ${{ vars.REELS_ENABLED || 'true' }}
+      LYRIA_MODEL: ${{ vars.LYRIA_MODEL || 'lyria-3-clip-preview' }}
       MEDIA_BRANCH: ig-media
       BRAND_NAME: ${{ vars.BRAND_NAME || 'page_of_the__soul' }}
       PREPARE_AHEAD_MINUTES: ${{ vars.PREPARE_AHEAD_MINUTES || '30' }}
@@ -53,6 +54,7 @@ jobs:
       BOT_CONTACT: ${{ vars.BOT_CONTACT || 'page_of_the__soul poetry page (non-commercial, ~3 requests/day)' }}
       INSTAGRAM_USER_ID_POETRY: ${{ secrets.INSTAGRAM_USER_ID_POETRY }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      LYRIA_API_KEY: ${{ secrets.LYRIA_API_KEY }}   # billed key for Reel music (optional; falls back to GEMINI_API_KEY)
       FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
       FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
       TOKEN_STATE_KEY: ${{ secrets.TOKEN_STATE_KEY }}

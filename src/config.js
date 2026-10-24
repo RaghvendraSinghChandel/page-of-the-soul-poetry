@@ -40,6 +40,10 @@ export function loadConfig(source = process.env) {
     // MEDIA_BRANCH of GITHUB_REPOSITORY (public), so GITHUB_TOKEN is needed to publish them.
     reelsEnabled: bool("REELS_ENABLED", true),
     ffmpegPath: env("FFMPEG_PATH"),
+    // Reel music is composed per post by Google Lyria, which needs billing on its API key's project.
+    // A separate LYRIA_API_KEY keeps the writing (GEMINI_API_KEY) on the free tier.
+    lyriaApiKey: env("LYRIA_API_KEY") || env("GEMINI_API_KEY"),
+    lyriaModel: env("LYRIA_MODEL", "lyria-3-clip-preview"),
 
     mediaHost: oneOf("MEDIA_HOST", ["facebook", "github"], "facebook"),
     facebookPageId: env("FACEBOOK_PAGE_ID"),
@@ -78,7 +82,7 @@ export function loadConfig(source = process.env) {
 
 /** Values that must never appear in logs. */
 export function secretValues(config) {
-  return [config.instagramToken, config.metaAppSecret, config.facebookPageToken, config.githubToken, config.geminiApiKey].filter(Boolean);
+  return [config.instagramToken, config.metaAppSecret, config.facebookPageToken, config.githubToken, config.geminiApiKey, config.lyriaApiKey].filter(Boolean);
 }
 
 /** Returns { errors, warnings }. `publishing` adds the checks a live publish needs. */

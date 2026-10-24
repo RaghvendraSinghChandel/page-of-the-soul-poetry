@@ -7,7 +7,7 @@ import test from "node:test";
 import { loadConfig } from "../src/config.js";
 import { createHistory } from "../src/history.js";
 import { fullCaption, publishNext, publishReel, tick } from "../src/job.js";
-import { loadTracks, musicCredit, pickTrack } from "../src/music.js";
+import { composeMusic, musicPrompt } from "../src/music.js";
 import { reelArgs, slideDurations } from "../src/reel.js";
 import { SONGS, songLine } from "../src/songs.js";
 import { silentLogger } from "../src/logger.js";
@@ -205,10 +205,12 @@ test("each post goes out as a carousel and then as a Reel whose caption credits 
     mediaInfo: async id => ({ permalink: `https://instagram.com/p/${id}`, timestamp: "2026-10-25T12:45:00Z" }),
   };
   const renderReel = async ({ file, music }) => (assert.ok(fs.existsSync(music), "music file exists"), fs.mkdirSync(path.dirname(file), { recursive: true }), fs.writeFileSync(file, "mp4"), { file, seconds: 15 });
+  const composeMusic = async ({ mood, dir }) => (fs.mkdirSync(dir, { recursive: true }), fs.writeFileSync(path.join(dir, "music.mp3"), "mp3"), { file: path.join(dir, "music.mp3"), model: "lyria-test", mood });
   const deps = {
     history,
     instagram,
     renderReel,
+    composeMusic,
     mediaHost: { upload: async file => ({ url: `https://cdn/${file}`, ref: file }), remove: async () => {} },
     videoHost: { available: true, upload: async (file, name) => ({ url: `https://raw/${name}/reel.mp4` }) },
     validateMedia: async () => ({}),
@@ -224,7 +226,8 @@ test("each post goes out as a carousel and then as a Reel whose caption credits 
   const [, reelCaption, videoUrl, audio] = created.find(c => c[0] === "reel");
   assert.match(carouselCaption, /Is kavita ke saath suniye: ".+" — .+ \(\d{4}\)/);
   assert.doesNotMatch(carouselCaption, /Dhun:/);
-  assert.match(reelCaption, /Dhun: ".+" .*Wikimedia Commons/);
+  assert.match(reelCaption, /Dhun: page_of_the__soul ke liye AI \(Google Lyria\) se banayi gayi/);
+  assert.equal(done.reel.music.mood, "pyaar");
   assert.equal(videoUrl, "https://raw/d1/reel.mp4");
   assert.ok(audio.length > 3);
   // a later run does not post the Reel again
@@ -232,21 +235,18 @@ test("each post goes out as a carousel and then as a Reel whose caption credits 
   assert.deepEqual(published, ["carousel-1", "reel-1"]);
 });
 
-test("music library: licensed, credited, mood-matched; songs are unique and suggested by name only", () => {
-  const tracks = loadTracks();
-  assert.ok(tracks.length >= 12);
-  for (const t of tracks) {
-    assert.ok(fs.existsSync(t.path), t.file);
-    assert.match(t.license, /^(CC0|Public domain|CC BY [34]\.0)$/, `${t.id}: ${t.license}`);
-    assert.match(t.source, /^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
-    if (t.attributionRequired) assert.ok(t.artist && musicCredit(t).includes(t.licenseUrl), t.id);
-  }
-  for (const mood of ["udaas", "pyaar", "ghar", "josh", "dosti", "soch"]) {
-    assert.ok(pickTrack(mood, [], () => 0).moods.includes(mood), mood);
-    assert.ok(SONGS.filter(s => s.moods.includes(mood)).length >= 5, mood);
-  }
-  assert.equal(new Set(SONGS.map(s => s.id)).size, SONGS.length);
+test("Lyria music: Bollywood-style instrumental prompt per mood; audio saved; missing billing is reported clearly", async () => {
+  assert.match(musicPrompt("udaas"), /no vocals.*Bollywood.*bansuri/s);
+  assert.ok(new Set(["udaas", "pyaar", "ghar", "josh", "dosti", "soch"].map(musicPrompt)).size === 6);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "echoes-"));
+  const ok = async () => ({ ok: true, status: 200, json: async () => ({ candidates: [{ content: { parts: [{ text: "x" }, { inlineData: { mimeType: "audio/mpeg", data: Buffer.from("ID3").toString("base64") } }] } }] }) });
+  const music = await composeMusic({ apiKey: "k", mood: "pyaar", dir, fetchImpl: ok });
+  assert.equal(path.basename(music.file), "music.mp3");
+  assert.equal(fs.readFileSync(music.file, "utf8"), "ID3");
+  const noBilling = async () => ({ ok: false, status: 429, json: async () => ({ error: { message: "Quota exceeded for metric: x, limit: 0, model: lyria-3-clip" } }) });
+  await assert.rejects(composeMusic({ apiKey: "k", mood: "pyaar", dir, fetchImpl: noBilling }), e => e.kind === "permanent" && /enable billing/.test(e.message));
   assert.equal(songLine(SONGS[0]), 'Is kavita ke saath suniye: "Kahin Door Jab Din Dhal Jaaye" — Anand (1971)');
+  assert.equal(new Set(SONGS.map(s => s.id)).size, SONGS.length);
 });
 
 test("reel timing: slides stay long enough to read and cross-fade", () => {

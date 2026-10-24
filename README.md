@@ -45,16 +45,25 @@ The old Mac schedule (`npm run schedule:install`, launchd) still works for local
 
 ## Reels and music
 
-Each post also goes out as a **Reel**: a 1080×1920 video of the same slides with slow zooms and fades, set to an Indian instrumental.
-- **Music.** It comes from `assets/music/`: 45-second excerpts of veena, sitar, bansuri, shehnai and tabla pieces from Wikimedia Commons.
-  - Every license is CC0, public domain or CC BY, and was read from the Commons API (`tracks.json`).
-  - The Reel caption credits the track, as CC BY requires.
-  - The track is chosen by the post's **mood** (udaas, pyaar, ghar, josh, dosti, soch).
+Each post also goes out as a **Reel**: a 1080×1920 video of the same slides with slow zooms and fades, set to background music.
+- **Music.** It is a new Bollywood-style instrumental composed for that post by **Google Lyria** (Gemini API). The prompt follows the post's **mood** (`src/music.js`):
+
+  | Mood | Instruments |
+  |---|---|
+  | udaas | bansuri over piano |
+  | pyaar | santoor, guitar, tabla |
+  | ghar | sitar, harmonium |
+  | josh | sitar, dhol, strings |
+  | dosti | guitar, bansuri |
+  | soch | Sufi harmonium, sarangi |
+
+  Every piece is instrumental only. The Reel caption says the music is AI-made for the page.
+- **Billing.** Lyria is not on the Gemini free tier. Put a key from a **billed** Google AI Studio project in the `LYRIA_API_KEY` secret. The writing keeps using the free `GEMINI_API_KEY`.
 - **Bollywood suggestion.** Both captions add `Is kavita ke saath suniye: "<gaana>" — <film> (<saal>)`. The song comes from the hand-checked list in `src/songs.js`, picked by the writer.
-  - Only the song's name is printed. Bollywood audio is never used: the Instagram API cannot attach Instagram's licensed music, and uploading a film song ourselves would be copyright infringement (muted posts, strikes).
+  - Only the song's name is printed. Real film audio is never used: the Instagram API cannot attach Instagram's licensed music, and uploading a film song ourselves would be copyright infringement.
 - **Hosting.** Reel videos are hosted for Instagram on the `ig-media` branch of this public repo. It holds a single orphan commit, replaced each time.
+- **If something fails.** If the music or the Reel fails, the carousel still goes out on time. Backup runs retry the Reel. A missing Lyria billing setup stops further retries.
 - **Off switch.** Set the repository variable `REELS_ENABLED=false` to post carousels only.
-- **Retries.** A Reel that fails does not hold up the carousel. Backup runs retry it, up to `JOB_MAX_ATTEMPTS` times.
 
 ## What one post contains
 
