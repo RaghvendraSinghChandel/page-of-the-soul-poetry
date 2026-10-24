@@ -1,9 +1,9 @@
 {
-  "name": "echoes-of-yesterday-poet",
+  "name": "page-of-the-soul-poetry",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Echoes of Yesterday: 2-3 Hinglish poetry carousel posts per run, with verified public-domain Hindi/Urdu sources (Kabir, Rahim, Ghalib) and Instagram Graph API publishing.",
+  "description": "page_of_the__soul: three Hinglish poetry posts a day (two voice Reels, one carousel), verified public-domain Kabir/Rahim couplets, published on time by GitHub Actions; voice Reels made ahead on the Mac.",
   "scripts": {
     "generate": "node src/cli.js generate",
     "publish-next": "node src/cli.js publish-next",
