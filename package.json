@@ -1,0 +1,31 @@
+{
+  "name": "echoes-of-yesterday-poet",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Echoes of Yesterday: 2-3 Hinglish poetry carousel posts per run, with verified public-domain Hindi/Urdu sources (Kabir, Rahim, Ghalib) and Instagram Graph API publishing.",
+  "scripts": {
+    "generate": "node src/cli.js generate",
+    "publish-next": "node src/cli.js publish-next",
+    "rerender": "node src/cli.js rerender",
+    "refresh-token": "node src/cli.js refresh-token",
+    "tick": "node src/cli.js tick",
+    "cron:setup": "node scripts/setup-cronjobs.js",
+    "check-config": "node src/cli.js check-config",
+    "history": "node src/cli.js history",
+    "check": "for f in $(find src tests scripts -name '*.js'); do node --check $f || exit 1; done",
+    "test": "node --test tests/*.test.js",
+    "schedule:install": "sh scripts/install-launchd.sh",
+    "schedule:remove": "sh scripts/install-launchd.sh --remove"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "@fontsource/lora": "^5.3.0",
+    "@fontsource/mukta": "^5.3.0",
+    "@fontsource/tiro-devanagari-hindi": "^5.3.0",
+    "dotenv": "^16.6.1",
+    "playwright": "^1.64.1"
+  }
+}

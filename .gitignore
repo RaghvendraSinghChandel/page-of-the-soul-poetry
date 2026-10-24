@@ -1,0 +1,8 @@
+node_modules/
+.env
+output/
+logs/
+state/
+.DS_Store
+posts_log.csv
+.poet-state/

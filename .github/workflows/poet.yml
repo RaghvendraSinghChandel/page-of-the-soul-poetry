@@ -1,0 +1,181 @@
+name: page_of_the__soul — Instagram
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "tick = publish whatever slot is due now (18:00 / 23:00 IST); generate = write drafts now; publish-now = publish the oldest draft immediately; refresh-token = renew the Instagram token now"
+        type: choice
+        options: [tick, generate, publish-now, refresh-token]
+        default: tick
+  schedule:
+    # All times UTC (IST = UTC + 5:30). The primary trigger is cron-job.org (npm run cron:setup), which starts
+    # runs within seconds; GitHub's own schedule is often late by up to hours, so these are only a fallback.
+    # A run starts early, gets the carousel ready, then publishes exactly at 18:00:00 / 23:00:00 IST.
+    # Every run is idempotent (state/history.json records each slot), so extra triggers never double-post.
+    - cron: "5 12 * * *"    # 17:35 IST  fallback for 18:00
+    - cron: "40 12 * * *"   # 18:10 IST  fallback for 18:00
+    - cron: "5 17 * * *"    # 22:35 IST  fallback for 23:00
+    - cron: "40 17 * * *"   # 23:10 IST  fallback for 23:00
+
+permissions:
+  contents: write   # save history, drafts and the encrypted token to the poet-state branch
+  actions: write    # keep the schedule from being auto-disabled
+
+concurrency:
+  group: page-of-the-soul-instagram
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'tick' }}
+      STATE_BRANCH: poet-state
+      STATE_DIR: state
+      OUTPUT_DIR: output
+      LOG_DIR: logs
+      TIMEZONE: Asia/Kolkata
+      PUBLISH_TO_INSTAGRAM: ${{ vars.PUBLISH_TO_INSTAGRAM || 'true' }}
+      POSTS_PER_RUN: ${{ vars.POSTS_PER_RUN || '2' }}
+      BRAND_NAME: ${{ vars.BRAND_NAME || 'page_of_the__soul' }}
+      PREPARE_AHEAD_MINUTES: ${{ vars.PREPARE_AHEAD_MINUTES || '30' }}
+      RUN_GRACE_MINUTES: ${{ vars.RUN_GRACE_MINUTES || '120' }}
+      JOB_MAX_ATTEMPTS: ${{ vars.JOB_MAX_ATTEMPTS || '3' }}
+      GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-3.5-flash' }}
+      GEMINI_FALLBACK_MODELS: ${{ vars.GEMINI_FALLBACK_MODELS || 'gemini-3.5-flash-lite,gemini-flash-lite-latest' }}
+      INSTAGRAM_API_HOST: graph.instagram.com
+      GRAPH_API_VERSION: ${{ vars.GRAPH_API_VERSION || 'v23.0' }}
+      MEDIA_HOST: facebook
+      BOT_CONTACT: ${{ vars.BOT_CONTACT || 'page_of_the__soul poetry page (non-commercial, ~3 requests/day)' }}
+      INSTAGRAM_USER_ID_POETRY: ${{ secrets.INSTAGRAM_USER_ID_POETRY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+      FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+      TOKEN_STATE_KEY: ${{ secrets.TOKEN_STATE_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Load history and drafts from the state branch
+        run: |
+          if git ls-remote --exit-code --heads origin "$STATE_BRANCH" >/dev/null 2>&1; then
+            git fetch -q --depth=1 origin "$STATE_BRANCH"
+            git worktree add -q --detach .poet-state FETCH_HEAD
+            mkdir -p state output
+            cp -a .poet-state/state/. state/ 2>/dev/null || true
+            cp -a .poet-state/output/. output/ 2>/dev/null || true
+            cp .poet-state/posts_log.csv . 2>/dev/null || true
+          else
+            echo "::warning::No $STATE_BRANCH branch yet: starting with empty history"
+          fi
+
+      # The Instagram token is renewed weekly. The renewed one is kept encrypted (AES-256, key in the
+      # TOKEN_STATE_KEY secret) on the state branch; the INSTAGRAM_ACCESS_TOKEN_POETRY secret is the starting value.
+      - name: Load Instagram token
+        env:
+          SECRET_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN_POETRY }}
+        run: |
+          token="$SECRET_TOKEN"
+          if [ -f .poet-state/token.enc ] && [ -n "$TOKEN_STATE_KEY" ]; then
+            token="$(openssl enc -d -aes-256-cbc -pbkdf2 -a -A -pass env:TOKEN_STATE_KEY -in .poet-state/token.enc)" || { echo "::warning::Could not decrypt the renewed token; using the secret"; token="$SECRET_TOKEN"; }
+          fi
+          echo "::add-mask::$token"
+          echo "INSTAGRAM_ACCESS_TOKEN_POETRY=$token" >> "$GITHUB_ENV"
+
+      # Fallback runs with nothing to do stop here in seconds, without installing Chromium.
+      - name: Anything due?
+        id: gate
+        if: env.MODE == 'tick'
+        run: node src/cli.js tick --check
+
+      - name: Cache Playwright Chromium
+        if: env.MODE != 'tick' || steps.gate.outputs.work == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Chromium
+        if: env.MODE != 'tick' || steps.gate.outputs.work == 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Run
+        id: run
+        if: env.MODE != 'tick' || steps.gate.outputs.work == 'true'
+        run: |
+          case "$MODE" in
+            tick)          node src/cli.js tick ;;
+            generate)      node src/cli.js generate ;;
+            publish-now)   node src/cli.js publish-next ;;
+            refresh-token) echo "Token renewal runs in the next step" ;;
+          esac
+
+      - name: Renew the Instagram token (weekly)
+        id: token
+        if: always() && steps.run.outcome != 'skipped'
+        run: |
+          max_age=6; [ "$MODE" = refresh-token ] && max_age=0
+          node src/cli.js refresh-token --out "$RUNNER_TEMP/ig_token" --max-age-days "$max_age"
+          if [ -s "$RUNNER_TEMP/ig_token" ]; then
+            [ -n "$TOKEN_STATE_KEY" ] || { echo "::error::Secret TOKEN_STATE_KEY is missing; the renewed token was not saved."; exit 1; }
+            echo "::add-mask::$(cat "$RUNNER_TEMP/ig_token")"
+            openssl enc -aes-256-cbc -pbkdf2 -salt -a -A -pass env:TOKEN_STATE_KEY -in "$RUNNER_TEMP/ig_token" -out "$RUNNER_TEMP/token.enc"
+            rm -f "$RUNNER_TEMP/ig_token"
+          fi
+
+      - name: Save history and drafts to the state branch
+        if: always() && steps.run.outcome != 'skipped'
+        run: |
+          [ -f state/history.json ] || { echo "No history to save"; exit 0; }
+          rm -rf "$RUNNER_TEMP/save" && mkdir -p "$RUNNER_TEMP/save/state" "$RUNNER_TEMP/save/output"
+          cp state/history.json "$RUNNER_TEMP/save/state/"
+          [ -f state/token.json ] && cp state/token.json "$RUNNER_TEMP/save/state/"
+          [ -f posts_log.csv ] && cp posts_log.csv "$RUNNER_TEMP/save/"
+          if [ -f "$RUNNER_TEMP/token.enc" ]; then cp "$RUNNER_TEMP/token.enc" "$RUNNER_TEMP/save/"
+          elif [ -f .poet-state/token.enc ]; then cp .poet-state/token.enc "$RUNNER_TEMP/save/"; fi
+          # Only unpublished drafts need their slides; published ones are on Instagram (and in the run artifact).
+          node -e '
+            const h = require("./state/history.json");
+            for (const p of h.posts || []) if (["draft", "publishing"].includes(p.status))
+              for (const f of p.slides || []) console.log(require("path").dirname(f));
+          ' | sort -u | while read -r d; do mkdir -p "$RUNNER_TEMP/save/$d" && cp -a "$d/." "$RUNNER_TEMP/save/$d/"; done
+          cd "$RUNNER_TEMP/save"
+          git init -q -b "$STATE_BRANCH"
+          git add -A
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -q -m "State after run ${GITHUB_RUN_ID}"
+          remote="https://x-access-token:${{ github.token }}@github.com/${GITHUB_REPOSITORY}.git"
+          for attempt in 1 2 3 4; do
+            git push -q -f "$remote" "HEAD:refs/heads/${STATE_BRANCH}" && exit 0
+            sleep $((attempt * 5))
+          done
+          echo "::error::Could not save state. Fix this before the next slot, or duplicate protection will be out of date."
+          exit 1
+
+      - name: Upload slides and logs
+        if: always() && steps.run.outcome != 'skipped'
+        uses: actions/upload-artifact@v4
+        with:
+          name: poet-${{ github.run_id }}
+          path: |
+            output/
+            logs/
+            posts_log.csv
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Keep schedule alive
+        if: always() && github.event_name == 'schedule'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/$GITHUB_REPOSITORY/actions/workflows/poet.yml/enable" >/dev/null
