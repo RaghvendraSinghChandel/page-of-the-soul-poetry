@@ -6,7 +6,7 @@ import test from "node:test";
 
 import { loadConfig } from "../src/config.js";
 import { createHistory } from "../src/history.js";
-import { fullCaption, publishNext, publishReel, tick } from "../src/job.js";
+import { fullCaption, publishNext, tick } from "../src/job.js";
 import { reelArgs, slideDurations } from "../src/reel.js";
 import { SONGS, songLine } from "../src/songs.js";
 import { buildVoiceScript, voiceTextHash } from "../src/voice.js";
@@ -54,7 +54,7 @@ const good = {
   coupletId: "",
   bhavarth: "",
   poem: ["Main roz shaam khidki par baitha raha,", "jahan se suraj doobte dekha tha.", "Har baar socha, kaash woh ruk jaata,", "aur raat bhar taare intezaar karte rahe."],
-  caption: Array(60).fill("shabd").join(" ") + " kya aapne bhi kabhi aisa mehsoos kiya?",
+  caption: Array(30).fill("shabd").join(" ") + " 🌙 kya aapne bhi kabhi aisa mehsoos kiya? 🤍",
   hashtags: ["#Yaadein", "#HinglishPoetry", "#Zindagi"],
   scene: "dusk_window",
   mood: "udaas",
@@ -139,17 +139,18 @@ test("token refresh rewrites only the poetry token line of .env and records the 
 test("slots open 20 minutes early, stay open 2 hours, and are done once published", () => {
   const plan = (iso, state = {}) =>
     planSlots({ now: new Date(iso), timeZone: "Asia/Kolkata", prepareAheadMinutes: 20, runGraceMinutes: 120, maxAttempts: 3, getState: key => state[key] }).map(s => `${s.time}:${s.action}`);
-  assert.deepEqual(plan("2026-10-25T12:20:00Z"), ["18:15:wait", "23:00:wait"]); // 17:50 IST
-  assert.deepEqual(plan("2026-10-25T12:30:00Z"), ["18:15:run", "23:00:wait"]); // 18:00 IST
-  assert.deepEqual(plan("2026-10-25T17:15:00Z", { "2026-10-25@18:15": { status: "published" } }), ["18:15:done", "23:00:run"]); // 22:45 IST
-  assert.deepEqual(plan("2026-10-25T17:15:00Z"), ["18:15:missed", "23:00:run"]);
+  assert.deepEqual(plan("2026-10-25T12:05:00Z"), ["18:00:wait", "19:00:wait", "23:00:wait"]); // 17:35 IST
+  assert.deepEqual(plan("2026-10-25T12:15:00Z"), ["18:00:run", "19:00:wait", "23:00:wait"]); // 17:45 IST
+  assert.deepEqual(plan("2026-10-25T13:15:00Z", { "2026-10-25@18:00": { status: "published" } }), ["18:00:done", "19:00:run", "23:00:wait"]); // 18:45 IST
+  assert.deepEqual(plan("2026-10-25T17:15:00Z", { "2026-10-25@19:00": { status: "published" } }), ["18:00:missed", "19:00:done", "23:00:run"]); // 22:45 IST
 });
 
 test("tick publishes the due slot exactly at its time, once, and drafts the next posts when none are left", async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "echoes-"));
   const history = createHistory({ stateDir: dir });
   history.add({ id: "d1", status: "draft", caption: "Pehli post?", hashtags: [], couplet: null, slides: ["a.jpg"] });
-  const at = Date.parse("2026-10-25T12:45:00Z"); // 18:15 IST
+  history.updateSlot("2026-10-25@18:00", { status: "published" }); // the earlier Reel slot is done
+  const at = Date.parse("2026-10-25T13:30:00Z"); // 19:00 IST (carousel slot)
   let clock = at - 10 * 60000;
   const slept = [];
   const instagram = {
@@ -176,10 +177,10 @@ test("tick publishes the due slot exactly at its time, once, and drafts the next
     const drafted = [];
     const generateStub = { browser: { close: async () => {} }, gemini: { json: async () => (drafted.push(1), Promise.reject(new Error("no gemini in tests"))) } };
     const { ran } = await tick({ config, logger: silentLogger, now: () => new Date(clock), deps: { ...deps, ...generateStub } });
-    assert.deepEqual(ran, [{ key: "2026-10-25@18:15", status: "published" }]);
+    assert.deepEqual(ran, [{ key: "2026-10-25@19:00", status: "published" }]);
     assert.equal(slept[0], 10 * 60000);
-    assert.equal(history.slot("2026-10-25@18:15").post, "d1");
-    assert.equal(history.load()[0].slot, "2026-10-25@18:15");
+    assert.equal(history.slot("2026-10-25@19:00").post, "d1");
+    assert.equal(history.load()[0].slot, "2026-10-25@19:00");
     assert.ok(drafted.length > 0, "tried to draft the next posts");
     const again = await tick({ config, logger: silentLogger, now: () => new Date(clock), deps });
     assert.deepEqual(again.ran, []);
@@ -188,49 +189,46 @@ test("tick publishes the due slot exactly at its time, once, and drafts the next
   }
 });
 
-test("each post goes out as a carousel and then as its Mac-made voice Reel, credited in the caption", async () => {
+test("Reel slots post a Mac-voiced draft as a Reel, the post slot a carousel, and a Reel slot without a voice Reel falls back to a carousel", async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "echoes-"));
   const history = createHistory({ stateDir: dir });
   const base = { status: "draft", category: "love", hashtags: ["#Yaadein"], couplet: null, poem: ["a", "b", "c", "d"], slides: ["a.jpg", "b.jpg"] };
-  history.add({ ...base, id: "d1", caption: "Pehli post?" });
-  history.add({ ...base, id: "d2", caption: "Doosri post?" });
+  for (const id of ["d1", "d2", "d3"]) history.add({ ...base, id, caption: `Post ${id} 🤍 kya?` });
   const created = [];
-  const published = [];
   const instagram = {
     checkAccount: async () => ({}),
     publishingLimit: async () => ({ used: 0, total: 50 }),
     createCarouselItem: async url => `item-${url}`,
-    createCarousel: async (children, caption) => (created.push(["carousel", caption]), `carousel-${published.length}`),
-    createReel: async ({ videoUrl, caption, audioName }) => (created.push(["reel", caption, videoUrl, audioName]), "reel-1"),
+    createCarousel: async (children, caption) => (created.push(["carousel", caption]), `carousel-${created.length}`),
+    createReel: async ({ videoUrl, caption, audioName }) => (created.push(["reel", caption, videoUrl, audioName]), `reel-${created.length}`),
     waitForContainer: async () => "FINISHED",
-    publishContainer: async id => (published.push(id), `media-${id}`),
-    mediaInfo: async id => ({ permalink: `https://instagram.com/p/${id}`, timestamp: "2026-10-25T12:45:00Z" }),
+    publishContainer: async id => `media-${id}`,
+    mediaInfo: async id => ({ permalink: `https://instagram.com/p/${id}`, timestamp: "2026-10-25T12:30:00Z" }),
   };
-  // the Mac has voiced d1 only
-  const voiceReels = { find: async post => (post.id === "d1" ? { url: "https://raw/sha/voice/d1/reel.mp4", meta: {} } : null) };
+  const voiced = new Set(["d2"]); // the Mac has voiced d2 only
+  const voiceReels = { find: async post => (voiced.has(post.id) ? { url: `https://raw/sha/voice/${post.id}/reel.mp4`, meta: {} } : null) };
   const deps = { history, instagram, voiceReels, mediaHost: { upload: async file => ({ url: `https://cdn/${file}`, ref: file }), remove: async () => {} }, validateMedia: async () => ({}) };
   const config = loadConfig({ GEMINI_API_KEY: "x", PUBLISH_TO_INSTAGRAM: "true", INSTAGRAM_USER_ID_POETRY: "1", INSTAGRAM_ACCESS_TOKEN_POETRY: "t" });
 
-  const first = await publishNext({ config, logger: silentLogger, deps });
-  assert.deepEqual(published, ["carousel-0", "reel-1"]);
-  assert.equal(first.reel.status, "published");
-  assert.equal(first.mood, "pyaar");
-  const [, carouselCaption] = created.find(c => c[0] === "carousel");
-  const [, reelCaption, videoUrl, audio] = created.find(c => c[0] === "reel");
-  assert.match(carouselCaption, /Is kavita ke saath suniye: ".+" — .+ \(\d{4}\)/);
-  assert.doesNotMatch(carouselCaption, /Awaaz:/);
+  const reel = await publishNext({ config, logger: silentLogger, format: "reel", deps });
+  assert.equal(reel.id, "d2");
+  assert.equal(reel.format, "reel");
+  const [, reelCaption, videoUrl, audio] = created[0];
+  assert.match(reelCaption, /Is kavita ke saath suniye: ".+" — .+ \(\d{4}\)/);
   assert.match(reelCaption, /Awaaz: page_of_the__soul ki apni awaaz par AI \(IndicF5\) se bani/);
-  assert.equal(videoUrl, "https://raw/sha/voice/d1/reel.mp4");
+  assert.equal(videoUrl, "https://raw/sha/voice/d2/reel.mp4");
   assert.equal(audio, "Kavita path — page_of_the__soul");
-  // a later run does not post the Reel again
-  await publishReel(history.load()[0], { config, logger: silentLogger, deps });
-  assert.equal(published.length, 2);
 
-  // no voice Reel for d2 (Mac was off): the carousel still goes, the Reel is skipped, nothing fails
-  const second = await publishNext({ config, logger: silentLogger, deps });
-  assert.equal(second.status, "published");
-  assert.equal(second.reel.status, "skipped");
-  assert.deepEqual(published, ["carousel-0", "reel-1", "carousel-2"]);
+  const post = await publishNext({ config, logger: silentLogger, format: "carousel", deps });
+  assert.equal(post.id, "d1");
+  assert.equal(post.format, "carousel");
+  assert.doesNotMatch(created[1][1], /Awaaz:/);
+
+  // no voiced draft left: the Reel slot still posts (as a carousel)
+  const fallback = await publishNext({ config, logger: silentLogger, format: "reel", deps });
+  assert.equal(fallback.id, "d3");
+  assert.equal(fallback.format, "carousel");
+  assert.equal(created.length, 3);
 });
 
 test("voice script: cover, poem as recited pairs with the last line once more, then a cheerful outro", () => {

@@ -18,14 +18,18 @@ const repo = process.env.GITHUB_REPOSITORY || "RaghvendraSinghChandel/page-of-th
 const dryRun = process.argv.includes("--dry-run");
 
 // IST trigger times: each main run starts ~20 min before its slot (setup, and a fresh draft if none is waiting),
-// gets the carousel ready, then publishes exactly at 18:15 / 23:00; the backups catch a failed or dropped run.
+// gets the post ready, then publishes exactly on time; the backups catch a failed or dropped run.
+// 18:00 Reel (voice) · 19:00 post (carousel) · 23:00 Reel (voice)
 const TRIGGERS = [
-  { title: "18:15 post – main", hour: 17, minute: 55 },
-  { title: "18:15 post – backup", hour: 18, minute: 20 },
-  { title: "18:15 post – backup 2", hour: 18, minute: 45 },
-  { title: "23:00 post – main", hour: 22, minute: 40 },
-  { title: "23:00 post – backup", hour: 23, minute: 5 },
-  { title: "23:00 post – backup 2", hour: 23, minute: 30 },
+  { title: "18:00 Reel – main", hour: 17, minute: 40 },
+  { title: "18:00 Reel – backup", hour: 18, minute: 5 },
+  { title: "18:00 Reel – backup 2", hour: 18, minute: 30 },
+  { title: "19:00 post – main", hour: 18, minute: 40 },
+  { title: "19:00 post – backup", hour: 19, minute: 5 },
+  { title: "19:00 post – backup 2", hour: 19, minute: 30 },
+  { title: "23:00 Reel – main", hour: 22, minute: 40 },
+  { title: "23:00 Reel – backup", hour: 23, minute: 5 },
+  { title: "23:00 Reel – backup 2", hour: 23, minute: 30 },
 ];
 
 const apiKey = process.env.CRONJOB_ORG_API_KEY;

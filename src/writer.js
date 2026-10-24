@@ -19,7 +19,7 @@ LANGUAGE (sabse zaroori):
 
 TONE: gehra, sachcha, relatable; literary lekin simple. Drama, clichés ("time heals everything", "stay strong"), manipulation ya dard ko exploit karna nahi.
 POEM: 4–10 lines, har line ka apna kaam ho, asli zindagi ki chhoti, dekhi hui details (chai, phone, purani photo, office ki late shaam). Aakhri line reader ko rukne par majboor kare. Har line 46 characters se chhoti.
-CAPTION: 50–110 shabd, poem dohraana nahi, uska gehra matlab kholna, reader ko apni life se jodna, aakhir mein ek sochne wala sawaal. Emojis nahi.
+CAPTION: chhota aur matlab bhara, 25–60 shabd: 2–3 vaakya jo poem ka gehra matlab kholein aur reader ko apni life se jodein (poem dohraana nahi), aakhir mein ek sochne wala sawaal. 2–4 emojis jo bhaav se mel khayein (jaise 🤍 🌙 ☕ 🍂 ✨ 🕊️ 💭 🌧️), vaakyon ke beech ya aakhir mein; har line par nahi. Poem mein emojis nahi.
 AUTHENTICITY: classical doha sirf diye gaye candidates mein se id se chuno, apni yaad se kabhi nahi. Doha tabhi lo jab uska seedha arth (upma nahi) topic se aam reader ko turant jude; warna coupletId "" rakho. Bina doha ki mool rachna bilkul theek hai. Apni poem ko kisi kavi ke naam se kabhi mat jodo.`;
 
 const SCHEMA = {
@@ -33,7 +33,7 @@ const SCHEMA = {
     title: { type: "string", description: "Poem ka chhota Hinglish title, 2-5 shabd" },
     hook: { type: "string", description: "Cover image ke liye ek dil chhoo lene wali Hinglish line, 60-110 characters" },
     poem: { type: "array", items: { type: "string" }, description: "4-10 Hinglish lines, har line 46 characters se kam" },
-    caption: { type: "string", description: "50-110 shabd Hinglish caption, ek sawaal ke saath khatam" },
+    caption: { type: "string", description: "25-60 shabd ka chhota, matlab bhara Hinglish caption, 2-4 emojis, ek sawaal ke saath khatam" },
     hashtags: { type: "array", items: { type: "string" }, description: "3-6 hashtags, topic ke hisaab se, Hindi/Hinglish shabdon se bane" },
     scene: { type: "string", description: "Diye gaye scenes mein se ek key" },
     mood: { type: "string", enum: MOODS, description: "Poem ka mood (Reel ka music isi se chuna jaata hai)" },
@@ -73,9 +73,12 @@ export function reviewDraft(draft, { candidates, category, recent = [] }) {
   const long = poem.filter(line => line.length > 48);
   if (long.length) problems.push(`Ye lines 46 characters se lambi hain, chhoti karo: ${long.map(l => `"${l}"`).join("; ")}`);
   const words = wordCount(draft.caption);
-  if (words < 45 || words > 125) problems.push(`Caption ${words} shabd ka hai; 50-110 chahiye.`);
-  if (!/\?\s*$/.test(String(draft.caption || "").trim())) problems.push("Caption ek sawaal (?) par khatam karo.");
-  if (/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(`${draft.caption}${fields.poem}`)) problems.push("Emojis hata do.");
+  if (words < 20 || words > 70) problems.push(`Caption ${words} shabd ka hai; 25-60 chahiye (chhota aur matlab bhara).`);
+  const captionText = String(draft.caption || "").trim();
+  if (!/\?[\s\p{Extended_Pictographic}\u{FE0F}\u{200D}]*$/u.test(captionText)) problems.push("Caption ek sawaal (?) par khatam karo (emoji uske baad aa sakta hai).");
+  const emojis = captionText.match(/\p{Extended_Pictographic}/gu) || [];
+  if (emojis.length < 1 || emojis.length > 5) problems.push(`Caption mein 2-4 emojis do (abhi ${emojis.length}).`);
+  if (/\p{Extended_Pictographic}/u.test(fields.poem)) problems.push("Poem se emojis hata do.");
   const hook = String(draft.hook || "");
   if (hook.length < 30 || hook.length > 130) problems.push("Hook 60-110 characters ka rakho.");
   const tags = draft.hashtags || [];
@@ -162,7 +165,7 @@ async function polish({ gemini, brand, draft, candidates, category, recent, logg
     "- Poem lines mein natural punctuation (comma, full stop) do; har line 46 characters se chhoti rahe; 4-10 lines.",
     "- Title aur hook poem ki asli baat se mel khayein; koi aisi cheez na ho jo poem mein hai hi nahi.",
     "- Bhavarth sirf doha ka arth bataye, topic par apply na kare. Doha ke shabdon se aage ka daava mat karo.",
-    "- Caption 50-110 shabd, ek sawaal par khatam, English sentences nahi.",
+    "- Caption chhota aur matlab bhara: 25-60 shabd, 2-4 bhaav se milte emojis, ek sawaal par khatam, English sentences nahi.",
     "- Har line ki grammar aur bolchaal jaanch lo: aisi ho jaise koi sach mein bolta hai. Zabardasti ki tukbandi (rhyme) se behtar hai seedhi, sachchi line.",
     "- coupletFit sakhti se do: 4-5 sirf tab jab ek aam reader bina samjhaye doha aur poem ka rishta mehsoos kare. Agar doha sirf ek shabd ya door ki upma se juda hai, ya uska arth aam reader ko ajeeb lagega, toh 3 ya kam.",
     couplet ? `Doha (${couplet.source.poet.roman}): ${couplet.lines.join(" / ")}` : "Is draft mein koi doha nahi hai: coupletFit 0, bhavarth \"\".",

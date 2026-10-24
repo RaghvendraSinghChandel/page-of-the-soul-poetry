@@ -203,25 +203,25 @@ export async function rerenderDrafts({ config, logger, deps = {} }) {
 }
 
 /**
- * Publishes the oldest draft as a carousel and then as a Reel. publishAt (Date): get both ready first, then
- * wait and publish at that moment. Returns the post (status "published" once the carousel is out); its
- * `reel.status` says how the Reel went ("published", or "draft"/"failed" to be retried by publishReel).
+ * Publishes one draft. format "reel": the oldest draft whose voice Reel the Mac has made, as a Reel; if none
+ * is ready, the slot falls back to a carousel so nothing is missed. format "carousel": the oldest draft
+ * that has no voice Reel (those are kept for the Reel slots), or else the oldest draft.
+ * publishAt (Date): get the container ready first, then wait and publish at that moment.
  */
-export async function publishNext({ config, logger, publishAt, deps = {} }) {
+export async function publishNext({ config, logger, publishAt, format = "carousel", deps = {} }) {
   if (!config.publishEnabled) {
     logger.info("PUBLISH_TO_INSTAGRAM is false: drafts only, nothing published.");
     return null;
   }
   const history = deps.history || historyFor(config);
   const ig = deps.instagram || createInstagram({ host: config.instagramApiHost, version: config.graphApiVersion, userId: config.instagramUserId, token: config.instagramToken, appSecret: config.metaAppSecret });
-  const posts = history.load();
 
   // A crash between media_publish and recording leaves a post in "publishing": settle it first, never post twice.
-  const pending = posts.find(p => p.status === "publishing" && p.containerId);
+  const pending = history.load().find(p => p.status === "publishing" && p.containerId);
   if (pending) {
     const { status_code: code } = await ig.containerStatus(pending.containerId);
     if (code === "PUBLISHED") {
-      const match = (await ig.recentMedia()).find(m => m.media_product_type !== "REELS" && String(m.caption || "").startsWith(pending.caption.slice(0, 60)));
+      const match = (await ig.recentMedia()).find(m => String(m.caption || "").startsWith(pending.caption.slice(0, 60)));
       const done = history.update(pending.id, { status: "published", mediaId: match?.id || "", permalink: match?.permalink || "", publishedAt: match?.timestamp || new Date().toISOString() });
       logger.info("Earlier publish confirmed", { post: pending.id, permalink: match?.permalink });
       return done;
@@ -230,19 +230,31 @@ export async function publishNext({ config, logger, publishAt, deps = {} }) {
       history.update(pending.id, { status: "draft", containerId: "" });
       logger.warn("Earlier container unusable; post goes back to draft", { post: pending.id, code });
     } else {
-      return finish(pending, pending.containerId);
+      return finish(pending, pending.containerId, pending.format || "carousel");
     }
   }
 
-  let post = history.load().find(p => p.status === "draft");
-  if (!post) {
+  const drafts = history.load().filter(p => p.status === "draft");
+  if (!drafts.length) {
     logger.info("No draft waiting to be published.");
     return null;
   }
-  const log = logger.child({ post: post.id });
+  const voices = deps.voiceReels || createVoiceReels(config);
+  const voiceFor = async post => (config.reelsEnabled ? voices.find(post).catch(error => (logger.warn("Voice Reel lookup failed", { post: post.id, error }), null)) : null);
+
+  let post = null;
+  let voice = null;
+  if (format === "reel") {
+    for (const candidate of drafts) if ((voice = await voiceFor(candidate))) { post = candidate; break; }
+    if (!post) logger.warn("No voice Reel ready (the Mac makes them); this slot posts a carousel instead");
+  } else {
+    for (const candidate of drafts) if (!(await voiceFor(candidate))) { post = candidate; break; }
+  }
+  post ??= drafts[0];
+  const as = voice ? "reel" : "carousel";
+  const log = logger.child({ post: post.id, as });
   const host = deps.mediaHost || createMediaHost(config, { logger: log });
   const hosted = [];
-  let reelContainer = null;
   try {
     await ig.checkAccount();
     const limit = await ig.publishingLimit();
@@ -251,34 +263,34 @@ export async function publishNext({ config, logger, publishAt, deps = {} }) {
       return null;
     }
     post = ensureSong(post, { history });
-    const children = [];
-    for (const file of post.slides) {
-      const media = await host.upload(file);
-      hosted.push(media.ref);
-      await (deps.validateMedia || validatePublicMedia)(media.url, SIZE);
-      children.push(await ig.createCarouselItem(media.url));
+    let containerId;
+    if (voice) {
+      containerId = await ig.createReel({ videoUrl: voice.url, caption: fullCaption(post, config.brandName, { reel: true }), audioName: audioName(config.brandName, { voice: true }) });
+      await ig.waitForContainer(containerId, { timeoutMs: 600000, intervalMs: 8000 });
+    } else {
+      const children = [];
+      for (const file of post.slides) {
+        const media = await host.upload(file);
+        hosted.push(media.ref);
+        await (deps.validateMedia || validatePublicMedia)(media.url, SIZE);
+        children.push(await ig.createCarouselItem(media.url));
+      }
+      for (const child of children) await ig.waitForContainer(child);
+      containerId = await ig.createCarousel(children, fullCaption(post, config.brandName));
+      await ig.waitForContainer(containerId);
     }
-    for (const child of children) await ig.waitForContainer(child);
-    const containerId = await ig.createCarousel(children, fullCaption(post, config.brandName));
-    await ig.waitForContainer(containerId);
-    reelContainer = await prepareReel(post, { config, ig, log, deps }).catch(error => {
-      log.warn("Reel could not be prepared; it is tried again right after the carousel", { error });
-      return null;
-    });
     const wait = publishAt ? publishAt.getTime() - Date.now() : 0;
     if (wait > 0) {
-      log.info("Carousel ready; publishing exactly at the slot time", { at: publishAt.toISOString(), waitSeconds: Math.round(wait / 1000), reelReady: Boolean(reelContainer) });
+      log.info(`${as === "reel" ? "Reel" : "Carousel"} ready; publishing exactly at the slot time`, { at: publishAt.toISOString(), waitSeconds: Math.round(wait / 1000) });
       await (deps.sleepFn || sleep)(wait);
     }
-    history.update(post.id, { status: "publishing", containerId });
-    const done = await finish(post, containerId);
-    return config.reelsEnabled ? await publishReel(done, { config, logger: log, deps: { ...deps, history, instagram: ig }, container: reelContainer }) : done;
+    history.update(post.id, { status: "publishing", containerId, format: as });
+    return await finish(post, containerId, as);
   } catch (error) {
     if (error.kind === "ambiguous") {
       log.warn("Publish outcome unknown; the next run checks the container before doing anything else", { error });
       throw error;
     }
-    if (history.load().find(p => p.id === post.id)?.status === "published") throw error;
     const attempts = (post.attempts || 0) + 1;
     const giveUp = error.kind === "permanent" || attempts >= config.jobMaxAttempts;
     history.update(post.id, { attempts, lastError: safeErrorText(error), ...(giveUp ? { status: "failed" } : {}) });
@@ -288,78 +300,17 @@ export async function publishNext({ config, logger, publishAt, deps = {} }) {
     for (const ref of hosted) await host.remove(ref);
   }
 
-  async function finish(target, containerId) {
+  async function finish(target, containerId, as) {
     try {
       const mediaId = await ig.publishContainer(containerId);
       const info = await ig.mediaInfo(mediaId).catch(() => ({}));
-      const done = history.update(target.id, { status: "published", mediaId, permalink: info.permalink || "", publishedAt: info.timestamp || new Date().toISOString() });
-      logger.info("Published on Instagram", { post: target.id, permalink: info.permalink });
+      const done = history.update(target.id, { status: "published", format: as, mediaId, permalink: info.permalink || "", publishedAt: info.timestamp || new Date().toISOString() });
+      logger.info(`Published on Instagram as a ${as}`, { post: target.id, permalink: info.permalink });
       return done;
     } catch (error) {
       if (error.kind !== "ambiguous") history.update(target.id, { status: "draft", containerId: "" });
       throw error;
     }
-  }
-}
-
-const REEL_DONE = ["published", "failed", "skipped"];
-
-/**
- * A FINISHED Reel container for the post's voice Reel (made on the Mac, kept on the poet-voice branch),
- * or null when Reels are off or no voice Reel is ready for this post.
- */
-async function prepareReel(post, { config, ig, log, deps }) {
-  if (!config.reelsEnabled || REEL_DONE.includes(post.reel?.status)) return null;
-  const voice = await (deps.voiceReels || createVoiceReels(config)).find(post);
-  if (!voice) return null;
-  const id = await ig.createReel({ videoUrl: voice.url, caption: fullCaption(post, config.brandName, { reel: true }), audioName: audioName(config.brandName, { voice: true }) });
-  await ig.waitForContainer(id, { timeoutMs: 600000, intervalMs: 8000 });
-  log.info("Reel ready", { container: id });
-  return id;
-}
-
-/**
- * Publishes the Reel of an already published carousel post: the given FINISHED container, or a new one.
- * Never throws for Reel problems: they are recorded on post.reel (retried until JOB_MAX_ATTEMPTS).
- */
-export async function publishReel(post, { config, logger, container = null, deps = {} }) {
-  const history = deps.history || historyFor(config);
-  const ig = deps.instagram || createInstagram({ host: config.instagramApiHost, version: config.graphApiVersion, userId: config.instagramUserId, token: config.instagramToken, appSecret: config.metaAppSecret });
-  const log = logger.child({ post: post.id, part: "reel" });
-  let reel = post.reel || {};
-  if (REEL_DONE.includes(reel.status)) return post;
-  try {
-    // An earlier publish whose answer was lost: check before posting again.
-    if (reel.status === "publishing" && reel.containerId) {
-      const { status_code: code } = await ig.containerStatus(reel.containerId);
-      if (code === "PUBLISHED") {
-        const match = (await ig.recentMedia()).find(m => m.media_product_type === "REELS" && String(m.caption || "").startsWith(post.caption.slice(0, 60)));
-        log.info("Earlier Reel publish confirmed", { permalink: match?.permalink });
-        return history.update(post.id, { reel: { ...reel, status: "published", mediaId: match?.id || "", permalink: match?.permalink || "", publishedAt: match?.timestamp || new Date().toISOString() } });
-      }
-      if (code === "FINISHED") container = reel.containerId;
-    }
-    if (!container) {
-      container = await prepareReel(post, { config, ig, log, deps });
-      if (!container) {
-        log.info("No voice Reel ready for this post (the Mac makes them); the carousel went alone");
-        return history.update(post.id, { reel: { ...reel, status: "skipped", reason: "awaaz wali Reel taiyaar nahi thi" } });
-      }
-    }
-    history.update(post.id, { reel: { ...reel, status: "publishing", containerId: container } });
-    const mediaId = await ig.publishContainer(container);
-    const info = await ig.mediaInfo(mediaId).catch(() => ({}));
-    log.info("Reel published on Instagram", { permalink: info.permalink });
-    return history.update(post.id, { reel: { ...reel, status: "published", containerId: container, mediaId, permalink: info.permalink || "", publishedAt: info.timestamp || new Date().toISOString() } });
-  } catch (error) {
-    if (error.kind === "ambiguous") {
-      log.warn("Reel publish outcome unknown; the next run checks it before posting again", { error });
-      return history.load().find(p => p.id === post.id);
-    }
-    const attempts = (reel.attempts || 0) + 1;
-    const giveUp = error.kind === "permanent" || attempts >= config.jobMaxAttempts;
-    log.error(giveUp ? "Reel failed; giving up on this Reel" : "Reel failed; a backup run retries it", { error, attempts });
-    return history.update(post.id, { reel: { ...reel, status: giveUp ? "failed" : "draft", containerId: "", attempts, lastError: safeErrorText(error) } });
   }
 }
 
@@ -404,7 +355,7 @@ export async function tick({ config, logger, now = () => new Date(), checkOnly =
 }
 
 async function runSlot(slot, { config, logger, history, deps }) {
-  const log = logger.child({ slot: slot.key });
+  const log = logger.child({ slot: slot.key, format: slot.format });
   history.updateSlot(slot.key, { status: "running", scheduledFor: slot.at.toISOString(), attempts: (history.slot(slot.key)?.attempts || 0) + 1 });
   try {
     if (!config.publishEnabled) {
@@ -412,27 +363,18 @@ async function runSlot(slot, { config, logger, history, deps }) {
       log.info("PUBLISH_TO_INSTAGRAM is false: slot recorded as a dry run, nothing published.");
       return "dry_run";
     }
-    // The carousel may already be out (an earlier run of this slot) with only its Reel left to do.
-    const earlier = history.slot(slot.key)?.post;
-    let post = earlier ? history.load().find(p => p.id === earlier && p.status === "published") : null;
-    if (post) {
-      post = await publishReel(post, { config, logger: log, deps: { ...deps, history } });
-    } else {
-      if (!history.load().some(p => p.status === "draft" || p.status === "publishing")) {
-        log.warn("No draft waiting for this slot; writing one now");
-        await generate({ config, logger: log, count: 1, deps: { ...deps, history } });
-      }
-      post = await publishNext({ config, logger: log, publishAt: slot.at, deps: { ...deps, history } });
-      if (post?.status !== "published") {
-        history.updateSlot(slot.key, { status: "pending", lastError: "nothing published (no draft, or the API limit was reached)" });
-        return "pending";
-      }
-      history.update(post.id, { slot: slot.key });
+    if (!history.load().some(p => p.status === "draft" || p.status === "publishing")) {
+      log.warn("No draft waiting for this slot; writing one now");
+      await generate({ config, logger: log, count: 1, deps: { ...deps, history } });
     }
-    const reelDone = !config.reelsEnabled || REEL_DONE.includes(post.reel?.status);
-    const status = reelDone ? "published" : "reel_pending";
-    history.updateSlot(slot.key, { status, post: post.id, permalink: post.permalink, publishedAt: post.publishedAt, reel: post.reel?.permalink || post.reel?.status || "", lastError: post.reel?.lastError || "" });
-    return status;
+    const post = await publishNext({ config, logger: log, publishAt: slot.at, format: slot.format, deps: { ...deps, history } });
+    if (post?.status !== "published") {
+      history.updateSlot(slot.key, { status: "pending", lastError: "nothing published (no draft, or the API limit was reached)" });
+      return "pending";
+    }
+    history.update(post.id, { slot: slot.key });
+    history.updateSlot(slot.key, { status: "published", post: post.id, format: post.format, permalink: post.permalink, publishedAt: post.publishedAt, lastError: "" });
+    return "published";
   } catch (error) {
     history.updateSlot(slot.key, { status: "pending", lastError: safeErrorText(error) });
     log.error("Slot run failed; a backup run will try again", { error });
