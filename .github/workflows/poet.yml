@@ -4,17 +4,17 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "tick = publish whatever slot is due now (18:00 / 23:00 IST); generate = write drafts now; publish-now = publish the oldest draft immediately; refresh-token = renew the Instagram token now; check = verify settings and the Instagram account (publishes nothing)"
+        description: "tick = publish whatever slot is due now (18:15 / 23:00 IST); generate = write drafts now; publish-now = publish the oldest draft immediately; refresh-token = renew the Instagram token now; check = verify settings and the Instagram account (publishes nothing)"
         type: choice
         options: [tick, generate, publish-now, refresh-token, check]
         default: tick
   schedule:
     # All times UTC (IST = UTC + 5:30). The primary trigger is cron-job.org (npm run cron:setup), which starts
     # runs within seconds; GitHub's own schedule is often late by up to hours, so these are only a fallback.
-    # A run starts early, gets the carousel ready, then publishes exactly at 18:00:00 / 23:00:00 IST.
+    # A run starts early, gets the carousel ready, then publishes exactly at 18:15:00 / 23:00:00 IST.
     # Every run is idempotent (state/history.json records each slot), so extra triggers never double-post.
-    - cron: "5 12 * * *"    # 17:35 IST  fallback for 18:00
-    - cron: "40 12 * * *"   # 18:10 IST  fallback for 18:00
+    - cron: "20 12 * * *"   # 17:50 IST  fallback for 18:15
+    - cron: "55 12 * * *"   # 18:25 IST  fallback for 18:15
     - cron: "5 17 * * *"    # 22:35 IST  fallback for 23:00
     - cron: "40 17 * * *"   # 23:10 IST  fallback for 23:00
 

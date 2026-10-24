@@ -16,7 +16,7 @@ import { writePost } from "./writer.js";
 // generate: drafts POSTS_PER_RUN carousel posts (different categories), saves slides + post.md under
 //           output/<date>/<post-id>/ and records them in state/history.json and posts_log.csv.
 // publishNext: when PUBLISH_TO_INSTAGRAM=true, publishes the oldest draft as an Instagram carousel.
-// tick: what the schedule runs; publishes one draft per daily slot (18:00 and 23:00), exactly on time.
+// tick: what the schedule runs; publishes one draft per daily slot (18:15 and 23:00), exactly on time.
 
 const FORM_ROMAN = { "साखी": "sakhi", "दोहा": "doha", "सोरठा": "sortha" };
 

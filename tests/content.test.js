@@ -134,17 +134,17 @@ test("token refresh rewrites only the poetry token line of .env and records the 
 test("slots open 20 minutes early, stay open 2 hours, and are done once published", () => {
   const plan = (iso, state = {}) =>
     planSlots({ now: new Date(iso), timeZone: "Asia/Kolkata", prepareAheadMinutes: 20, runGraceMinutes: 120, maxAttempts: 3, getState: key => state[key] }).map(s => `${s.time}:${s.action}`);
-  assert.deepEqual(plan("2026-10-25T12:05:00Z"), ["18:00:wait", "23:00:wait"]); // 17:35 IST
-  assert.deepEqual(plan("2026-10-25T12:15:00Z"), ["18:00:run", "23:00:wait"]); // 17:45 IST
-  assert.deepEqual(plan("2026-10-25T17:15:00Z", { "2026-10-25@18:00": { status: "published" } }), ["18:00:done", "23:00:run"]); // 22:45 IST
-  assert.deepEqual(plan("2026-10-25T17:15:00Z"), ["18:00:missed", "23:00:run"]);
+  assert.deepEqual(plan("2026-10-25T12:20:00Z"), ["18:15:wait", "23:00:wait"]); // 17:50 IST
+  assert.deepEqual(plan("2026-10-25T12:30:00Z"), ["18:15:run", "23:00:wait"]); // 18:00 IST
+  assert.deepEqual(plan("2026-10-25T17:15:00Z", { "2026-10-25@18:15": { status: "published" } }), ["18:15:done", "23:00:run"]); // 22:45 IST
+  assert.deepEqual(plan("2026-10-25T17:15:00Z"), ["18:15:missed", "23:00:run"]);
 });
 
 test("tick publishes the due slot exactly at its time, once, and drafts the next posts when none are left", async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "echoes-"));
   const history = createHistory({ stateDir: dir });
   history.add({ id: "d1", status: "draft", caption: "Pehli post?", hashtags: [], couplet: null, slides: ["a.jpg"] });
-  const at = Date.parse("2026-10-25T12:30:00Z"); // 18:00 IST
+  const at = Date.parse("2026-10-25T12:45:00Z"); // 18:15 IST
   let clock = at - 10 * 60000;
   const slept = [];
   const instagram = {
@@ -171,10 +171,10 @@ test("tick publishes the due slot exactly at its time, once, and drafts the next
     const drafted = [];
     const generateStub = { browser: { close: async () => {} }, gemini: { json: async () => (drafted.push(1), Promise.reject(new Error("no gemini in tests"))) } };
     const { ran } = await tick({ config, logger: silentLogger, now: () => new Date(clock), deps: { ...deps, ...generateStub } });
-    assert.deepEqual(ran, [{ key: "2026-10-25@18:00", status: "published" }]);
+    assert.deepEqual(ran, [{ key: "2026-10-25@18:15", status: "published" }]);
     assert.equal(slept[0], 10 * 60000);
-    assert.equal(history.slot("2026-10-25@18:00").post, "d1");
-    assert.equal(history.load()[0].slot, "2026-10-25@18:00");
+    assert.equal(history.slot("2026-10-25@18:15").post, "d1");
+    assert.equal(history.load()[0].slot, "2026-10-25@18:15");
     assert.ok(drafted.length > 0, "tried to draft the next posts");
     const again = await tick({ config, logger: silentLogger, now: () => new Date(clock), deps });
     assert.deepEqual(again.ran, []);

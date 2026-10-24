@@ -4,7 +4,7 @@ import { localDate, zonedTimeToUtc } from "./util.js";
 // A run starts a few minutes early, gets the carousel ready, then publishes exactly at the slot time.
 
 export const SLOTS = [
-  { name: "evening", time: "18:00" },
+  { name: "evening", time: "18:15" },
   { name: "night", time: "23:00" },
 ];
 

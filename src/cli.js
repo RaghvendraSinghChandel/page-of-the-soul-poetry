@@ -8,7 +8,7 @@ import { daysLeft, refreshToken, tokenState, warnTokenExpiry } from "./token.js"
 
 // Commands:
 //   generate [--count N]   draft N posts (default POSTS_PER_RUN) into output/<date>/
-//   tick [--check]         what the schedule runs: publish today's due slot (18:00 / 23:00) on time;
+//   tick [--check]         what the schedule runs: publish today's due slot (18:15 / 23:00) on time;
 //                          --check only reports whether anything is due (work=true|false)
 //   publish-next           publish the oldest draft now (only when PUBLISH_TO_INSTAGRAM=true)
 //   check-config           settings and, if credentials are set, the Instagram account (never publishes)

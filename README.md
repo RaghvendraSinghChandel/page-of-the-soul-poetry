@@ -6,12 +6,12 @@ It runs on **GitHub Actions** (`.github/workflows/poet.yml`), so the Mac can be 
 
 | When | What happens |
 |---|---|
-| **18:00:00** daily | Publishes the oldest draft as a carousel |
+| **18:15:00** daily | Publishes the oldest draft as a carousel |
 | **23:00:00** daily | Publishes the next draft, then writes `POSTS_PER_RUN` (2) new drafts for the next day |
 | Once a week (inside a slot run) | Renews the 60-day Instagram token |
 
 How "on time, every day" is achieved:
-- **Triggers.** cron-job.org starts the workflow at 17:40 and 22:40 (main) and again at +5 and +30 minutes (backups). GitHub's own schedule is often hours late, so it is only a further fallback.
+- **Triggers.** cron-job.org starts the workflow 20 minutes early, at 17:55 and 22:40 (main), and again at +5 and +30 minutes after each slot (backups). GitHub's own schedule is often hours late, so it is only a further fallback.
 - **Exact time.** A run prepares the carousel early, then waits and calls `media_publish` exactly at the slot time.
 - **No doubles.** Each slot's outcome is stored in `state/history.json`, so extra triggers do nothing. A slot that nobody publishes within 2 hours is logged as `missed`.
 - **Never empty.** If no draft is waiting, the slot run writes one first.
@@ -97,7 +97,7 @@ Publishing is **off** (`PUBLISH_TO_INSTAGRAM=false`). Until you switch it on, ev
    - `INSTAGRAM_API_HOST`
    - hosting: `MEDIA_HOST=facebook` with `FACEBOOK_PAGE_ID` and `FACEBOOK_PAGE_ACCESS_TOKEN`
 4. Run `npm run check-config`. It must show the right username.
-5. Set `PUBLISH_TO_INSTAGRAM=true`. The 18:00 and 23:00 runs then publish one draft each as a carousel.
+5. Set `PUBLISH_TO_INSTAGRAM=true`. The 18:15 and 23:00 runs then publish one draft each as a carousel.
 
 Safety:
 - A post whose publish outcome is unknown is checked with Instagram before anything else, so it is never posted twice.
