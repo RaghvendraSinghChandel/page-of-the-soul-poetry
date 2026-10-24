@@ -31,7 +31,8 @@ export function slideDurations(post) {
   return post.slides.length >= 3 ? [6, 8, poem] : [6, poem];
 }
 
-export function reelArgs({ slides, durations, music, file }) {
+/** voice: the audio is a recitation, so it starts after a short breath and is not faded in. */
+export function reelArgs({ slides, durations, music, file, voice = false }) {
   const n = slides.length;
   const inputs = slides.flatMap((slide, i) => ["-loop", "1", "-framerate", String(REEL.fps), "-t", durations[i].toFixed(2), "-i", slide]);
   const total = durations.reduce((a, b) => a + b, 0) - FADE * (n - 1);
@@ -53,7 +54,10 @@ export function reelArgs({ slides, durations, music, file }) {
     last = `x${i}`;
   }
   // apad: a clip shorter than the video ends in silence (under the fade) instead of cutting the video short
-  filters.push(`[${n}:a]apad,atrim=0:${total.toFixed(2)},asetpts=N/SR/TB,afade=t=in:d=1.2,afade=t=out:st=${(total - 2.5).toFixed(2)}:d=2.5[aout]`);
+  const intro = voice ? "adelay=600:all=1," : "";
+  const fadeIn = voice ? "" : "afade=t=in:d=1.2,";
+  const fadeOut = voice ? 1 : 2.5;
+  filters.push(`[${n}:a]${intro}apad,atrim=0:${total.toFixed(2)},asetpts=N/SR/TB,${fadeIn}afade=t=out:st=${(total - fadeOut).toFixed(2)}:d=${fadeOut}[aout]`);
   return {
     total,
     args: [
@@ -73,9 +77,9 @@ export function reelArgs({ slides, durations, music, file }) {
 }
 
 /** Renders the Reel to `file`; returns { file, seconds }. */
-export async function renderReel({ slides, durations, music, file, ffmpeg = ffmpegPath() }) {
+export async function renderReel({ slides, durations, music, file, voice = false, ffmpeg = ffmpegPath() }) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
-  const { args, total } = reelArgs({ slides, durations, music, file });
+  const { args, total } = reelArgs({ slides, durations, music, file, voice });
   try {
     await run(ffmpeg, args, { maxBuffer: 1 << 24, timeout: 10 * 60000 });
   } catch (error) {

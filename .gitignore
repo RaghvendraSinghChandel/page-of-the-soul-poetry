@@ -6,3 +6,6 @@ state/
 .DS_Store
 posts_log.csv
 .poet-state/
+assets/voice/*
+!assets/voice/README.md
+.voice-env/

@@ -65,5 +65,8 @@ export async function composeMusic({ apiKey, model = "lyria-3-clip-preview", moo
 /** Caption credit (Hinglish): the music is AI-made for this page, and says so. */
 export const musicCredit = (music, brand) => (music ? `Dhun: ${brand} ke liye AI (Google Lyria) se banayi gayi` : "");
 
+/** Credit for a Reel recited in the page owner's cloned voice; Instagram asks for realistic AI audio to be disclosed. */
+export const voiceCredit = brand => `Awaaz: ${brand} ki apni awaaz par AI (IndicF5) se bani`;
+
 /** Instagram's "original audio" label on the Reel. */
-export const audioName = brand => `Mool dhun — ${brand}`;
+export const audioName = (brand, { voice = false } = {}) => (voice ? `Kavita path — ${brand}` : `Mool dhun — ${brand}`);

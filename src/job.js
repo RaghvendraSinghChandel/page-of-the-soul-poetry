@@ -6,7 +6,7 @@ import { createHistory } from "./history.js";
 import { createInstagram } from "./instagramPublisher.js";
 import { safeErrorText } from "./logger.js";
 import { createMediaHost, createVideoHost, validatePublicMedia } from "./mediaHost.js";
-import { audioName, composeMusic, musicCredit } from "./music.js";
+import { audioName, composeMusic, musicCredit, voiceCredit } from "./music.js";
 import { ffmpegPath, renderReel, slideDurations } from "./reel.js";
 import { SIZE, buildSlides, displayLine, formPhrase, launchBrowser, renderJpeg } from "./render.js";
 import { loadCorpus } from "./sources.js";
@@ -37,7 +37,7 @@ export function fullCaption(post, brand, { reel = false } = {}) {
     post.couplet
       ? `${FORM_ROMAN[post.couplet.form] || "doha"}: ${post.couplet.poetRoman} · ${post.couplet.workRoman} (${post.couplet.year}), ${post.couplet.number}\nKavita: mool rachna — ${brand}`
       : `Mool rachna — ${brand}`,
-    reel ? musicCredit(post.reel?.music, brand) : "",
+    reel ? (post.reel?.voice ? voiceCredit(brand) : musicCredit(post.reel?.music, brand)) : "",
   ].filter(Boolean);
   return [post.caption, songLine(post.song), credits.join("\n"), post.hashtags.join(" ")].filter(Boolean).join("\n\n");
 }
@@ -342,7 +342,7 @@ async function prepareReel(post, { config, ig, log, deps }) {
   const videos = deps.videoHost || createVideoHost(config);
   if (!videos.available) throw new JobError("GITHUB_TOKEN and GITHUB_REPOSITORY are needed to host the Reel video", { kind: "permanent" });
   const { url } = await videos.upload(post.reel.file, post.id);
-  const id = await ig.createReel({ videoUrl: url, caption: fullCaption(post, config.brandName, { reel: true }), audioName: audioName(config.brandName) });
+  const id = await ig.createReel({ videoUrl: url, caption: fullCaption(post, config.brandName, { reel: true }), audioName: audioName(config.brandName, { voice: Boolean(post.reel.voice) }) });
   await ig.waitForContainer(id, { timeoutMs: 600000, intervalMs: 8000 });
   log.info("Reel ready", { container: id });
   return id;
