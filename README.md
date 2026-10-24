@@ -35,6 +35,7 @@ Run a mode by hand under **Actions → page_of_the__soul — Instagram → Run w
 - `generate`
 - `publish-now`
 - `refresh-token`
+- `check` (settings and the Instagram account; publishes nothing)
 
 To pause publishing, set the repository variable `PUBLISH_TO_INSTAGRAM=false`.
 

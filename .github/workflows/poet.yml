@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "tick = publish whatever slot is due now (18:00 / 23:00 IST); generate = write drafts now; publish-now = publish the oldest draft immediately; refresh-token = renew the Instagram token now"
+        description: "tick = publish whatever slot is due now (18:00 / 23:00 IST); generate = write drafts now; publish-now = publish the oldest draft immediately; refresh-token = renew the Instagram token now; check = verify settings and the Instagram account (publishes nothing)"
         type: choice
-        options: [tick, generate, publish-now, refresh-token]
+        options: [tick, generate, publish-now, refresh-token, check]
         default: tick
   schedule:
     # All times UTC (IST = UTC + 5:30). The primary trigger is cron-job.org (npm run cron:setup), which starts
@@ -98,14 +98,14 @@ jobs:
         run: node src/cli.js tick --check
 
       - name: Cache Playwright Chromium
-        if: env.MODE != 'tick' || steps.gate.outputs.work == 'true'
+        if: env.MODE != 'check' && (env.MODE != 'tick' || steps.gate.outputs.work == 'true')
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
           key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Install Chromium
-        if: env.MODE != 'tick' || steps.gate.outputs.work == 'true'
+        if: env.MODE != 'check' && (env.MODE != 'tick' || steps.gate.outputs.work == 'true')
         run: npx playwright install --with-deps chromium
 
       - name: Run
@@ -117,6 +117,7 @@ jobs:
             generate)      node src/cli.js generate ;;
             publish-now)   node src/cli.js publish-next ;;
             refresh-token) echo "Token renewal runs in the next step" ;;
+            check)         node src/cli.js check-config ;;
           esac
 
       - name: Renew the Instagram token (weekly)
