@@ -95,6 +95,37 @@ function githubHost(config, { fetchImpl, logger }) {
 }
 
 /**
+ * Hosts a Reel video for Instagram to fetch: an orphan commit holding only this file on the media branch of
+ * the (public) repo, force-pushed through the GitHub API, so videos never pile up in the repo's history.
+ * The URL names the commit, so it is served at once (branch URLs are cached for minutes).
+ */
+export function createVideoHost(config, { fetchImpl = fetch } = {}) {
+  const repo = config.githubRepository;
+  const branch = config.mediaBranch;
+  const headers = { authorization: `Bearer ${config.githubToken}`, accept: "application/vnd.github+json", "x-github-api-version": "2022-11-28" };
+  const api = async (method, url, body) => {
+    const res = await fetchImpl(`https://api.github.com/repos/${repo}${url}`, { method, headers, body: body && JSON.stringify(body), signal: AbortSignal.timeout(120000) });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok && !(method === "PATCH" && res.status === 422)) {
+      throw new JobError(`GitHub video upload failed (${method} ${url}): HTTP ${res.status} ${json.message || ""}`, { kind: res.status === 401 || res.status === 403 ? "permanent" : "retryable" });
+    }
+    return { ok: res.ok, json };
+  };
+  return {
+    available: Boolean(config.githubToken && repo),
+    async upload(file, name) {
+      const target = `media/${name}/${path.basename(file)}`;
+      const blob = await api("POST", "/git/blobs", { content: fs.readFileSync(file).toString("base64"), encoding: "base64" });
+      const tree = await api("POST", "/git/trees", { tree: [{ path: target, mode: "100644", type: "blob", sha: blob.json.sha }] });
+      const commit = await api("POST", "/git/commits", { message: `Reel video: ${target}`, tree: tree.json.sha, parents: [] });
+      const moved = await api("PATCH", `/git/refs/heads/${branch}`, { sha: commit.json.sha, force: true });
+      if (!moved.ok) await api("POST", "/git/refs", { ref: `refs/heads/${branch}`, sha: commit.json.sha });
+      return { url: `https://raw.githubusercontent.com/${repo}/${commit.json.sha}/${target}`, ref: commit.json.sha };
+    },
+  };
+}
+
+/**
  * Confirms that Instagram will be able to fetch the media: public HTTPS, no auth, JPEG, ≤ 8 MB,
  * expected dimensions. Retries briefly because CDNs can take a few seconds to serve a new file.
  */

@@ -36,6 +36,10 @@ export function loadConfig(source = process.env) {
     metaAppSecret: env("META_APP_SECRET_POETRY"),
     // Master switch. While false, posts are only drafted (nothing is uploaded or published).
     publishEnabled: bool("PUBLISH_TO_INSTAGRAM", false),
+    // Each post also goes out as a Reel (slides + Indian instrumental music). Videos are hosted on the
+    // MEDIA_BRANCH of GITHUB_REPOSITORY (public), so GITHUB_TOKEN is needed to publish them.
+    reelsEnabled: bool("REELS_ENABLED", true),
+    ffmpegPath: env("FFMPEG_PATH"),
 
     mediaHost: oneOf("MEDIA_HOST", ["facebook", "github"], "facebook"),
     facebookPageId: env("FACEBOOK_PAGE_ID"),

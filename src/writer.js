@@ -1,3 +1,4 @@
+import { MOODS, SONGS } from "./songs.js";
 import { SCENES } from "./themes.js";
 import { JobError, similarity } from "./util.js";
 
@@ -35,8 +36,10 @@ const SCHEMA = {
     caption: { type: "string", description: "50-110 shabd Hinglish caption, ek sawaal ke saath khatam" },
     hashtags: { type: "array", items: { type: "string" }, description: "3-6 hashtags, topic ke hisaab se, Hindi/Hinglish shabdon se bane" },
     scene: { type: "string", description: "Diye gaye scenes mein se ek key" },
+    mood: { type: "string", enum: MOODS, description: "Poem ka mood (Reel ka music isi se chuna jaata hai)" },
+    songId: { type: "string", description: "Di gayi Bollywood list mein se us gaane ki id jo is poem ke bhaav se sabse mel khaye" },
   },
-  required: ["topic", "realLife", "audienceConnect", "coupletId", "bhavarth", "title", "hook", "poem", "caption", "hashtags", "scene"],
+  required: ["topic", "realLife", "audienceConnect", "coupletId", "bhavarth", "title", "hook", "poem", "caption", "hashtags", "scene", "mood", "songId"],
 };
 
 // English function words that never occur in Hinglish. Homographs of Hindi words are left out:
@@ -78,6 +81,8 @@ export function reviewDraft(draft, { candidates, category, recent = [] }) {
   const tags = draft.hashtags || [];
   if (tags.length < 3 || tags.length > 6 || tags.some(tag => !/^#[\p{L}\p{N}_]+$/u.test(tag))) problems.push("3-6 sahi hashtags do (#Shabd, bina space ke).");
   if (!category.scenes.includes(draft.scene)) problems.push(`scene in mein se ek ho: ${category.scenes.join(", ")}.`);
+  if (!MOODS.includes(draft.mood)) problems.push(`mood in mein se ek ho: ${MOODS.join(", ")}.`);
+  if (!SONGS.some(s => s.id === draft.songId)) problems.push(`songId "${draft.songId}" list mein nahi hai. Sirf di gayi id do.`);
   if (draft.coupletId) {
     if (!candidates.some(c => c.id === draft.coupletId)) problems.push(`coupletId "${draft.coupletId}" candidates mein nahi hai. Sirf di gayi id ya "" do.`);
     if (wordCount(draft.bhavarth) < 8) problems.push("Doha chuna hai toh uska bhavarth 2-3 lines mein do.");
@@ -89,6 +94,11 @@ export function reviewDraft(draft, { candidates, category, recent = [] }) {
     if (similarity(draft.caption, post.caption) > 0.45) problems.push(`Caption purani post ("${post.title}") se bahut milta hai.`);
   }
   return problems;
+}
+
+function describeSongs(recent) {
+  const used = new Set(recent.slice(0, 15).map(p => p.song?.id).filter(Boolean));
+  return SONGS.filter(s => !used.has(s.id)).map(s => `${s.id} | "${s.title}" — ${s.film} (${s.year}) | ${s.moods.join(", ")}`).join("\n");
 }
 
 function describeCandidates(candidates) {
@@ -105,6 +115,7 @@ export async function writePost({ gemini, brand = "page_of_the__soul", category,
       `Is category ke kuch topics (inme se ek chuno ya inke paas ka koi sachcha angle): ${category.topics.join("; ")}`,
       avoid.length ? `In topics ko dobara mat lo (haal hi mein ho chuke hain):\n- ${avoid.join("\n- ")}` : "",
       `Scenes (ek key chuno jo mood se mile):\n${scenes}`,
+      `Mood (${MOODS.join(", ")}) chuno, phir is list se ek Bollywood gaana jo poem ke bhaav se sabse mel khaye (sirf id do; apni yaad se koi gaana nahi):\n${describeSongs(recent)}`,
       candidates.length
         ? `Verified classical couplets (Hindi Wikisource ke public-domain editions se). Agar koi topic se gehrai se jude toh uski id do, warna "":\n${describeCandidates(candidates)}`
         : 'Is baar koi classical couplet nahi diya gaya: coupletId "" rakho.',

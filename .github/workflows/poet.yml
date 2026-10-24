@@ -19,7 +19,7 @@ on:
     - cron: "40 17 * * *"   # 23:10 IST  fallback for 23:00
 
 permissions:
-  contents: write   # save history, drafts and the encrypted token to the poet-state branch
+  contents: write   # save history, drafts and the encrypted token to poet-state; host Reel videos on ig-media
   actions: write    # keep the schedule from being auto-disabled
 
 concurrency:
@@ -39,6 +39,8 @@ jobs:
       TIMEZONE: Asia/Kolkata
       PUBLISH_TO_INSTAGRAM: ${{ vars.PUBLISH_TO_INSTAGRAM || 'true' }}
       POSTS_PER_RUN: ${{ vars.POSTS_PER_RUN || '2' }}
+      REELS_ENABLED: ${{ vars.REELS_ENABLED || 'true' }}
+      MEDIA_BRANCH: ig-media
       BRAND_NAME: ${{ vars.BRAND_NAME || 'page_of_the__soul' }}
       PREPARE_AHEAD_MINUTES: ${{ vars.PREPARE_AHEAD_MINUTES || '30' }}
       RUN_GRACE_MINUTES: ${{ vars.RUN_GRACE_MINUTES || '120' }}
@@ -54,6 +56,7 @@ jobs:
       FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
       FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
       TOKEN_STATE_KEY: ${{ secrets.TOKEN_STATE_KEY }}
+      GITHUB_TOKEN: ${{ github.token }}   # Reel videos: Instagram fetches them from raw.githubusercontent.com
 
     steps:
       - uses: actions/checkout@v4

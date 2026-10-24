@@ -5,6 +5,7 @@ import { JobError, backoffDelay, isNetworkError, sleep } from "./util.js";
 // Official Instagram Graph API content publishing:
 //   POST /{ig-user-id}/media           → one item container per slide (is_carousel_item=true)
 //   POST /{ig-user-id}/media           → carousel container (media_type=CAROUSEL, children, caption)
+//   POST /{ig-user-id}/media           → Reel container (media_type=REELS, video_url, caption, audio_name)
 //   GET  /{container-id}?fields=status_code   until FINISHED
 //   POST /{ig-user-id}/media_publish   → media ID
 //
@@ -87,6 +88,12 @@ export function createInstagram({ host = "graph.facebook.com", version = "v23.0"
     /** Carousel container from 2–10 FINISHED item containers. */
     async createCarousel(children, caption) {
       return (await call("POST", `${userId}/media`, { media_type: "CAROUSEL", children: children.join(","), caption }, { retries: 0 })).id;
+    },
+
+    /** Reel container from a public MP4 URL; thumb_offset 0 = the cover slide is the thumbnail. */
+    async createReel({ videoUrl, caption, audioName = "" }) {
+      const params = { media_type: "REELS", video_url: videoUrl, caption, share_to_feed: "true", thumb_offset: "0", ...(audioName ? { audio_name: audioName } : {}) };
+      return (await call("POST", `${userId}/media`, params, { retries: 0 })).id;
     },
 
     containerStatus: id => call("GET", id, { fields: "status_code,status" }),

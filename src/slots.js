@@ -16,7 +16,7 @@ export function slotsForDay(now, timeZone, date = localDate(now, timeZone)) {
 /**
  * What a run at `now` should do with each of today's slots, given the recorded slot states.
  *   run    – due: inside [at - prepareAhead, at + grace] and not finished
- *   missed – past the grace window with nothing published
+ *   missed – past the grace window with nothing published ("reel_pending": carousel out, Reel being retried)
  *   wait / done – nothing to do now
  */
 export function planSlots({ now, timeZone, prepareAheadMinutes, runGraceMinutes, maxAttempts, getState }) {
@@ -29,7 +29,8 @@ export function planSlots({ now, timeZone, prepareAheadMinutes, runGraceMinutes,
     if (["published", "dry_run", "missed", "skipped"].includes(status)) action = "done";
     else if ((state?.attempts || 0) >= maxAttempts) action = "done";
     else if (now.getTime() < opensAt) action = "wait";
-    else if (now.getTime() > closesAt) action = "missed";
+    // The carousel went out; only its Reel kept failing. Nothing is missed.
+    else if (now.getTime() > closesAt) action = status === "reel_pending" ? "done" : "missed";
     else action = "run";
     return { ...slot, action, status: status || "pending" };
   });

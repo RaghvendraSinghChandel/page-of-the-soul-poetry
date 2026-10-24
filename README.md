@@ -6,8 +6,8 @@ It runs on **GitHub Actions** (`.github/workflows/poet.yml`), so the Mac can be 
 
 | When | What happens |
 |---|---|
-| **18:15:00** daily | Publishes the oldest draft as a carousel |
-| **23:00:00** daily | Publishes the next draft, then writes `POSTS_PER_RUN` (2) new drafts for the next day |
+| **18:15:00** daily | Publishes the oldest draft as a carousel, then the same post as a Reel |
+| **23:00:00** daily | Publishes the next draft as a carousel and a Reel, then writes `POSTS_PER_RUN` (2) new drafts for the next day |
 | Once a week (inside a slot run) | Renews the 60-day Instagram token |
 
 How "on time, every day" is achieved:
@@ -42,6 +42,19 @@ To pause publishing, set the repository variable `PUBLISH_TO_INSTAGRAM=false`.
 Set up or update the cron-job.org triggers with `npm run cron:setup`. It needs `CRONJOB_ORG_API_KEY` and `GH_DISPATCH_TOKEN` (a fine-grained token with access to this repo and **Actions: Read and write**) in `.env`.
 
 The old Mac schedule (`npm run schedule:install`, launchd) still works for local use, but do not run it alongside GitHub Actions: the two keep separate histories and would post the same drafts twice.
+
+## Reels and music
+
+Each post also goes out as a **Reel**: a 1080×1920 video of the same slides with slow zooms and fades, set to an Indian instrumental.
+- **Music.** It comes from `assets/music/`: 45-second excerpts of veena, sitar, bansuri, shehnai and tabla pieces from Wikimedia Commons.
+  - Every license is CC0, public domain or CC BY, and was read from the Commons API (`tracks.json`).
+  - The Reel caption credits the track, as CC BY requires.
+  - The track is chosen by the post's **mood** (udaas, pyaar, ghar, josh, dosti, soch).
+- **Bollywood suggestion.** Both captions add `Is kavita ke saath suniye: "<gaana>" — <film> (<saal>)`. The song comes from the hand-checked list in `src/songs.js`, picked by the writer.
+  - Only the song's name is printed. Bollywood audio is never used: the Instagram API cannot attach Instagram's licensed music, and uploading a film song ourselves would be copyright infringement (muted posts, strikes).
+- **Hosting.** Reel videos are hosted for Instagram on the `ig-media` branch of this public repo. It holds a single orphan commit, replaced each time.
+- **Off switch.** Set the repository variable `REELS_ENABLED=false` to post carousels only.
+- **Retries.** A Reel that fails does not hold up the carousel. Backup runs retry it, up to `JOB_MAX_ATTEMPTS` times.
 
 ## What one post contains
 

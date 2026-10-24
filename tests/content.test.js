@@ -6,7 +6,10 @@ import test from "node:test";
 
 import { loadConfig } from "../src/config.js";
 import { createHistory } from "../src/history.js";
-import { fullCaption, publishNext, tick } from "../src/job.js";
+import { fullCaption, publishNext, publishReel, tick } from "../src/job.js";
+import { loadTracks, musicCredit, pickTrack } from "../src/music.js";
+import { reelArgs, slideDurations } from "../src/reel.js";
+import { SONGS, songLine } from "../src/songs.js";
 import { silentLogger } from "../src/logger.js";
 import { displayLine, formPhrase } from "../src/render.js";
 import { planSlots } from "../src/slots.js";
@@ -54,6 +57,8 @@ const good = {
   caption: Array(60).fill("shabd").join(" ") + " kya aapne bhi kabhi aisa mehsoos kiya?",
   hashtags: ["#Yaadein", "#HinglishPoetry", "#Zindagi"],
   scene: "dusk_window",
+  mood: "udaas",
+  songId: "kahin-door",
 };
 
 test("a clean Hinglish draft passes review", () => {
@@ -104,12 +109,12 @@ test("publish-next posts the oldest draft as a carousel and records it", async (
     mediaInfo: async () => ({ permalink: "https://instagram.com/p/x", timestamp: "2026-10-24T03:30:00Z" }),
   };
   const mediaHost = { upload: async file => ({ url: `https://cdn/${file}`, ref: file }), remove: async () => {} };
-  const config = loadConfig({ GEMINI_API_KEY: "x", PUBLISH_TO_INSTAGRAM: "true", INSTAGRAM_USER_ID_POETRY: "1", INSTAGRAM_ACCESS_TOKEN_POETRY: "t" });
+  const config = loadConfig({ GEMINI_API_KEY: "x", PUBLISH_TO_INSTAGRAM: "true", REELS_ENABLED: "false", INSTAGRAM_USER_ID_POETRY: "1", INSTAGRAM_ACCESS_TOKEN_POETRY: "t" });
   const done = await publishNext({ config, logger: silentLogger, deps: { history, instagram, mediaHost, validateMedia: async () => ({}) } });
   assert.equal(done.status, "published");
   assert.equal(history.load().find(p => p.id === "d2").status, "draft");
   assert.deepEqual(calls.find(c => c[0] === "carousel")[1], ["item-https://cdn/a.jpg", "item-https://cdn/b.jpg"]);
-  assert.match(calls.find(c => c[0] === "carousel")[2], /Pehli post\?\n\nMool rachna — page_of_the__soul\n\n#Yaadein/);
+  assert.match(calls.find(c => c[0] === "carousel")[2], /Pehli post\?\n\nIs kavita ke saath suniye: "[^"]+" — .+ \(\d{4}\)\n\nMool rachna — page_of_the__soul\n\n#Yaadein/);
 });
 
 test("reads only the _POETRY account settings, never the Daily Fact Check ones", () => {
@@ -167,7 +172,7 @@ test("tick publishes the due slot exactly at its time, once, and drafts the next
   const realNow = Date.now;
   Date.now = () => clock;
   try {
-    const config = loadConfig({ GEMINI_API_KEY: "x", PUBLISH_TO_INSTAGRAM: "true", INSTAGRAM_USER_ID_POETRY: "1", INSTAGRAM_ACCESS_TOKEN_POETRY: "t", STATE_DIR: dir });
+    const config = loadConfig({ GEMINI_API_KEY: "x", PUBLISH_TO_INSTAGRAM: "true", REELS_ENABLED: "false", INSTAGRAM_USER_ID_POETRY: "1", INSTAGRAM_ACCESS_TOKEN_POETRY: "t", STATE_DIR: dir });
     const drafted = [];
     const generateStub = { browser: { close: async () => {} }, gemini: { json: async () => (drafted.push(1), Promise.reject(new Error("no gemini in tests"))) } };
     const { ran } = await tick({ config, logger: silentLogger, now: () => new Date(clock), deps: { ...deps, ...generateStub } });
@@ -181,4 +186,73 @@ test("tick publishes the due slot exactly at its time, once, and drafts the next
   } finally {
     Date.now = realNow;
   }
+});
+
+test("each post goes out as a carousel and then as a Reel whose caption credits the music", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "echoes-"));
+  const history = createHistory({ stateDir: dir });
+  history.add({ id: "d1", status: "draft", category: "love", caption: "Pehli post?", hashtags: ["#Yaadein"], couplet: null, poem: ["a", "b", "c", "d"], slides: [path.join(dir, "o/slide-1.jpg"), path.join(dir, "o/slide-2.jpg")] });
+  const created = [];
+  const published = [];
+  const instagram = {
+    checkAccount: async () => ({}),
+    publishingLimit: async () => ({ used: 0, total: 50 }),
+    createCarouselItem: async url => `item-${url}`,
+    createCarousel: async (children, caption) => (created.push(["carousel", caption]), "carousel-1"),
+    createReel: async ({ videoUrl, caption, audioName }) => (created.push(["reel", caption, videoUrl, audioName]), "reel-1"),
+    waitForContainer: async () => "FINISHED",
+    publishContainer: async id => (published.push(id), `media-${id}`),
+    mediaInfo: async id => ({ permalink: `https://instagram.com/p/${id}`, timestamp: "2026-10-25T12:45:00Z" }),
+  };
+  const renderReel = async ({ file, music }) => (assert.ok(fs.existsSync(music), "music file exists"), fs.mkdirSync(path.dirname(file), { recursive: true }), fs.writeFileSync(file, "mp4"), { file, seconds: 15 });
+  const deps = {
+    history,
+    instagram,
+    renderReel,
+    mediaHost: { upload: async file => ({ url: `https://cdn/${file}`, ref: file }), remove: async () => {} },
+    videoHost: { available: true, upload: async (file, name) => ({ url: `https://raw/${name}/reel.mp4` }) },
+    validateMedia: async () => ({}),
+  };
+  const config = loadConfig({ GEMINI_API_KEY: "x", PUBLISH_TO_INSTAGRAM: "true", INSTAGRAM_USER_ID_POETRY: "1", INSTAGRAM_ACCESS_TOKEN_POETRY: "t" });
+  const done = await publishNext({ config, logger: silentLogger, deps });
+  assert.deepEqual(published, ["carousel-1", "reel-1"]);
+  assert.equal(done.status, "published");
+  assert.equal(done.reel.status, "published");
+  assert.equal(done.reel.permalink, "https://instagram.com/p/media-reel-1");
+  assert.equal(done.mood, "pyaar");
+  const [, carouselCaption] = created.find(c => c[0] === "carousel");
+  const [, reelCaption, videoUrl, audio] = created.find(c => c[0] === "reel");
+  assert.match(carouselCaption, /Is kavita ke saath suniye: ".+" — .+ \(\d{4}\)/);
+  assert.doesNotMatch(carouselCaption, /Dhun:/);
+  assert.match(reelCaption, /Dhun: ".+" .*Wikimedia Commons/);
+  assert.equal(videoUrl, "https://raw/d1/reel.mp4");
+  assert.ok(audio.length > 3);
+  // a later run does not post the Reel again
+  assert.equal((await publishReel(history.load()[0], { config, logger: silentLogger, deps })).reel.status, "published");
+  assert.deepEqual(published, ["carousel-1", "reel-1"]);
+});
+
+test("music library: licensed, credited, mood-matched; songs are unique and suggested by name only", () => {
+  const tracks = loadTracks();
+  assert.ok(tracks.length >= 12);
+  for (const t of tracks) {
+    assert.ok(fs.existsSync(t.path), t.file);
+    assert.match(t.license, /^(CC0|Public domain|CC BY [34]\.0)$/, `${t.id}: ${t.license}`);
+    assert.match(t.source, /^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
+    if (t.attributionRequired) assert.ok(t.artist && musicCredit(t).includes(t.licenseUrl), t.id);
+  }
+  for (const mood of ["udaas", "pyaar", "ghar", "josh", "dosti", "soch"]) {
+    assert.ok(pickTrack(mood, [], () => 0).moods.includes(mood), mood);
+    assert.ok(SONGS.filter(s => s.moods.includes(mood)).length >= 5, mood);
+  }
+  assert.equal(new Set(SONGS.map(s => s.id)).size, SONGS.length);
+  assert.equal(songLine(SONGS[0]), 'Is kavita ke saath suniye: "Kahin Door Jab Din Dhal Jaaye" — Anand (1971)');
+});
+
+test("reel timing: slides stay long enough to read and cross-fade", () => {
+  assert.deepEqual(slideDurations({ slides: [1, 2, 3], poem: Array(8) }), [6, 8, 12.2]);
+  assert.deepEqual(slideDurations({ slides: [1, 2], poem: Array(4) }), [6, 9]);
+  const { total, args } = reelArgs({ slides: ["a.jpg", "b.jpg"], durations: [6, 9], music: "m.m4a", file: "r.mp4" });
+  assert.equal(total, 14.3);
+  assert.match(args.join(" "), /xfade=transition=fade:duration=0.7:offset=5.30/);
 });

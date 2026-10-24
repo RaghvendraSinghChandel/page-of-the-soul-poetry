@@ -5,17 +5,21 @@ import { createGemini } from "./gemini.js";
 import { createHistory } from "./history.js";
 import { createInstagram } from "./instagramPublisher.js";
 import { safeErrorText } from "./logger.js";
-import { createMediaHost, validatePublicMedia } from "./mediaHost.js";
+import { createMediaHost, createVideoHost, validatePublicMedia } from "./mediaHost.js";
+import { audioName, loadTracks, musicCredit, pickTrack } from "./music.js";
+import { ffmpegPath, renderReel, slideDurations } from "./reel.js";
 import { SIZE, buildSlides, displayLine, formPhrase, launchBrowser, renderJpeg } from "./render.js";
 import { loadCorpus } from "./sources.js";
 import { pickCategories } from "./themes.js";
 import { planSlots } from "./slots.js";
-import { localDate, sleep } from "./util.js";
+import { CATEGORY_MOOD, songById, songLine, songsFor } from "./songs.js";
+import { JobError, localDate, sleep } from "./util.js";
 import { writePost } from "./writer.js";
 
-// generate: drafts POSTS_PER_RUN carousel posts (different categories), saves slides + post.md under
-//           output/<date>/<post-id>/ and records them in state/history.json and posts_log.csv.
-// publishNext: when PUBLISH_TO_INSTAGRAM=true, publishes the oldest draft as an Instagram carousel.
+// generate: drafts POSTS_PER_RUN posts (different categories), saves slides, the Reel (slides + music) and
+//           post.md under output/<date>/<post-id>/ and records them in state/history.json and posts_log.csv.
+// publishNext: when PUBLISH_TO_INSTAGRAM=true, publishes the oldest draft as an Instagram carousel and,
+//           right after it, as a Reel.
 // tick: what the schedule runs; publishes one draft per daily slot (18:15 and 23:00), exactly on time.
 
 const FORM_ROMAN = { "साखी": "sakhi", "दोहा": "doha", "सोरठा": "sortha" };
@@ -24,12 +28,35 @@ export function historyFor(config) {
   return createHistory({ stateDir: config.stateDir, csvFile: "posts_log.csv" });
 }
 
-/** The caption exactly as it goes to Instagram: text, credits, hashtags (all Hinglish). */
-export function fullCaption(post, brand) {
-  const credits = post.couplet
-    ? `${FORM_ROMAN[post.couplet.form] || "doha"}: ${post.couplet.poetRoman} · ${post.couplet.workRoman} (${post.couplet.year}), ${post.couplet.number}\nKavita: mool rachna — ${brand}`
-    : `Mool rachna — ${brand}`;
-  return `${post.caption}\n\n${credits}\n\n${post.hashtags.join(" ")}`;
+/**
+ * The caption exactly as it goes to Instagram: text, the suggested Bollywood song, credits, hashtags.
+ * The Reel's caption also credits its background music.
+ */
+export function fullCaption(post, brand, { reel = false } = {}) {
+  const credits = [
+    post.couplet
+      ? `${FORM_ROMAN[post.couplet.form] || "doha"}: ${post.couplet.poetRoman} · ${post.couplet.workRoman} (${post.couplet.year}), ${post.couplet.number}\nKavita: mool rachna — ${brand}`
+      : `Mool rachna — ${brand}`,
+    reel ? musicCredit(post.reel?.track) : "",
+  ].filter(Boolean);
+  return [post.caption, songLine(post.song), credits.join("\n"), post.hashtags.join(" ")].filter(Boolean).join("\n\n");
+}
+
+/** Adds what older drafts lack: a mood, a suggested song and the Reel (music track + video). */
+async function ensureReelParts(post, { config, history, logger, random = Math.random, render = renderReel }) {
+  const recent = history.recent().filter(p => p.id !== post.id);
+  const changes = {};
+  const mood = post.mood || CATEGORY_MOOD[post.category] || "soch";
+  if (!post.mood) changes.mood = mood;
+  if (!post.song) changes.song = songsFor(mood, recent)[0] || null;
+  if (config.reelsEnabled && !(post.reel?.file && fs.existsSync(post.reel.file))) {
+    const track = loadTracks().find(t => t.id === post.reel?.track?.id) || pickTrack(mood, recent, random);
+    const file = path.join(path.dirname(post.slides[0]), "reel.mp4");
+    const { seconds } = await render({ slides: post.slides, durations: slideDurations(post), music: track.path, file, ffmpeg: ffmpegPath(config.ffmpegPath) });
+    changes.reel = { ...post.reel, status: post.reel?.status || "draft", file, seconds, track: { ...track, path: undefined } };
+    logger.info("Reel rendered", { post: post.id, seconds, track: track.id });
+  }
+  return Object.keys(changes).length ? history.update(post.id, changes) : post;
 }
 
 function shuffle(items, random) {
@@ -57,7 +84,7 @@ function postMarkdown(post, brand) {
 ${
   c
     ? `- **Doha (mool shabd, edition se hoobahoo):**\n  > ${c.lines.map(displayLine).join("\n  > ")}\n- **Kavi:** ${c.poet} (${c.poetRoman})\n- **Kitaab:** ${c.work} (${c.year}), ${c.editor} — ${c.form} ${c.number}\n- **Source URL:** ${c.url}\n- **Permanent link (jis version se match kiya):** ${c.permalink}\n- **Verification:** VERIFIED — text live Wikisource page (revision ${c.revid}) par hoobahoo mila, ${post.createdAt}\n- **Copyright:** ${c.rights}\n- **Bhavarth (hamari samajh, shabdsah anuvaad nahi):** ${post.bhavarth}`
-    : "- Is post mein koi classical quote nahi hai. Poori rachna **Mool Rachna — ${brand}** hai."
+    : `- Is post mein koi classical quote nahi hai. Poori rachna **Mool Rachna — ${brand}** hai.`
 }
 
 ## C. Kavita — Mool Rachna — ${brand}${c ? ` (prerna: ${formPhrase({ form: c.form, poet: { roman: c.poetRoman } })})` : ""}
@@ -67,6 +94,16 @@ ${post.poem.map(line => `> ${line}`).join("\n")}
 
 ## D. Caption (Instagram par jaisa jayega)
 ${fullCaption(post, brand)}
+
+## E. Reel
+${
+  post.reel?.file
+    ? `- **Video:** ${path.basename(post.reel.file)} (1080×1920, ${post.reel.seconds}s), wahi slides + music
+- **Music:** "${post.reel.track.title}"${post.reel.track.artist ? ` — ${post.reel.track.artist}` : ""} · ${post.reel.track.license} · ${post.reel.track.source}
+- **Reel caption ka music credit:** ${musicCredit(post.reel.track)}`
+    : "- Reel abhi nahi bani (publish se pehle ban jaayegi)."
+}
+- **Mood:** ${post.mood || "-"}  ·  **Sujhaya gaana:** ${post.song ? `${post.song.title} — ${post.song.film} (${post.song.year}); sirf naam caption mein, gaana post mein nahi` : "-"}
 
 ## Visual
 - Scene: ${post.scene}
@@ -143,11 +180,19 @@ export async function generate({ config, logger, count = config.postsPerRun, now
             revid: c.revid,
           },
           slides: files,
+          mood: draft.mood,
+          song: songById(draft.songId),
         };
-        fs.writeFileSync(path.join(dir, "post.md"), postMarkdown(post, config.brandName));
         history.add(post);
-        made.push(post);
-        log.info("Draft ready", { title: post.title, couplet: c?.id || "none", slides: files.length, dir });
+        let ready = post;
+        try {
+          ready = await ensureReelParts(post, { config, history, logger: log, random, render: deps.renderReel });
+        } catch (error) {
+          log.warn("Reel could not be rendered now; it is tried again before publishing", { error });
+        }
+        fs.writeFileSync(path.join(dir, "post.md"), postMarkdown(ready, config.brandName));
+        made.push(ready);
+        log.info("Draft ready", { title: post.title, couplet: c?.id || "none", slides: files.length, reel: Boolean(ready.reel?.file), song: post.song?.id, dir });
       } catch (error) {
         log.error("Post could not be drafted", { error });
       }
@@ -170,8 +215,10 @@ export async function rerenderDrafts({ config, logger, deps = {} }) {
       const { slides } = buildSlides({ ...post, couplet }, { brandName: config.brandName, seed: [...post.id].reduce((a, ch) => a * 31 + ch.charCodeAt(0), 7) });
       const dir = path.dirname(post.slides[0]);
       for (const [i, html] of slides.entries()) await renderJpeg(browser, { html, file: path.join(dir, `slide-${i + 1}.jpg`) });
-      fs.writeFileSync(path.join(dir, "post.md"), postMarkdown(post, config.brandName));
-      logger.info("Draft re-rendered", { post: post.id, brand: config.brandName });
+      if (post.reel?.file) fs.rmSync(post.reel.file, { force: true });
+      const fresh = await ensureReelParts(post, { config, history, logger }).catch(error => (logger.warn("Reel not re-rendered", { post: post.id, error }), post));
+      fs.writeFileSync(path.join(dir, "post.md"), postMarkdown(fresh, config.brandName));
+      logger.info("Draft re-rendered", { post: post.id, brand: config.brandName, reel: Boolean(fresh.reel?.file) });
     }
   } finally {
     await browser.close();
@@ -179,7 +226,11 @@ export async function rerenderDrafts({ config, logger, deps = {} }) {
   return drafts;
 }
 
-/** publishAt (Date): get the carousel ready, then wait and publish at that moment. */
+/**
+ * Publishes the oldest draft as a carousel and then as a Reel. publishAt (Date): get both ready first, then
+ * wait and publish at that moment. Returns the post (status "published" once the carousel is out); its
+ * `reel.status` says how the Reel went ("published", or "draft"/"failed" to be retried by publishReel).
+ */
 export async function publishNext({ config, logger, publishAt, deps = {} }) {
   if (!config.publishEnabled) {
     logger.info("PUBLISH_TO_INSTAGRAM is false: drafts only, nothing published.");
@@ -194,7 +245,7 @@ export async function publishNext({ config, logger, publishAt, deps = {} }) {
   if (pending) {
     const { status_code: code } = await ig.containerStatus(pending.containerId);
     if (code === "PUBLISHED") {
-      const match = (await ig.recentMedia()).find(m => String(m.caption || "").startsWith(pending.caption.slice(0, 60)));
+      const match = (await ig.recentMedia()).find(m => m.media_product_type !== "REELS" && String(m.caption || "").startsWith(pending.caption.slice(0, 60)));
       const done = history.update(pending.id, { status: "published", mediaId: match?.id || "", permalink: match?.permalink || "", publishedAt: match?.timestamp || new Date().toISOString() });
       logger.info("Earlier publish confirmed", { post: pending.id, permalink: match?.permalink });
       return done;
@@ -207,7 +258,7 @@ export async function publishNext({ config, logger, publishAt, deps = {} }) {
     }
   }
 
-  const post = history.load().find(p => p.status === "draft");
+  let post = history.load().find(p => p.status === "draft");
   if (!post) {
     logger.info("No draft waiting to be published.");
     return null;
@@ -215,12 +266,18 @@ export async function publishNext({ config, logger, publishAt, deps = {} }) {
   const log = logger.child({ post: post.id });
   const host = deps.mediaHost || createMediaHost(config, { logger: log });
   const hosted = [];
+  let reelContainer = null;
   try {
     await ig.checkAccount();
     const limit = await ig.publishingLimit();
     if (limit.total && limit.used >= limit.total) {
       log.warn("Instagram API publishing limit reached; trying again next run", limit);
       return null;
+    }
+    try {
+      post = await ensureReelParts(post, { config, history, logger: log, render: deps.renderReel });
+    } catch (error) {
+      log.warn("Reel could not be rendered; the carousel goes alone and the Reel is retried", { error });
     }
     const children = [];
     for (const file of post.slides) {
@@ -232,18 +289,24 @@ export async function publishNext({ config, logger, publishAt, deps = {} }) {
     for (const child of children) await ig.waitForContainer(child);
     const containerId = await ig.createCarousel(children, fullCaption(post, config.brandName));
     await ig.waitForContainer(containerId);
+    reelContainer = await prepareReel(post, { config, ig, log, deps }).catch(error => {
+      log.warn("Reel not ready; the carousel goes alone and the Reel is retried", { error });
+      return null;
+    });
     const wait = publishAt ? publishAt.getTime() - Date.now() : 0;
     if (wait > 0) {
-      log.info("Carousel ready; publishing exactly at the slot time", { at: publishAt.toISOString(), waitSeconds: Math.round(wait / 1000) });
+      log.info("Carousel ready; publishing exactly at the slot time", { at: publishAt.toISOString(), waitSeconds: Math.round(wait / 1000), reelReady: Boolean(reelContainer) });
       await (deps.sleepFn || sleep)(wait);
     }
     history.update(post.id, { status: "publishing", containerId });
-    return await finish(post, containerId);
+    const done = await finish(post, containerId);
+    return reelContainer ? await publishReel(done, { config, logger: log, deps: { ...deps, history, instagram: ig }, container: reelContainer }) : done;
   } catch (error) {
     if (error.kind === "ambiguous") {
       log.warn("Publish outcome unknown; the next run checks the container before doing anything else", { error });
       throw error;
     }
+    if (history.load().find(p => p.id === post.id)?.status === "published") throw error;
     const attempts = (post.attempts || 0) + 1;
     const giveUp = error.kind === "permanent" || attempts >= config.jobMaxAttempts;
     history.update(post.id, { attempts, lastError: safeErrorText(error), ...(giveUp ? { status: "failed" } : {}) });
@@ -264,6 +327,61 @@ export async function publishNext({ config, logger, publishAt, deps = {} }) {
       if (error.kind !== "ambiguous") history.update(target.id, { status: "draft", containerId: "" });
       throw error;
     }
+  }
+}
+
+/** Uploads the post's Reel video and returns a FINISHED Reel container id (null when Reels are off). */
+async function prepareReel(post, { config, ig, log, deps }) {
+  if (!config.reelsEnabled || !post.reel?.file || ["published", "failed"].includes(post.reel.status)) return null;
+  const videos = deps.videoHost || createVideoHost(config);
+  if (!videos.available) throw new JobError("GITHUB_TOKEN and GITHUB_REPOSITORY are needed to host the Reel video", { kind: "permanent" });
+  const { url } = await videos.upload(post.reel.file, post.id);
+  const id = await ig.createReel({ videoUrl: url, caption: fullCaption(post, config.brandName, { reel: true }), audioName: audioName(post.reel.track) });
+  await ig.waitForContainer(id, { timeoutMs: 600000, intervalMs: 8000 });
+  log.info("Reel ready", { container: id });
+  return id;
+}
+
+/**
+ * Publishes the Reel of an already published carousel post: the given FINISHED container, or a new one.
+ * Never throws for Reel problems: they are recorded on post.reel (retried until JOB_MAX_ATTEMPTS).
+ */
+export async function publishReel(post, { config, logger, container = null, deps = {} }) {
+  const history = deps.history || historyFor(config);
+  const ig = deps.instagram || createInstagram({ host: config.instagramApiHost, version: config.graphApiVersion, userId: config.instagramUserId, token: config.instagramToken, appSecret: config.metaAppSecret });
+  const log = logger.child({ post: post.id, part: "reel" });
+  let reel = post.reel || {};
+  try {
+    // An earlier publish whose answer was lost: check before posting again.
+    if (reel.status === "publishing" && reel.containerId) {
+      const { status_code: code } = await ig.containerStatus(reel.containerId);
+      if (code === "PUBLISHED") {
+        const match = (await ig.recentMedia()).find(m => m.media_product_type === "REELS" && String(m.caption || "").startsWith(post.caption.slice(0, 60)));
+        log.info("Earlier Reel publish confirmed", { permalink: match?.permalink });
+        return history.update(post.id, { reel: { ...reel, status: "published", mediaId: match?.id || "", permalink: match?.permalink || "", publishedAt: match?.timestamp || new Date().toISOString() } });
+      }
+      if (code === "FINISHED") container = reel.containerId;
+    }
+    if (!container) {
+      post = await ensureReelParts(post, { config, history, logger: log, render: deps.renderReel });
+      reel = post.reel || {};
+      container = await prepareReel(post, { config, ig, log, deps });
+      if (!container) return post;
+    }
+    history.update(post.id, { reel: { ...reel, status: "publishing", containerId: container } });
+    const mediaId = await ig.publishContainer(container);
+    const info = await ig.mediaInfo(mediaId).catch(() => ({}));
+    log.info("Reel published on Instagram", { permalink: info.permalink });
+    return history.update(post.id, { reel: { ...reel, status: "published", containerId: container, mediaId, permalink: info.permalink || "", publishedAt: info.timestamp || new Date().toISOString() } });
+  } catch (error) {
+    if (error.kind === "ambiguous") {
+      log.warn("Reel publish outcome unknown; the next run checks it before posting again", { error });
+      return history.load().find(p => p.id === post.id);
+    }
+    const attempts = (reel.attempts || 0) + 1;
+    const giveUp = error.kind === "permanent" || attempts >= config.jobMaxAttempts;
+    log.error(giveUp ? "Reel failed; giving up on this Reel" : "Reel failed; a backup run retries it", { error, attempts });
+    return history.update(post.id, { reel: { ...reel, status: giveUp ? "failed" : "draft", containerId: "", attempts, lastError: safeErrorText(error) } });
   }
 }
 
@@ -295,7 +413,7 @@ export async function tick({ config, logger, now = () => new Date(), checkOnly =
   }
 
   // Draft the next posts right after the last one goes out, so a slow Gemini or a source outage never delays a slot.
-  if (ran.some(r => r.status === "published") && !history.load().some(p => p.status === "draft")) {
+  if (ran.some(r => ["published", "reel_pending"].includes(r.status)) && !history.load().some(p => p.status === "draft")) {
     try {
       await generate({ config, logger, deps: { ...deps, history } });
     } catch (error) {
@@ -314,18 +432,27 @@ async function runSlot(slot, { config, logger, history, deps }) {
       log.info("PUBLISH_TO_INSTAGRAM is false: slot recorded as a dry run, nothing published.");
       return "dry_run";
     }
-    if (!history.load().some(p => p.status === "draft" || p.status === "publishing")) {
-      log.warn("No draft waiting for this slot; writing one now");
-      await generate({ config, logger: log, count: 1, deps: { ...deps, history } });
-    }
-    const post = await publishNext({ config, logger: log, publishAt: slot.at, deps: { ...deps, history } });
-    if (post?.status === "published") {
+    // The carousel may already be out (an earlier run of this slot) with only its Reel left to do.
+    const earlier = history.slot(slot.key)?.post;
+    let post = earlier ? history.load().find(p => p.id === earlier && p.status === "published") : null;
+    if (post) {
+      post = await publishReel(post, { config, logger: log, deps: { ...deps, history } });
+    } else {
+      if (!history.load().some(p => p.status === "draft" || p.status === "publishing")) {
+        log.warn("No draft waiting for this slot; writing one now");
+        await generate({ config, logger: log, count: 1, deps: { ...deps, history } });
+      }
+      post = await publishNext({ config, logger: log, publishAt: slot.at, deps: { ...deps, history } });
+      if (post?.status !== "published") {
+        history.updateSlot(slot.key, { status: "pending", lastError: "nothing published (no draft, or the API limit was reached)" });
+        return "pending";
+      }
       history.update(post.id, { slot: slot.key });
-      history.updateSlot(slot.key, { status: "published", post: post.id, permalink: post.permalink, publishedAt: post.publishedAt, lastError: "" });
-      return "published";
     }
-    history.updateSlot(slot.key, { status: "pending", lastError: "nothing published (no draft, or the API limit was reached)" });
-    return "pending";
+    const reelDone = !config.reelsEnabled || ["published", "failed"].includes(post.reel?.status);
+    const status = reelDone ? "published" : "reel_pending";
+    history.updateSlot(slot.key, { status, post: post.id, permalink: post.permalink, publishedAt: post.publishedAt, reel: post.reel?.permalink || post.reel?.status || "", lastError: post.reel?.lastError || "" });
+    return status;
   } catch (error) {
     history.updateSlot(slot.key, { status: "pending", lastError: safeErrorText(error) });
     log.error("Slot run failed; a backup run will try again", { error });
