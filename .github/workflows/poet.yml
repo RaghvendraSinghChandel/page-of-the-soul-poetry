@@ -41,7 +41,7 @@ jobs:
       TIMEZONE: Asia/Kolkata
       PUBLISH_TO_INSTAGRAM: ${{ vars.PUBLISH_TO_INSTAGRAM || 'true' }}
       POSTS_PER_RUN: ${{ vars.POSTS_PER_RUN || '3' }}
-      DRAFT_BUFFER: ${{ vars.DRAFT_BUFFER || '10' }}
+      DRAFT_BUFFER: ${{ vars.DRAFT_BUFFER || '15' }}
       REELS_ENABLED: ${{ vars.REELS_ENABLED || 'true' }}
       VOICE_BRANCH: poet-voice
       BRAND_NAME: ${{ vars.BRAND_NAME || 'page_of_the__soul' }}

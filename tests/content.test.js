@@ -9,7 +9,7 @@ import { createHistory } from "../src/history.js";
 import { fullCaption, publishNext, tick } from "../src/job.js";
 import { reelArgs, slideDurations } from "../src/reel.js";
 import { SONGS, songLine } from "../src/songs.js";
-import { buildVoiceScript, voiceTextHash } from "../src/voice.js";
+import { buildVoiceScript, keptForCarousel, voiceTextHash } from "../src/voice.js";
 import { silentLogger } from "../src/logger.js";
 import { displayLine, formPhrase } from "../src/render.js";
 import { planSlots } from "../src/slots.js";
@@ -110,7 +110,7 @@ test("publish-next posts the oldest draft as a carousel and records it", async (
   };
   const mediaHost = { upload: async file => ({ url: `https://cdn/${file}`, ref: file }), remove: async () => {} };
   const config = loadConfig({ GEMINI_API_KEY: "x", PUBLISH_TO_INSTAGRAM: "true", REELS_ENABLED: "false", INSTAGRAM_USER_ID_POETRY: "1", INSTAGRAM_ACCESS_TOKEN_POETRY: "t" });
-  const done = await publishNext({ config, logger: silentLogger, deps: { history, instagram, mediaHost, validateMedia: async () => ({}) } });
+  const done = await publishNext({ config, logger: silentLogger, deps: { history, instagram, mediaHost, keptForCarousel: () => false, validateMedia: async () => ({}) } });
   assert.equal(done.status, "published");
   assert.equal(history.load().find(p => p.id === "d2").status, "draft");
   assert.deepEqual(calls.find(c => c[0] === "carousel")[1], ["item-https://cdn/a.jpg", "item-https://cdn/b.jpg"]);
@@ -207,7 +207,7 @@ test("Reel slots post a Mac-voiced draft as a Reel, the post slot a carousel, an
   };
   const voiced = new Set(["d2"]); // the Mac has voiced d2 only
   const voiceReels = { find: async post => (voiced.has(post.id) ? { url: `https://raw/sha/voice/${post.id}/reel.mp4`, meta: {} } : null) };
-  const deps = { history, instagram, voiceReels, mediaHost: { upload: async file => ({ url: `https://cdn/${file}`, ref: file }), remove: async () => {} }, validateMedia: async () => ({}) };
+  const deps = { history, instagram, voiceReels, keptForCarousel: () => false, mediaHost: { upload: async file => ({ url: `https://cdn/${file}`, ref: file }), remove: async () => {} }, validateMedia: async () => ({}) };
   const config = loadConfig({ GEMINI_API_KEY: "x", PUBLISH_TO_INSTAGRAM: "true", INSTAGRAM_USER_ID_POETRY: "1", INSTAGRAM_ACCESS_TOKEN_POETRY: "t" });
 
   const reel = await publishNext({ config, logger: silentLogger, format: "reel", deps });
@@ -262,4 +262,11 @@ test("reel timing: slides stay long enough to read and cross-fade", () => {
   const { total, args } = reelArgs({ slides: ["a.jpg", "b.jpg"], durations: [6, 9], music: "m.m4a", file: "r.mp4" });
   assert.equal(total, 14.3);
   assert.match(args.join(" "), /xfade=transition=fade:duration=0.7:offset=5.30/);
+});
+
+test("about a third of the drafts are kept for the carousel slot, fixed per post", () => {
+  const ids = Array.from({ length: 300 }, (_, i) => ({ id: `2026-11-${String(1 + (i % 28)).padStart(2, "0")}-${i}` }));
+  const kept = ids.filter(keptForCarousel).length;
+  assert.ok(kept > 70 && kept < 130, String(kept));
+  assert.equal(keptForCarousel(ids[5]), keptForCarousel({ ...ids[5] }));
 });

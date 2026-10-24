@@ -15,7 +15,7 @@ import { createGemini } from "../src/gemini.js";
 import { createLogger, registerSecrets } from "../src/logger.js";
 import { FADE, renderReel } from "../src/reel.js";
 import { buildOutroSlide, launchBrowser, overlayPage, renderJpeg, renderPng } from "../src/render.js";
-import { buildVoiceScript, toDevanagari, voiceTextHash } from "../src/voice.js";
+import { buildVoiceScript, keptForCarousel, toDevanagari, voiceTextHash } from "../src/voice.js";
 
 // Mac voice worker (launchd, every 30 minutes and at login; npm run voice):
 // keeps a voice Reel ready for each of the next DRAFT_BUFFER drafts, so Reels keep going out on days the
@@ -199,15 +199,17 @@ async function main() {
   for (const id of fs.existsSync(path.join(voiceDir, "voice")) ? fs.readdirSync(path.join(voiceDir, "voice")) : []) {
     if (!keep.has(id)) fs.rmSync(path.join(voiceDir, "voice", id), { recursive: true, force: true }), pruned++;
   }
+  const cinematic = Boolean((process.env.UNSPLASH_ACCESS_KEY || "").trim());
   const ready = id => {
     try {
       const meta = JSON.parse(fs.readFileSync(path.join(voiceDir, "voice", id, "meta.json"), "utf8"));
-      return meta.textHash === voiceTextHash(posts.find(p => p.id === id));
+      // with photos available, slide-style Reels made earlier are redone in the cinematic style
+      return meta.textHash === voiceTextHash(posts.find(p => p.id === id)) && (!cinematic || meta.style === "cinematic");
     } catch {
       return false;
     }
   };
-  const todo = queue.filter(p => !ready(p.id));
+  const todo = queue.filter(p => !ready(p.id) && !keptForCarousel(p));
   logger.info("Voice queue", { drafts: queue.length, ready: queue.length - todo.length, todo: todo.map(p => p.id), pruned });
   if (pruned && !todo.length) await pushVoices(voiceDir, `Prune ${pruned} published Reel(s)`);
   if (!todo.length) return;

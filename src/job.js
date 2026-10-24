@@ -12,6 +12,7 @@ import { loadCorpus } from "./sources.js";
 import { pickCategories } from "./themes.js";
 import { planSlots } from "./slots.js";
 import { CATEGORY_MOOD, songById, songLine, songsFor } from "./songs.js";
+import { keptForCarousel as defaultKeptForCarousel } from "./voice.js";
 import { localDate, sleep } from "./util.js";
 import { writePost } from "./writer.js";
 
@@ -209,6 +210,7 @@ export async function rerenderDrafts({ config, logger, deps = {} }) {
  * publishAt (Date): get the container ready first, then wait and publish at that moment.
  */
 export async function publishNext({ config, logger, publishAt, format = "carousel", deps = {} }) {
+  const keptForCarousel = deps.keptForCarousel || defaultKeptForCarousel;
   if (!config.publishEnabled) {
     logger.info("PUBLISH_TO_INSTAGRAM is false: drafts only, nothing published.");
     return null;
@@ -248,7 +250,9 @@ export async function publishNext({ config, logger, publishAt, format = "carouse
     for (const candidate of drafts) if ((voice = await voiceFor(candidate))) { post = candidate; break; }
     if (!post) logger.warn("No voice Reel ready (the Mac makes them); this slot posts a carousel instead");
   } else {
-    for (const candidate of drafts) if (!(await voiceFor(candidate))) { post = candidate; break; }
+    // a draft the Mac leaves for this slot, then any draft without a voice Reel (never waste a ready Reel)
+    for (const candidate of drafts) if (keptForCarousel(candidate) && !(await voiceFor(candidate))) { post = candidate; break; }
+    if (!post) for (const candidate of drafts) if (!(await voiceFor(candidate))) { post = candidate; break; }
   }
   post ??= drafts[0];
   const as = voice ? "reel" : "carousel";

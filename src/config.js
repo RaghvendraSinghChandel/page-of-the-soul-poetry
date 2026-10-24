@@ -59,7 +59,7 @@ export function loadConfig(source = process.env) {
     // Content
     postsPerRun: int("POSTS_PER_RUN", 3, 1, 5),
     // Drafts kept waiting, so the Mac can voice them days ahead.
-    draftBuffer: int("DRAFT_BUFFER", 10, 1, 30),
+    draftBuffer: int("DRAFT_BUFFER", 15, 1, 30),
     brandName: env("BRAND_NAME", "page_of_the__soul"),
     brandHandle: env("BRAND_HANDLE"),
 
