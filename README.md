@@ -94,7 +94,6 @@ Ye sab **GitHub Actions** par chalta hai, Mac ki zaroorat nahi:
 ## 4. Branches
 
 - **`main`:** code. GitHub Actions hamesha isi se chalta hai.
-- **`postOptimisation`:** naye features ki branch. Test hone ke baad `main` mein merge hoti hai.
 - **`poet-state`:** robot ki diary: `state/history.json`, `state/token.json`, `posts_log.csv`, `token.enc`, drafts ki slides. Ise haath se edit karna ho toh pehle check kar lijiye ki koi run chal na raha ho.
 - **`poet-voice`:** Mac ki banayi Reels, `voice/<post-id>/reel.mp4` + `meta.json`.
 
