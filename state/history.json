@@ -1,0 +1,2701 @@
+{
+  "posts": [
+    {
+      "id": "2026-10-23-1",
+      "date": "2026-10-23",
+      "createdAt": "2026-10-23T07:00:00.000Z",
+      "status": "manual",
+      "category": "past",
+      "categoryName": "Past aur Memories",
+      "topic": "Kaash mein atak kar present kho dena",
+      "title": "Kaash",
+      "poem": [
+        "Main roz shaam usi khidki par baitha raha,",
+        "jahan se maine woh suraj doobte dekha tha.",
+        "Har baar socha — kaash woh thoda aur ruk jaata,",
+        "kaash us din maine kuch aur keh diya hota.",
+        "Aur isi \"kaash\" mein, chupchaap,",
+        "Maa ki di hui chai thandi hoti rahi,",
+        "doston ke phone bajte-bajte chup ho gaye,",
+        "aur poori raat, taare mera intezaar karte rahe."
+      ],
+      "caption": "Kuch log zindagi se chale jaate hain, kuch decisions waqt ke saath galat lagne lagte hain. Aur hum unhi lamhon ko baar-baar replay karte rehte hain.",
+      "hashtags": [],
+      "scene": "dusk_window",
+      "couplet": null,
+      "contentType": "Verified quote (Tagore, English) + mool rachna",
+      "author": "Rabindranath Tagore",
+      "work": "Stray Birds (1916)",
+      "reference": "No. 6",
+      "sourceUrl": "https://www.gutenberg.org/ebooks/6524",
+      "verification": "Verified against Gutenberg text of 1916 Macmillan ed.",
+      "copyright": "Public domain",
+      "slides": [
+        "posts/2026-10-23/slide1.png",
+        "posts/2026-10-23/slide2.png"
+      ]
+    },
+    {
+      "id": "2026-10-23-2",
+      "date": "2026-10-23",
+      "createdAt": "2026-10-23T07:44:47.664Z",
+      "status": "published",
+      "category": "work",
+      "categoryName": "Work, Career aur Ambition",
+      "topic": "Hamesha sabke liye strong aur samajhdar bane rehne ki thakawat",
+      "realLife": "Office ki zimmeydariyan aur ghar ki khwaahishein poori karte hue apni thakawat ko chupana.",
+      "audienceConnect": "Reader ko lagega ki kaise woh bhi har din bina kisi shikayat ke bas chal raha hai.",
+      "title": "Thaka Hua Mukhauta",
+      "hook": "Sabki umeedein sambhalte sambhalte, khud ko sambhalna bhool gaye hum.",
+      "poem": [
+        "Sabko lagta hai tum sab sambhal loge,",
+        "isliye koi haal bhi nahi poochhta.",
+        "Khaali office aur screen ki roshni,",
+        "baitha hai ek thaka hua insaan.",
+        "Hamesha mazboot dikhne ki zidd,",
+        "andar se khokhla karti rehti hai.",
+        "Kya kabhi thak kar rukne ka haq milega?"
+      ],
+      "bhavarth": "Hansen toh dukh nahi bhulta aur rone se sehan shakti ghat-ti hai. Isliye insaan andar hi andar ghut-ta rehta hai, jaise ghun lakdi ko andar se khaya jata hai.",
+      "caption": "Ghar ki zimmedariyan, office ki late shaam aur sabki umeedein. Humne bachpan se yahi seekha hai ki har haal mein samajhdar banna zaroori hai, chahe andar se hum kitne hi thak kyon na gaye hon. Har roz chehre par ek muskaan pehan kar nikal padte hain, kyunki lagta hai agar hum ruke, toh sab bikhar jayega. Lekin is bhaagdaud mein humara apna wajood kahan kho gaya? Kya sabki umeedein poori karte karte aapne apne dil ki baat sunna bilkul band kar diya hai?",
+      "hashtags": [
+        "#zindagikisachai",
+        "#thakawat",
+        "#dilkibaat",
+        "#sukoon",
+        "#zimmedari"
+      ],
+      "scene": "office_night",
+      "couplet": {
+        "id": "kabir-kk#42",
+        "number": 42,
+        "lines": [
+          "हँसौं तो दुःख ना बीसरै रोवौं बल घटि जाय।",
+          "मनहीँ माहिँ बिसूरना ज्यौं घुन काठहिँ खाय॥४२॥"
+        ],
+        "poet": "कबीर",
+        "poetRoman": "Kabir",
+        "work": "कविता-कौमुदी, भाग १",
+        "workRoman": "Kavita-Kaumudi, Bhag 1",
+        "editor": "Ramnaresh Tripathi (sampadak)",
+        "year": 1918,
+        "form": "साखी",
+        "rights": "Public domain: Kabir ki rachna (15vi sadi); sankalan 1918 mein chhapa, sampadak Ramnaresh Tripathi (d. 1962) — India mein 2023 se public domain.",
+        "url": "https://hi.wikisource.org/wiki/%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE-%E0%A4%95%E0%A5%8C%E0%A4%AE%E0%A5%81%E0%A4%A6%E0%A5%80_%E0%A5%A7%2F%E0%A5%A9_%E0%A4%95%E0%A4%AC%E0%A5%80%E0%A4%B0_%E0%A4%B8%E0%A4%BE%E0%A4%B9%E0%A4%AC",
+        "permalink": "https://hi.wikisource.org/w/index.php?title=%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE-%E0%A4%95%E0%A5%8C%E0%A4%AE%E0%A5%81%E0%A4%A6%E0%A5%80_%E0%A5%A7%2F%E0%A5%A9_%E0%A4%95%E0%A4%AC%E0%A5%80%E0%A4%B0_%E0%A4%B8%E0%A4%BE%E0%A4%B9%E0%A4%AC&oldid=637069",
+        "revid": 637069
+      },
+      "slides": [
+        "output/2026-10-23/2026-10-23-2/slide-1.jpg",
+        "output/2026-10-23/2026-10-23-2/slide-2.jpg",
+        "output/2026-10-23/2026-10-23-2/slide-3.jpg"
+      ],
+      "containerId": "18134488558677099",
+      "mediaId": "18091681559230648",
+      "permalink": "https://www.instagram.com/p/De1GojQCTwA/",
+      "publishedAt": "2026-10-23T08:14:22+0000"
+    },
+    {
+      "id": "2026-10-23-3",
+      "date": "2026-10-23",
+      "createdAt": "2026-10-23T07:45:19.089Z",
+      "status": "published",
+      "category": "life",
+      "categoryName": "Life aur Philosophy",
+      "topic": "Waqt ke saath samajh aane wala sukoon aur rishton ki sachai",
+      "realLife": "Umar badalne ke saath jab hum fizool ki behas aur shor chhodkar shanti chunne lagte hain.",
+      "audienceConnect": "Har woh shakhs jo ab shor se door apni zindagi mein sukoon dhoondhna chahta hai.",
+      "title": "Waqt Aur Sukoon",
+      "hook": "Zindagi ka yeh sach samajhne mein, na jaane kitne saal bit gaye.",
+      "poem": [
+        "Pehle har baat par behas hoti thi,",
+        "ab muskurakar chup ho jaate hain.",
+        "Kabhi duniya ko jeetne ka junoon tha,",
+        "aaj bas khud se milne ki chahat hai.",
+        "Dhire dhire andar ka shor tham gaya,",
+        "ab khamoshi mein bhi sukoon milta hai."
+      ],
+      "bhavarth": "",
+      "caption": "Umar ke ek padav par aakar humein yeh ehsaas hota hai ki har jung jeetna zaroori nahi hota. Kuch jaghon par chup rehna kamzori nahi, balki apne andar ke sukoon ko bachane ka rasta hai. Pehle hum logon ko badalna chahte the, unki har baat ka jawab dena zaroori lagta tha. Par ab samajh aata hai ki waqt aur taaqat dono keemti hain, inhein behas mein zaya nahi karna chahiye. Aaj jab aap peeche mudkar dekhte hain, toh kya lagta hai ki kitna kuch bewajah tha?",
+      "hashtags": [
+        "#zindagi",
+        "#sukoon",
+        "#waqt",
+        "#alfaaz",
+        "#khamoshi"
+      ],
+      "scene": "autumn_road",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-23/2026-10-23-3/slide-1.jpg",
+        "output/2026-10-23/2026-10-23-3/slide-2.jpg"
+      ],
+      "containerId": "18134493616677099",
+      "mediaId": "18038076047896639",
+      "permalink": "https://www.instagram.com/p/De1IfSlCdck/",
+      "publishedAt": "2026-10-23T08:30:33+0000"
+    },
+    {
+      "id": "2026-10-23-4",
+      "date": "2026-10-23",
+      "createdAt": "2026-10-23T07:46:07.727Z",
+      "status": "published",
+      "category": "love",
+      "categoryName": "Love aur Relationships",
+      "topic": "Rishto mein bina wajah aayi doori aur feekapan",
+      "realLife": "Purane messages padhna aur call karne se jhijhakna, kyunki ab baatein formal ho gayi hain.",
+      "audienceConnect": "Kisi apne ke paas hote hue bhi door ho jaane ka ehsaas har kisi ne kabhi na kabhi mehsoos kiya hai.",
+      "title": "Woh Purani Mithaas",
+      "hook": "Baatein toh ab bhi hoti hain, par woh pehle jaisi mithaas nahi rahi.",
+      "poem": [
+        "Mizaaj dono ka wahi hai,",
+        "Magar baatein badal gayi.",
+        "Dono cup mein chai thandi,",
+        "Khamoshi mein dhal gayi.",
+        "Pehle jaisa sawaal nahi,",
+        "Bas rasmi sa haal hai.",
+        "Na jaane kaun si ganth hai,",
+        "Jo saari mithaas le gayi.",
+        "Paas baith kar bhi hum,",
+        "Kitne door ho gaye."
+      ],
+      "bhavarth": "Ganne mein jahan ganth hoti hai wahan ras nahi milta. Usi tarah jab rishte mein manmutav ki ganth pad jaati hai, toh prem ki mithaas khatam ho jaati hai.",
+      "caption": "Kabhi kabhi kisi rishte mein koi bada jhagda nahi hota. Bas waqt ke saath ek aisi khamoshi aa jaati hai jo sab kuch badal deti hai. Hum saath hote hain, baat bhi hoti hai, par woh pehle jaisi mithaas aur apnapan gayab ho jata hai. Ek anjaan si ganth beech mein aa jaati hai jise koi kholna nahi chahta. Sab kuch aam dikhta hai par andar se cheezein badal chuki hoti hain. Kya aapke saath bhi kabhi aisa hua hai jahan rishta toota nahi, par pehle jaisa raha bhi nahi?",
+      "hashtags": [
+        "#Rishte",
+        "#Ehsaas",
+        "#Kavita",
+        "#HinglishPoetry",
+        "#Yaadein"
+      ],
+      "scene": "two_cups",
+      "couplet": {
+        "id": "rahim-dohe#187",
+        "number": 187,
+        "lines": [
+          "रहिमन खोजै ऊख मैं, जहाँ रसन की खानि।",
+          "जहाँ गाँठि तहँ रस नहीं, यही प्रीति की हानि॥१८७॥"
+        ],
+        "poet": "रहीम",
+        "poetRoman": "Rahim",
+        "work": "रहीम-कवितावली",
+        "workRoman": "Rahim-Kavitavali",
+        "editor": "Surendranath Tiwari (sampadak)",
+        "year": 1926,
+        "form": "दोहा",
+        "rights": "Public domain: Abdul Rahim Khan-e-Khana (1556–1627) ki rachna; 1926 edition. Sampadak ke footnotes use nahi kiye gaye.",
+        "url": "https://hi.wikisource.org/wiki/%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87",
+        "permalink": "https://hi.wikisource.org/w/index.php?title=%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87&oldid=654060",
+        "revid": 654060
+      },
+      "slides": [
+        "output/2026-10-23/2026-10-23-4/slide-1.jpg",
+        "output/2026-10-23/2026-10-23-4/slide-2.jpg",
+        "output/2026-10-23/2026-10-23-4/slide-3.jpg"
+      ],
+      "containerId": "18134959504677099",
+      "mediaId": "18166767988477585",
+      "permalink": "https://www.instagram.com/p/De4JZE4CUMt/",
+      "publishedAt": "2026-10-24T12:36:07+0000"
+    },
+    {
+      "id": "2026-10-24-1",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T12:37:13.131Z",
+      "status": "published",
+      "category": "healing",
+      "categoryName": "Self-Respect aur Healing",
+      "topic": "Apni purani galtiyon ko maaf karke bina wazaahat ke aage badhna",
+      "realLife": "Purane khayalon aur jawabon ki talash ko chhodkar khud ke saath shanti se rehna seekhna.",
+      "audienceConnect": "Reader ko mehsus hoga ki har baat ka jawab milna zaroori nahi, khud ko maaf karna hi sachhi shuruat hai.",
+      "title": "Khud Ko Maaf Karo",
+      "hook": "Har safai ka jawab nahi milta, kabhi kabhi aage badhna hi sachha jawab hota hai.",
+      "poem": [
+        "Har baat ki safai zaroori nahi,",
+        "har adhuri baat ka jawab nahi.",
+        "Purani galtiyon ke bojh tale,",
+        "kab tak khud ko saza doge?",
+        "Thandi chai ka aakhri ghoont,",
+        "aur subah ki pehli kiran,",
+        "kehti hai bas aage badho,",
+        "khud ko maaf karna seekho."
+      ],
+      "bhavarth": "",
+      "caption": "Hum aksar un jawabon ki talash mein ulajh jaate hain jo kabhi nahi milne wale. Har insaan se safai maangna ya apni purani galtiyon ke liye khud ko kosna sirf sukoon chheen leta hai. Aage badhne ka matlab yeh nahi ki sab kuch theek ho gaya, balki yeh hai ki aapne us adhurepan ke saath jeena chun liya hai. Swabhimaan yahin se shuru hota hai jab aap khud ko maaf kar dete hain. Kya aapne bhi kisi purani baat ko pakad kar khud ko thakaya hai?",
+      "hashtags": [
+        "#atmasammanriseupfocus",
+        "#sukoon",
+        "#zindagi",
+        "#hinglishpoetry",
+        "#pageofthesoul"
+      ],
+      "scene": "sunrise_path",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-1/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-1/slide-2.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "kahin-door",
+        "title": "Kahin Door Jab Din Dhal Jaaye",
+        "film": "Anand",
+        "year": 1971,
+        "moods": [
+          "udaas",
+          "soch"
+        ]
+      },
+      "reel": {
+        "status": "published",
+        "file": "output/2026-10-24/2026-10-24-1/reel.mp4",
+        "seconds": 17.5,
+        "track": {
+          "id": "bowed-sitar",
+          "file": "bowed-sitar.m4a",
+          "title": "A Man Approaches with Bowed Sitar, Rishikesh",
+          "artist": "Samuel Corwin",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+          "attributionRequired": true,
+          "source": "https://commons.wikimedia.org/wiki/File:Samuel_Corwin_-_A_Man_Approaches_with_Bowed_Sitar,_Rishikesh.ogg",
+          "original": "https://upload.wikimedia.org/wikipedia/commons/8/85/Samuel_Corwin_-_A_Man_Approaches_with_Bowed_Sitar%2C_Rishikesh.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "sha1": "c5e32b6d0fde8008cbf1c1fa3400e9e0cc1331b5",
+          "excerpt": {
+            "start": 25,
+            "length": 45,
+            "changes": "excerpt, loudness normalised"
+          },
+          "moods": [
+            "udaas",
+            "soch"
+          ]
+        },
+        "containerId": "18134992543677099",
+        "mediaId": "18107857060964140",
+        "permalink": "https://www.instagram.com/reel/De4TSPfAXGo/",
+        "publishedAt": "2026-10-24T14:02:54+0000"
+      },
+      "containerId": "18134992513677099",
+      "mediaId": "18098598782536279",
+      "permalink": "https://www.instagram.com/p/De4TMTelffe/",
+      "publishedAt": "2026-10-24T14:02:49+0000"
+    },
+    {
+      "id": "2026-10-24-2",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T12:38:01.388Z",
+      "status": "published",
+      "category": "friendship",
+      "categoryName": "Friendship aur Loneliness",
+      "topic": "Purane doston ke badlav ko bina kisi gusse ke sweekar karna",
+      "realLife": "Purane doston se milkar yeh ehsaas hona ki dono ki zindagi aur soch ab badal chuki hai.",
+      "audienceConnect": "Reader ko apne badalte doston aur badalti dosti ki sachai ki yaad aayegi.",
+      "title": "Badalte Rishte Aur Hum",
+      "hook": "Kuch dost waqt ke saath badal jaate hain, par unki yaadein nahi badaltin.",
+      "poem": [
+        "Do chai ke pyale rakhe hain,",
+        "par baatein pehle jaisi nahi.",
+        "Samne baitha shakhs wahi hai,",
+        "bas uski aawaz badal gayi hai.",
+        "Ab kisi se koi shikayat nahi,",
+        "waqt ne hum dono ko badal diya.",
+        "Dosti ab bas itni si hai,",
+        "ek doosre ko waise hi apnana."
+      ],
+      "bhavarth": "",
+      "caption": "Waqt ke saath har insaan badalta hai. Hum chahte hain ki purane dost waisi hi baatein karein jaise purane dino mein karte the, lekin unki zimmedariyan aur anubhav badal chuke hote hain. Kisi ko badalne par kosna aasan hai, par uske badlav ko bina kisi gusse ke samajhna hi sachhi dosti hai. Purani dosti ka matlab yeh nahi ki dono log ek hi jagah ruke rahein, balki yeh hai ki alag raaston par chalte hue bhi ek doosre ki izzat karein. Kya aapne bhi apne kisi purane dost ko naye roop mein waise hi apnaya hai?",
+      "hashtags": [
+        "#Dosti",
+        "#Zindagi",
+        "#Khamoshi",
+        "#Rishte",
+        "#Vichar"
+      ],
+      "scene": "two_cups",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-2/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-2/slide-2.jpg"
+      ],
+      "mood": "dosti",
+      "reel": {
+        "status": "published",
+        "file": "/Users/raghvendrasingh/Documents/Raghvendra/Instagrem_Automation_Poet/output/2026-10-24/2026-10-24-2/reel-voice-v6.mp4",
+        "seconds": 59.25,
+        "voice": {
+          "model": "ai4bharat/IndicF5",
+          "reference": "v2",
+          "style": "page-wise, sher style, outro"
+        },
+        "bed": "self-made focus bed (kalimba, pad, water)",
+        "deleted": [
+          "https://www.instagram.com/reel/De4iPUQAPYX/",
+          "https://www.instagram.com/reel/De4eNYEjexu/",
+          "https://www.instagram.com/reel/De4nfcLilDZ/"
+        ],
+        "containerId": "18135065323677099",
+        "mediaId": "18099901355086678",
+        "permalink": "https://www.instagram.com/reel/De4oBomDxQH/",
+        "publishedAt": "2026-10-24T17:04:17+0000"
+      },
+      "song": {
+        "id": "tanhayee",
+        "title": "Tanhayee",
+        "film": "Dil Chahta Hai",
+        "year": 2001,
+        "moods": [
+          "udaas",
+          "dosti"
+        ]
+      },
+      "containerId": "18135029464677099",
+      "mediaId": "18107595044572854",
+      "permalink": "https://www.instagram.com/p/De4eLbQCepC/",
+      "publishedAt": "2026-10-24T15:38:21+0000"
+    },
+    {
+      "id": "2026-10-24-3",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T12:39:09.375Z",
+      "status": "published",
+      "category": "family",
+      "categoryName": "Family aur Parents",
+      "topic": "Bade hone ke baad parents ke purane tyag aur sacrifices ki samajh aana",
+      "realLife": "Pehli salary ke baad jab ghar ke kharche sambhalne lagte hain, tab pata chalta hai ki parents ne hamari zarooratein poori karne ke liye apni kitni khwahishein maari thin.",
+      "audienceConnect": "Har woh insaan jo aaj khud kamata hai, use apne pita ki purani cheezein dekh kar unka tyag yaad aata hai.",
+      "title": "Pita ki purani kameez",
+      "hook": "Jab khud paise kamaye, tab samajh aaya ki papa ki purani kameez ke peeche kitna bada tyag tha.",
+      "poem": [
+        "Papa ki woh purani kameez,",
+        "aur maa ka wahi purana chashma.",
+        "Humne har tyohar naye kapde maange,",
+        "unhone chupchap sab khareed diye.",
+        "Aaj jab khud kamane lage hain,",
+        "toh ghar ka hisaab samajh aaya.",
+        "Unki har 'haan' ke peeche,",
+        "kitni badi keemat chhupi thi."
+      ],
+      "bhavarth": "",
+      "caption": "Bachpan mein humein lagta tha ki ghar ki cheezein apne aap aa jaati hain. Maango aur mil jaata hai. Lekin jab pehli baar khud ki kamai se mahine ke kharche poore kiye, tab samajh aaya ki har chhoti khushi ke peeche maata-pita ka kitna bada samjhauta tha. Unhone apni pasand chhodi taaki hamare sapne poore ho sakein. Unhone apne armaan daba diye taaki hum muskurayein. Yeh ehsaas tabhi hota hai jab hum unki jagah khade hote hain. Kya aapne bhi bade hone ke baad unke kisi aise samjhoute ko mehsoos kiya jo unhone kabhi bolkar nahi bataya?",
+      "hashtags": [
+        "#parivar",
+        "#matapita",
+        "#ehsaas",
+        "#rishte",
+        "#zindagi"
+      ],
+      "scene": "kitchen_lamp",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-3/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-3/slide-2.jpg"
+      ],
+      "containerId": "18135066808677099",
+      "mediaId": "17913070149579264",
+      "permalink": "https://www.instagram.com/p/De4ondeGpK2/",
+      "publishedAt": "2026-10-24T17:30:00+0000",
+      "slot": "2026-10-24@23:00"
+    },
+    {
+      "id": "2026-10-24-4",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T17:31:00.052Z",
+      "status": "superseded",
+      "category": "past",
+      "categoryName": "Past aur Memories",
+      "topic": "Purane faislon aur unke nateejo par pachtawa",
+      "realLife": "Purani chitthiyan dekhte waqt kisi purane galat faisle ki yaad aana aur pachtava hona.",
+      "audienceConnect": "Reader ko lagega ki unhone bhi kisi purane faisle par khud ko koste huye saal bita diye hain.",
+      "title": "Purane Faisle",
+      "hook": "Purane faislon ka pachtawa chhodkar khud ko maaf karna seekhna padta hai.",
+      "poem": [
+        "Purani chitthiyon ke peele kaagaz,",
+        "Ek purana faisla yaad aaya.",
+        "Saalon tak khud se naraz rahe,",
+        "Kaash kuch alag kiya hota.",
+        "Par tab humne wahi chuna,",
+        "Jitni humari samajh thi.",
+        "Faisla humara tha,",
+        "Par nateeja humare haath nahi."
+      ],
+      "bhavarth": "Insaan sirf apne haath se karam kar sakta hai, par aage kya hoga yeh waqt ke haath mein hota hai. Paase phekna humare haath mein hai, par kaun sa daav aayega yeh hum tay nahi kar sakte.",
+      "caption": "Hum aksar apne purane faislon par pachtate rehte hain, yeh bhool kar ki us waqt humne apni samajh ke hisaab se sabse sahi kadam uthaya tha. Waqt ke saath insaan badalta hai, tajurba aata hai, par purane waqt ke khud ko aaj ke tajurbe se dekhna sahi nahi hai. Hum sirf koshish kar sakte hain, nateeja humare bas mein nahi hota. Kya aapne bhi kisi purane faisle ke liye khud ko saalon tak maaf nahi kiya?",
+      "hashtags": [
+        "#pachtawa",
+        "#yaadein",
+        "#zindagi",
+        "#dilse",
+        "#kavita"
+      ],
+      "scene": "old_letters",
+      "couplet": {
+        "id": "rahim-dohe#104",
+        "number": 104,
+        "lines": [
+          "निज कर क्रिया रहीम कहि, सुधि भावी के हाथ।",
+          "पाँसे अपने हाथ में, दाँव न अपने हाथ॥१०४॥"
+        ],
+        "poet": "रहीम",
+        "poetRoman": "Rahim",
+        "work": "रहीम-कवितावली",
+        "workRoman": "Rahim-Kavitavali",
+        "editor": "Surendranath Tiwari (sampadak)",
+        "year": 1926,
+        "form": "दोहा",
+        "rights": "Public domain: Abdul Rahim Khan-e-Khana (1556–1627) ki rachna; 1926 edition. Sampadak ke footnotes use nahi kiye gaye.",
+        "url": "https://hi.wikisource.org/wiki/%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87",
+        "permalink": "https://hi.wikisource.org/w/index.php?title=%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87&oldid=654060",
+        "revid": 654060
+      },
+      "slides": [
+        "output/2026-10-24/2026-10-24-4/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-4/slide-2.jpg",
+        "output/2026-10-24/2026-10-24-4/slide-3.jpg"
+      ],
+      "note": "old caption style (long, no emojis); replaced by new drafts"
+    },
+    {
+      "id": "2026-10-24-5",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T17:31:26.150Z",
+      "status": "superseded",
+      "category": "work",
+      "categoryName": "Work, Career aur Ambition",
+      "topic": "Financial responsibilities aur apne sapno ke beech ka sangharsh",
+      "realLife": "Mahine ki pehli tareekh ko salary aate hi bills aur responsibilities mein chali jaati hai, aur purana sapna bas phone ki notes app mein pada reh jata hai.",
+      "audienceConnect": "Zimmedariyon ke bojh tale dab kar apne shauk aur sapne chhodne wala har insaan isse relate karega.",
+      "title": "Kahin Khoye Sapne",
+      "hook": "Mahine ki pehli tareekh ko sapne nahi, bas zimmedariyan yaad aati hain.",
+      "poem": [
+        "Shaam ki bus mein baithe baithe,",
+        "Hisaab mahine ka jodta hoon.",
+        "Pehli tareekh ki tankhah se,",
+        "Ghar ka har kharcha bharta hoon.",
+        "Ek purana sapna jo dekha tha,",
+        "Notes app mein dhundhla pad gaya.",
+        "Umr aage badhti rahi zaroor,",
+        "Par khwahish peeche chhoot gayi.",
+        "Hum kamane toh lage hain zaroor,",
+        "Par khud ko kahin khone lage."
+      ],
+      "bhavarth": "",
+      "caption": "Pehli tareekh ko jab account mein paise aate hain, toh sabse pehle sapne nahi, ghar ke kharche aur zimmedariyan yaad aati hain. Hum bade hote hain toh lagta hai ki azaadi milegi, apne shauk poore karenge. Lekin sachai yeh hai ki mahine ki aakhri tareekh tak hisaab lagate lagate hum un sapnon ko kahin peeche chhod dete hain jo kabhi hamare hone ki pehchan the. Zindagi ki is daud mein khwahishein chhoti hoti chali jaati hain aur zarooratein badi. Kya aapne bhi zimmedariyon ke aage apna koi pyaara sapna aahista se chhod diya hai?",
+      "hashtags": [
+        "#zimmedariyan",
+        "#sapne",
+        "#zindagi",
+        "#hinglishpoetry",
+        "#pageofthe_soul"
+      ],
+      "scene": "city_commute",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-5/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-5/slide-2.jpg"
+      ],
+      "note": "old caption style (long, no emojis); replaced by new drafts"
+    },
+    {
+      "id": "2026-10-24-6",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T17:35:15.141Z",
+      "status": "published",
+      "category": "life",
+      "categoryName": "Life aur Philosophy",
+      "topic": "khushi, success aur andar ka sukoon",
+      "realLife": "Badi degree aur naukri paane ke baad bhi raat ko akelepan mein sukoon na milna.",
+      "audienceConnect": "Jab safalta ki daud mein andar ki asli khushi kahin peeche chhoot jaati hai.",
+      "title": "Sukoon Ki Talaash",
+      "hook": "Is daud mein kya humne apna sukoon kahin chhod diya hai?",
+      "poem": [
+        "Mez par thandi reh gayi chai,",
+        "Har manzil ki zid nibhaayi.",
+        "Subah ki dhund mein yeh socha,",
+        "Kya asli khushi sirf yahi hai?",
+        "Bahar shor abhi bhi bahut hai,",
+        "Par andar ek sannata hai."
+      ],
+      "bhavarth": "",
+      "caption": "Badi manzil ke peeche bhaagte hue aksar hum apne andar ka sukoon bhool jaate hain. Bahar ki jeet tabhi poori lagti hai jab dil mein aaram ho. 🤍 ☕ 💭 Kya aapne bhi kabhi socha hai ki hum kiske liye itna daud rahe hain?",
+      "hashtags": [
+        "#sukoon",
+        "#zindagi",
+        "#sachai",
+        "#apnapan"
+      ],
+      "scene": "sunrise_path",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-6/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-6/slide-2.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "musafir-hoon",
+        "title": "Musafir Hoon Yaaron",
+        "film": "Parichay",
+        "year": 1972,
+        "moods": [
+          "soch",
+          "dosti"
+        ]
+      },
+      "containerId": "18135358477677099",
+      "format": "reel",
+      "mediaId": "18633360244008465",
+      "permalink": "https://www.instagram.com/reel/De6rZsIn-jf/",
+      "publishedAt": "2026-10-25T12:30:01+0000",
+      "slot": "2026-10-25@18:00"
+    },
+    {
+      "id": "2026-10-24-7",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T17:35:34.072Z",
+      "status": "published",
+      "category": "love",
+      "categoryName": "Love aur Relationships",
+      "topic": "Adhuri baatein aur dil ki khamoshi",
+      "realLife": "Jab samne wale se bohot kuch kehna ho, par shabdh khatam ho jayein aur bas ek khaali kursi bache.",
+      "audienceConnect": "Jab aap bhi kisi se kuch keh nahi paate aur dil mein baatein reh jati hain.",
+      "title": "Adhuri Si Baatein",
+      "hook": "Wo baatein jo kabhi keh na sake, aaj bhi dil ke kisi kone mein zinda hain.",
+      "poem": [
+        "Chai thandi ho gayi hai mez par,",
+        "Saamne ek khaali kursi baithi hai.",
+        "Kuch kisse the jo adhure chhoot gaye,",
+        "Kuch lafz thhe jo tumne nahi sune.",
+        "Ab bas yaadon ka ek silsila baaki hai,",
+        "Kya tumne bhi yeh doori mehsoos ki?"
+      ],
+      "bhavarth": "",
+      "caption": "Kuch rishte bina kisi ladai ke hi khatam ho jaate hain, bas waqt ke saath baatein kam ho jaati hain. Woh unkahe shabdh aaj bhi kisi purane panne ki tarah dil mein dabhe reh jaate hain. Kya tumhare paas bhi koi aisi adhuri kahani hai jo ab sirf yaadon mein zinda hai? 🤍 ☕ 💭",
+      "hashtags": [
+        "#adhuribaatein",
+        "#yaadein",
+        "#khamoshi",
+        "#dilkibaat"
+      ],
+      "scene": "two_cups",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-7/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-7/slide-2.jpg"
+      ],
+      "mood": "udaas",
+      "song": {
+        "id": "agar-tum-saath-ho",
+        "title": "Agar Tum Saath Ho",
+        "film": "Tamasha",
+        "year": 2015,
+        "moods": [
+          "udaas",
+          "pyaar"
+        ]
+      },
+      "containerId": "18135445588677099",
+      "format": "reel",
+      "mediaId": "18497796052111210",
+      "permalink": "https://www.instagram.com/reel/De7Mp0kgTCn/",
+      "publishedAt": "2026-10-25T17:30:00+0000",
+      "slot": "2026-10-25@23:00"
+    },
+    {
+      "id": "2026-10-24-8",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T17:35:49.439Z",
+      "status": "published",
+      "category": "healing",
+      "categoryName": "Self-Respect aur Healing",
+      "topic": "Sabko khush rakhne ki chah mein khud ko bhool jaana",
+      "realLife": "Dusro ki khushi ke liye apni zarooraton ko chhod dena aur khud ko khona.",
+      "audienceConnect": "Jab reader ko lage ki usne sabko sambhala par khud ko nahi.",
+      "title": "Khud Ko Talaashna",
+      "hook": "Sabhi ki khushi ke safar mein, kya tumne apna rasta kahin peeche chhod diya?",
+      "poem": [
+        "Sabki hasi laate-laate,",
+        "Apni khushi bhool gaye.",
+        "Subah ki chai akele, aur",
+        "Khud se door ho gaye.",
+        "Aaine mein ajnabi sa",
+        "Chehra nazar aata hai.",
+        "Batao na, hum khud ko",
+        "Kahan chhod aaye hain?"
+      ],
+      "bhavarth": "",
+      "caption": "Dusron ki khwahishein poori karte-karte kab humne khud ki awaaz dabani shuru kar di, pata hi nahi chala. Zindagi bas ek samjhauta ban kar reh jaati hai. Kya kabhi socha hai ki tumhara apna sukoon kahan kho gaya hai? 🤍 ☕ 🕊️",
+      "hashtags": [
+        "#khudkosukoon",
+        "#apnapan",
+        "#zindagi",
+        "#akelepan"
+      ],
+      "scene": "sunrise_path",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-8/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-8/slide-2.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "zindagi-ke-safar",
+        "title": "Zindagi Ke Safar Mein Guzar Jaate Hain",
+        "film": "Aap Ki Kasam",
+        "year": 1974,
+        "moods": [
+          "soch",
+          "udaas"
+        ]
+      },
+      "containerId": "18135729007677099",
+      "format": "reel",
+      "mediaId": "18219606508353369",
+      "permalink": "https://www.instagram.com/reel/De9SEy4jhVQ/",
+      "publishedAt": "2026-10-26T12:30:01+0000",
+      "slot": "2026-10-26@18:00"
+    },
+    {
+      "id": "2026-10-24-9",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T18:11:01.840Z",
+      "status": "published",
+      "category": "friendship",
+      "categoryName": "Friendship aur Loneliness",
+      "topic": "Bheed aur doston ke beech hote hue bhi andar se akela mehsoos hona",
+      "realLife": "Doston ke saath mehfil mein baithe rehna, sabka hasna lekin andar se ek doori aur akelepan ka ahsaas hona.",
+      "audienceConnect": "Aamtaur par log mehfilon mein muskurate hain par andar se behad akele mehsoos karte hain.",
+      "title": "Bheed Ka Sannata",
+      "hook": "Sabke beech baithe hone ke baad bhi, dil andar se bilkul akela hi khada rehta hai.",
+      "poem": [
+        "Sabhi doston ki hansi gunjti rahi,",
+        "Par dil kisi khamoshi mein uljha raha.",
+        "Sabhi paas baithe toh lagta tha,",
+        "Kisse bhi purane sab yaad the.",
+        "Phir bhi lag raha tha aisi bheed mein,",
+        "Ek main hi hoon jo akela reh gaya."
+      ],
+      "bhavarth": "Rahim kehte hain ki jab aisi an honi baat ho jaaye ki koi saath rehkar bhi na jud paye, toh us par kisi ka bas nahi chalta.",
+      "caption": "Kabhi-kabhi hum apno ke beech baithe hote hain, sab hans rahe hote hain, par andar ek ajeeb sa akelepan ka sannata ghula rehta hai. Bheed mein hone ke baad bhi dil bilkul alag jagah bhatakta rehta hai. Kya aapne bhi kabhi mehfil ke beech khud ko akela paaya hai? 🌧️ ☕ 💭",
+      "hashtags": [
+        "#akelepan",
+        "#dilkibaat",
+        "#bheed",
+        "#soch",
+        "#khamoshi"
+      ],
+      "scene": "two_cups",
+      "couplet": {
+        "id": "rahim-dohe#30",
+        "number": 30,
+        "lines": [
+          "कहु रहीम कैसे बनै, अनहोनी ह्वै जाइ।",
+          "मिला रहै औ ना मिलै, तासों कहा बसाइ॥३०॥"
+        ],
+        "poet": "रहीम",
+        "poetRoman": "Rahim",
+        "work": "रहीम-कवितावली",
+        "workRoman": "Rahim-Kavitavali",
+        "editor": "Surendranath Tiwari (sampadak)",
+        "year": 1926,
+        "form": "दोहा",
+        "rights": "Public domain: Abdul Rahim Khan-e-Khana (1556–1627) ki rachna; 1926 edition. Sampadak ke footnotes use nahi kiye gaye.",
+        "url": "https://hi.wikisource.org/wiki/%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87",
+        "permalink": "https://hi.wikisource.org/w/index.php?title=%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87&oldid=654060",
+        "revid": 654060
+      },
+      "slides": [
+        "output/2026-10-24/2026-10-24-9/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-9/slide-2.jpg",
+        "output/2026-10-24/2026-10-24-9/slide-3.jpg"
+      ],
+      "mood": "udaas",
+      "song": {
+        "id": "dil-dhoondta-hai",
+        "title": "Dil Dhoondta Hai",
+        "film": "Mausam",
+        "year": 1975,
+        "moods": [
+          "udaas",
+          "soch"
+        ]
+      },
+      "containerId": "18135370789677099",
+      "format": "carousel",
+      "mediaId": "17913894720513764",
+      "permalink": "https://www.instagram.com/p/De6xFPHG6Xi/",
+      "publishedAt": "2026-10-25T13:30:00+0000",
+      "slot": "2026-10-25@19:00"
+    },
+    {
+      "id": "2026-10-24-10",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T18:11:23.440Z",
+      "status": "published",
+      "category": "family",
+      "categoryName": "Family aur Parents",
+      "topic": "woh baatein jo family ke saamne keh nahi paate",
+      "realLife": "Ghar ke dining table par baith kar bhi dil ki baat zuban tak na laa pana.",
+      "audienceConnect": "Har kisi ke paas kuch aisi baatein hoti hain jo apne gharwalo se keh nahi paate.",
+      "title": "Dil Ki Khamoshi",
+      "hook": "Ghar ki deewaron ke beech sabse bada shor woh hota hai jo kisi se kaha nahi jata.",
+      "poem": [
+        "Chaay ke cup par haath thartharate hain,",
+        "Nazrein jhuka kar hum chup chaap baithte hain.",
+        "Kitni hi baatein hain jo honthon tak aati hain,",
+        "Par ghar ki deewarein unhe sun nahi paati hain.",
+        "Woh kisse jo humne khud se hi chupaye hain,",
+        "Aaj bhi unhi purane kamron mein dafn hain."
+      ],
+      "bhavarth": "",
+      "caption": "Gharwalon ke saamne sabse zyada mehfooz mehsoos karte hain, phir bhi kuch baatein unse keh nahi paate. Shayad darr hota hai unki fikar ka. Aapke dil mein aisi kaun si baat hai jo sirf aap tak hi simat kar reh gayi hai? 🏡☕",
+      "hashtags": [
+        "#ghar",
+        "#khamoshi",
+        "#yaadein",
+        "#rishte"
+      ],
+      "scene": "doorway_light",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-10/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-10/slide-2.jpg"
+      ],
+      "mood": "ghar",
+      "song": {
+        "id": "maa",
+        "title": "Maa",
+        "film": "Taare Zameen Par",
+        "year": 2007,
+        "moods": [
+          "ghar"
+        ]
+      },
+      "containerId": "18135815050677099",
+      "format": "reel",
+      "mediaId": "18106113665459917",
+      "permalink": "https://www.instagram.com/reel/De9yazIEVfj/",
+      "publishedAt": "2026-10-26T17:30:01+0000",
+      "slot": "2026-10-26@23:00"
+    },
+    {
+      "id": "2026-10-24-11",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T18:11:54.638Z",
+      "status": "published",
+      "category": "past",
+      "categoryName": "Past aur Memories",
+      "topic": "purani yaadein aur bachpan",
+      "realLife": "woh purane din jab ghar ki dehleez par shaam tak khelna aur fikar-mukt rehna aam baat thi",
+      "audienceConnect": "jab bhi bachpan ki album kholte hain, ek ajib sa khalipan aur sukoon dono mehsoos hote hain",
+      "title": "bachpan ke din",
+      "hook": "kahan kho gaye woh din jab fikar sirf khilona tutne ki hoti thi",
+      "poem": [
+        "kagaz ki kashti aur barish ka paani",
+        "aangan mein goonjti thi maa ki awaz",
+        "waqt reht ki tarah mutthi se fisal gaya",
+        "kya woh bachpan sach mein beet gaya"
+      ],
+      "bhavarth": "",
+      "caption": "bachpan ki woh yaadein aaj bhi dil ke ek kone mein chupchap baithi hain, jahan na kal ki fikar thi aur na waqt ka hisaab. kya tumhe bhi woh purana aangan aaj yaad aata hai? 🍂🏡",
+      "hashtags": [
+        "#bachpan",
+        "#puraniyaadein",
+        "#yaadein",
+        "#sukoon"
+      ],
+      "scene": "old_letters",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-11/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-11/slide-2.jpg"
+      ],
+      "mood": "udaas",
+      "song": {
+        "id": "tujhse-naraz",
+        "title": "Tujhse Naraz Nahi Zindagi",
+        "film": "Masoom",
+        "year": 1983,
+        "moods": [
+          "udaas",
+          "soch",
+          "ghar"
+        ]
+      },
+      "containerId": "18135739780677099",
+      "format": "carousel",
+      "mediaId": "17911862667589831",
+      "permalink": "https://www.instagram.com/p/De9V3XDoKef/",
+      "publishedAt": "2026-10-26T13:30:00+0000",
+      "slot": "2026-10-26@19:00"
+    },
+    {
+      "id": "2026-10-24-12",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T18:13:01.141Z",
+      "status": "published",
+      "category": "work",
+      "categoryName": "Work, Career aur Ambition",
+      "topic": "Din-raat ki mehnat ke baad bhi kaam ka credit na milna",
+      "realLife": "Der raat tak office mein mehnat karne ke baad jab credit kisi aur ko milta hai, toh dil mein ek gehri khamoshi chaa jaati hai.",
+      "audienceConnect": "Yeh post har us insaan ke liye hai jisse lagta hai ki uski mehnat koi dekh nahi raha.",
+      "title": "Unkaha Kaam",
+      "hook": "Har der raat tak jaagi aankhein jaanti hain, mehnat ki qadar hamesha manch par nahi milti.",
+      "poem": [
+        "Raat ke do baje tak ki mehnat,",
+        "meeting mein kisi aur ka naam hua.",
+        "Jis kaam mein poora din lagaya,",
+        "uska shrey bas ek line mein beh gaya.",
+        "Chup-chap laptop band kiya tumne,",
+        "na koi gussa, na koi shikayat.",
+        "Kuch mehnat ki gawaahi waqt deta hai."
+      ],
+      "bhavarth": "",
+      "caption": "Jab aapki din-raat ki mehnat ka shrey koi aur le jaata hai, toh gussa nahi bas ek ajeeb sa khaalipan mehsoos hota hai. 💻 Kabhi-kabhi chup rehna kamzori nahi, balki apne kaam par bharosa rakhna hota hai. 🌙 Kya aapne bhi kabhi apne kaam ki tareef kisi aur ke naam hote dekhi hai? 🏢",
+      "hashtags": [
+        "#worklife",
+        "#corporatelife",
+        "#mehnat",
+        "#hinglishpoetry",
+        "#pageofthesoul"
+      ],
+      "scene": "office_night",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-12/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-12/slide-2.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "chingari-koi",
+        "title": "Chingari Koi Bhadke",
+        "film": "Amar Prem",
+        "year": 1972,
+        "moods": [
+          "udaas",
+          "soch"
+        ]
+      },
+      "containerId": "18136039525677099",
+      "format": "reel",
+      "mediaId": "18142207621720505",
+      "permalink": "https://www.instagram.com/reel/De_04-Wic8V/",
+      "publishedAt": "2026-10-27T12:30:01+0000",
+      "slot": "2026-10-27@18:00"
+    },
+    {
+      "id": "2026-10-24-13",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T18:13:09.923Z",
+      "status": "published",
+      "category": "life",
+      "categoryName": "Life aur Philosophy",
+      "topic": "insaan ka badalna aur waqt ke sath aane wali samajh",
+      "realLife": "Jab saal badalte hain aur apne hi purane faisle bachpana lagne lagte hain.",
+      "audienceConnect": "Reader ko lagega ki kaise waqt ne use dheere-dheere badal diya.",
+      "title": "badalte rishte aur khamoshi",
+      "hook": "Waqt ke saath badal gaye hain hum, ya bas ab kehna chhod diya hai?",
+      "poem": [
+        "Ab baatein kam hoti hain raaton mein,",
+        "Shikayatein bhi ab khud se hoti hain.",
+        "Woh zid jo kabhi haq lagti thi,",
+        "Ab bas ek khamoshi bankar reh gayi.",
+        "Bada sa dil ab choti si baat par,",
+        "Bina shor machaye bas chup ho jata hai."
+      ],
+      "bhavarth": "",
+      "caption": "Waqt ke sath apno se fasle badhte hain aur shor khatam ho kar bas ek khamoshi reh jati hai. Hum ladna chhod kar bas door jana seekh lete hain. Kya tumne bhi apne andar yeh badlav mehsus kiya hai? 🍂🕰️",
+      "hashtags": [
+        "#zindagi",
+        "#badlaav",
+        "#khamoshi",
+        "#yaadein"
+      ],
+      "scene": "autumn_road",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-13/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-13/slide-2.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "zindagi-kaisi-hai",
+        "title": "Zindagi Kaisi Hai Paheli",
+        "film": "Anand",
+        "year": 1971,
+        "moods": [
+          "soch"
+        ]
+      },
+      "containerId": "18136124467677099",
+      "format": "reel",
+      "mediaId": "17914132197517990",
+      "permalink": "https://www.instagram.com/reel/DfAYPrrCXTy/",
+      "publishedAt": "2026-10-27T17:30:00+0000",
+      "slot": "2026-10-27@23:00"
+    },
+    {
+      "id": "2026-10-24-14",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T18:13:22.697Z",
+      "status": "published",
+      "category": "love",
+      "categoryName": "Love aur Relationships",
+      "topic": "kisi ko yaad karna jo ab zindagi mein nahi hai",
+      "realLife": "Ek khaali kursi aur purani chai ki pyali dekh kar kisi apne ki kami mehsoos hona.",
+      "audienceConnect": "Jo log kisi ko kho chuke hain ya door ho chuke hain, unhe yeh dard apna lagega.",
+      "title": "Khaali Kursi",
+      "hook": "Jinhone dil mein ghar banaya tha, aaj unse apne dukh-sukh kehne ko kaun bacha hai?",
+      "poem": [
+        "Mez par rakhi hain do pyali,",
+        "Ek mein ab bhi hai garam chai.",
+        "Doosri kursi bas khaali hai,",
+        "Jismein ab koi baithta nahi.",
+        "Purani chat ko roz padhte hain,",
+        "Ab wahan tera paigham nahi aata."
+      ],
+      "bhavarth": "Jinhone tan aur man dono de diye aur dil mein apna ghar basa liya, ab unhi se apne dukh-sukh kehne ki koi baat nahi bachti.",
+      "caption": "Waqt kitna bhi beet jaye, kuch logon ki kami kabhi nahi bharti. Unke bina yeh kamre aur shaamein bilkul sooni lagti hain. Kya tumhare paas bhi kisi ki aisi yaad hai jo ab bas ek parchhai ban kar reh gayi hai? 🪑 ☕ 🍂",
+      "hashtags": [
+        "#yaadein",
+        "#tanhai",
+        "#adhurapan",
+        "#purane_din"
+      ],
+      "scene": "two_cups",
+      "couplet": {
+        "id": "rahim-dohe#61",
+        "number": 61,
+        "lines": [
+          "जेहिं रहीम तन-मन दियो, कियो हिए बिच भौन।",
+          "तासों दुख-सुख कहन की, रही बात अब कौन॥६१॥"
+        ],
+        "poet": "रहीम",
+        "poetRoman": "Rahim",
+        "work": "रहीम-कवितावली",
+        "workRoman": "Rahim-Kavitavali",
+        "editor": "Surendranath Tiwari (sampadak)",
+        "year": 1926,
+        "form": "दोहा",
+        "rights": "Public domain: Abdul Rahim Khan-e-Khana (1556–1627) ki rachna; 1926 edition. Sampadak ke footnotes use nahi kiye gaye.",
+        "url": "https://hi.wikisource.org/wiki/%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87",
+        "permalink": "https://hi.wikisource.org/w/index.php?title=%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87&oldid=654060",
+        "revid": 654060
+      },
+      "slides": [
+        "output/2026-10-24/2026-10-24-14/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-14/slide-2.jpg",
+        "output/2026-10-24/2026-10-24-14/slide-3.jpg"
+      ],
+      "mood": "udaas",
+      "song": {
+        "id": "phir-le-aaya-dil",
+        "title": "Phir Le Aaya Dil",
+        "film": "Barfi!",
+        "year": 2012,
+        "moods": [
+          "udaas",
+          "pyaar"
+        ]
+      },
+      "containerId": "18136053889677099",
+      "format": "carousel",
+      "mediaId": "17993624457111488",
+      "permalink": "https://www.instagram.com/p/De_71aUG-Qa/",
+      "publishedAt": "2026-10-27T13:30:00+0000",
+      "slot": "2026-10-27@19:00"
+    },
+    {
+      "id": "2026-10-24-15",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T18:14:22.543Z",
+      "status": "published",
+      "category": "healing",
+      "categoryName": "Self-Respect aur Healing",
+      "topic": "apni pehchaan aur sukoon dobara dhoondhna",
+      "realLife": "Bheed mein kho jaane ke baad jab achanak khud ki aawaz sunai deti hai.",
+      "audienceConnect": "Jab aapko lage ki sabko sambhalte-sambhalte aap khud se hi door ho gaye hain.",
+      "title": "apni talaash",
+      "hook": "Bheed mein chalte-chalte jab achanak khud ki hi aawaz sunai dena band ho jaye...",
+      "poem": [
+        "kitne raaston par chalte-chalte",
+        "humne khud ko hi peeche chhod diya",
+        "aaine mein jo chehra dikhta hai",
+        "woh kisi aur ka lagta hai ab",
+        "kisi kone mein dabi thi jo aawaz",
+        "aaj use phir se sunne chale hain",
+        "shayad khud se milne ka waqt hai"
+      ],
+      "bhavarth": "Kabir ji kehte hain ki raste ka roda banakar apna abhiman tyag do. Lobh aur moh chhodne wale ko hi nij naam yaani sachchi pehchaan milti hai.",
+      "caption": "Doosron ki khushi ke safar mein aksar hum apni manzil hi bhool jaate hain. Jab thakan gehri ho aur dil kuch kehna chahe, toh ruk kar bas khud ki sunna zaroori hota hai. Kya aapne bhi kabhi khud ko dhoondhne ki koshish ki hai? 🛤️🕊️",
+      "hashtags": [
+        "#apnipehchaan",
+        "#sukoon",
+        "#khudsebaat",
+        "#zindagi",
+        "#safar"
+      ],
+      "scene": "sunrise_path",
+      "couplet": {
+        "id": "kabir-kk#135",
+        "number": 135,
+        "lines": [
+          "रोड़ा होइ रहु बाटका तजि आपा अभिमान।",
+          "लोभ मोह तृस्ना तजे ताहि मिलै निज नाम॥१३५॥"
+        ],
+        "poet": "कबीर",
+        "poetRoman": "Kabir",
+        "work": "कविता-कौमुदी, भाग १",
+        "workRoman": "Kavita-Kaumudi, Bhag 1",
+        "editor": "Ramnaresh Tripathi (sampadak)",
+        "year": 1918,
+        "form": "साखी",
+        "rights": "Public domain: Kabir ki rachna (15vi sadi); sankalan 1918 mein chhapa, sampadak Ramnaresh Tripathi (d. 1962) — India mein 2023 se public domain.",
+        "url": "https://hi.wikisource.org/wiki/%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE-%E0%A4%95%E0%A5%8C%E0%A4%AE%E0%A5%81%E0%A4%A6%E0%A5%80_%E0%A5%A7%2F%E0%A5%A9_%E0%A4%95%E0%A4%AC%E0%A5%80%E0%A4%B0_%E0%A4%B8%E0%A4%BE%E0%A4%B9%E0%A4%AC",
+        "permalink": "https://hi.wikisource.org/w/index.php?title=%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE-%E0%A4%95%E0%A5%8C%E0%A4%AE%E0%A5%81%E0%A4%A6%E0%A5%80_%E0%A5%A7%2F%E0%A5%A9_%E0%A4%95%E0%A4%AC%E0%A5%80%E0%A4%B0_%E0%A4%B8%E0%A4%BE%E0%A4%B9%E0%A4%AC&oldid=637069",
+        "revid": 637069
+      },
+      "slides": [
+        "output/2026-10-24/2026-10-24-15/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-15/slide-2.jpg",
+        "output/2026-10-24/2026-10-24-15/slide-3.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "ae-zindagi",
+        "title": "Ae Zindagi Gale Laga Le",
+        "film": "Sadma",
+        "year": 1983,
+        "moods": [
+          "soch",
+          "josh"
+        ]
+      },
+      "containerId": "18136329949677099",
+      "format": "reel",
+      "mediaId": "17952583884299220",
+      "permalink": "https://www.instagram.com/reel/DfCZs38lQnq/",
+      "publishedAt": "2026-10-28T12:30:01+0000",
+      "slot": "2026-10-28@18:00"
+    },
+    {
+      "id": "2026-10-24-16",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T18:14:37.990Z",
+      "status": "published",
+      "category": "friendship",
+      "categoryName": "Friendship aur Loneliness",
+      "topic": "Purani dosti ka dheere-dheere anjaane ho jaana",
+      "realLife": "Mobile ki contact list mein purane dost ka number abhi bhi save hai, par ab baat karne ki koi wajah nahi bachti.",
+      "audienceConnect": "Jiske paas bhi kisi purane dost ka khali number hai, woh is khamoshi ko turant samajh jayega.",
+      "title": "Number Abhi Bhi Save Hai",
+      "hook": "Purane dost ab bas screen par ek save number aur purani chat ban gaye hain.",
+      "poem": [
+        "Ab baatein khatam ho gayi hain,",
+        "Bas screen par naam dikhta hai.",
+        "Woh jo ghanto baithte the saath,",
+        "Ab ek message bhi door lagta hai.",
+        "Waqt badla ya hum badal gaye,",
+        "Ab woh dosti bas yaad reh gayi hai."
+      ],
+      "bhavarth": "",
+      "caption": "Waqt ke saath raste alag ho jaate hain aur apne bhi paraye lagne lagte hain. Phone mein number abhi bhi hai, par ab baat karne ki himmat nahi hoti. Kya aapka bhi koi aisa dost hai jisse ab bas yaadein baaki hain? 🍂📱",
+      "hashtags": [
+        "#dosti",
+        "#yaadein",
+        "#puranedost",
+        "#zindagi"
+      ],
+      "scene": "two_cups",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-16/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-16/slide-2.jpg"
+      ],
+      "mood": "dosti",
+      "song": {
+        "id": "tere-jaisa-yaar",
+        "title": "Tere Jaisa Yaar Kahan",
+        "film": "Yaarana",
+        "year": 1981,
+        "moods": [
+          "dosti"
+        ]
+      },
+      "containerId": "18136411867677099",
+      "format": "reel",
+      "mediaId": "18436867840182910",
+      "permalink": "https://www.instagram.com/reel/DfC8BNKjhXt/",
+      "publishedAt": "2026-10-28T17:30:01+0000",
+      "slot": "2026-10-28@23:00"
+    },
+    {
+      "id": "2026-10-24-17",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T18:14:52.207Z",
+      "status": "published",
+      "category": "family",
+      "categoryName": "Family aur Parents",
+      "topic": "family ke liye apne sapne chhod dena",
+      "realLife": "Apne shauk aur raste badal kar ghar ki zaroorato ko pehle rakhna.",
+      "audienceConnect": "Jab apne armaan ghar ki dehleez par hi thahar jaate hain.",
+      "title": "dehleez ke sapne",
+      "hook": "Kuch khwahishein chupchap dafn ho jaati hain ghar ki zaroorato ke aage.",
+      "poem": [
+        "kitaab ke panno mein dab gaye sapne,",
+        "ghar ki zarooratein jab pehle aa gayi.",
+        "purani almirah mein band hua rasta,",
+        "zimmedari ne neend sabhi chin li.",
+        "ab apne armaanon ka zikr nahi hota,",
+        "sabko khush rakhne mein raat beet gayi."
+      ],
+      "bhavarth": "",
+      "caption": "Apne shauk aur sapne chhod kar jab koi apno ki khushi ko apna sab kuch maan leta hai, toh dil mein ek halka sa dard reh jaati hai. Kya aapne bhi kabhi apna koi sapna aise hi peeche chhod diya hai? 🏡🍂",
+      "hashtags": [
+        "#zindagi",
+        "#sapne",
+        "#zimmedari",
+        "#khamoshi",
+        "#ghar"
+      ],
+      "scene": "kitchen_lamp",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-17/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-17/slide-2.jpg"
+      ],
+      "mood": "ghar",
+      "song": {
+        "id": "luka-chuppi",
+        "title": "Luka Chuppi",
+        "film": "Rang De Basanti",
+        "year": 2006,
+        "moods": [
+          "ghar",
+          "udaas"
+        ]
+      },
+      "containerId": "18136638034677099",
+      "format": "reel",
+      "mediaId": "17867209221679620",
+      "permalink": "https://www.instagram.com/reel/DfE-fbNm0I4/",
+      "publishedAt": "2026-10-29T12:30:01+0000",
+      "slot": "2026-10-29@18:00"
+    },
+    {
+      "id": "2026-10-24-18",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T18:16:11.710Z",
+      "status": "published",
+      "category": "past",
+      "categoryName": "Past aur Memories",
+      "topic": "woh waqt jab hum zyada carefree the",
+      "realLife": "bachpan ya purane dinon ki woh befikri jab subah uth kar kal ki fikar nahi hoti thi.",
+      "audienceConnect": "har koi apne bachpan ki us azaadi ko yaad karke muskurata hai.",
+      "title": "woh befikr din",
+      "hook": "kya tumhe yaad hai woh waqt jab subah bas khelne ke liye hoti thi?",
+      "poem": [
+        "kitni aasan thi woh subah ki dhoop",
+        "na fikar thi na kal ka koi roop",
+        "bas ek cycle aur doston ka sath",
+        "waqt jaise tham gaya tha har baat",
+        "aaj sab kuch hai paas mere magar",
+        "woh sukoon kahan hai ab dar-badar"
+      ],
+      "bhavarth": "",
+      "caption": "zindagi ki daud mein humne bohot kuch pa liya, lekin woh bachpan ki befikri kahin peeche chhoot gayi. kya tumhe bhi woh din ab sapne jaise lagte hain? 🍂🛤️",
+      "hashtags": [
+        "#bachpan",
+        "#yaadein",
+        "#puranedin",
+        "#sukoon"
+      ],
+      "scene": "old_letters",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-18/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-18/slide-2.jpg"
+      ],
+      "mood": "udaas",
+      "song": {
+        "id": "kahin-door",
+        "title": "Kahin Door Jab Din Dhal Jaaye",
+        "film": "Anand",
+        "year": 1971,
+        "moods": [
+          "udaas",
+          "soch"
+        ]
+      },
+      "containerId": "18136719160677099",
+      "format": "reel",
+      "mediaId": "18108377096192215",
+      "permalink": "https://www.instagram.com/reel/DfFgzs2jgt5/",
+      "publishedAt": "2026-10-29T17:30:01+0000",
+      "slot": "2026-10-29@23:00"
+    },
+    {
+      "id": "2026-10-24-19",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T18:16:34.476Z",
+      "status": "published",
+      "category": "work",
+      "categoryName": "Work, Career aur Ambition",
+      "topic": "Success, failure aur self-worth ka farq",
+      "realLife": "Jab office mein nateeje man mutabiq na aayein aur lagne lage ki kya hum sirf ek number hain.",
+      "audienceConnect": "Jab career ki daud mein khud ko bhool kar bas target poore karte hain.",
+      "title": "Kitni keemat hai?",
+      "hook": "Kya hamari poori zindagi bas ek file ke numbers aur ginti tak hi simat gayi hai?",
+      "poem": [
+        "Raat ke is sannate mein akela hoon,",
+        "Thandi ho chuki chai ko ghoont raha hoon.",
+        "Har nateeje par khud ko tolte-tolte,",
+        "Bhool gaya ki saans lena bhi zaroori hai.",
+        "Kya meri keemat sirf ek ankda ban gayi?"
+      ],
+      "bhavarth": "",
+      "caption": "Zindagi ki is daud mein hum yeh bhool jaate hain ki hamara wajood kisi file ya nateeje se bahut bada hai. Jab har din ka kaam hamari khushi tay karne lage, toh ruk kar khud se sochna zaroori hota hai. 🌙 ☕ Kya aapne bhi kabhi apne andar ke insaan ko kaam ke bojh mein dabte dekha hai?",
+      "hashtags": [
+        "#sukoon",
+        "#zindagi",
+        "#kaam",
+        "#apni_talaash"
+      ],
+      "scene": "office_night",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-19/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-19/slide-2.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "kahin-door",
+        "title": "Kahin Door Jab Din Dhal Jaaye",
+        "film": "Anand",
+        "year": 1971,
+        "moods": [
+          "udaas",
+          "soch"
+        ]
+      },
+      "containerId": "18136909708677099",
+      "format": "reel",
+      "mediaId": "18117891746016003",
+      "permalink": "https://www.instagram.com/reel/DfHjRiZgo6V/",
+      "publishedAt": "2026-10-30T12:30:01+0000",
+      "slot": "2026-10-30@18:00"
+    },
+    {
+      "id": "2026-10-24-20",
+      "date": "2026-10-24",
+      "createdAt": "2026-10-24T18:16:47.209Z",
+      "status": "published",
+      "category": "life",
+      "categoryName": "Life aur Philosophy",
+      "topic": "mushkil daur aur usse milne wali samajh",
+      "realLife": "Jab raste band lagte hain aur akelapan sab kuch sikha jata hai.",
+      "audienceConnect": "Har kisi ko apne bure din yaad aa jayenge jab unhone khud ko sambhala.",
+      "title": "andhere ke baad ka din",
+      "hook": "Jab raat lambi lagti hai, tab subah ki umeed hi dil ko sambhalti hai.",
+      "poem": [
+        "Raat jitni lambi ho,",
+        "Subah toh hoti hi hai.",
+        "Thandi subah ki chai mein,",
+        "Purani baatein yaad aati hain.",
+        "Jo zakham the kabhi,",
+        "Ab nishaan ban gaye hain."
+      ],
+      "bhavarth": "",
+      "caption": "Mushkil daur insaan ko andar se todta zaroor hai, par wahi hume jeena sikhata hai. Jab sab kuch bikhar jata hai, tabhi khud ko sametne ka mauka milta hai. Kya tumhe bhi apne kisi purane daur se ab sukoon milta hai? 🍂☕",
+      "hashtags": [
+        "#mushkildaur",
+        "#zindagi",
+        "#safar",
+        "#sukoon"
+      ],
+      "scene": "sunrise_path",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-24/2026-10-24-20/slide-1.jpg",
+        "output/2026-10-24/2026-10-24-20/slide-2.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "ruk-jana-nahin",
+        "title": "Ruk Jana Nahin",
+        "film": "Imtihan",
+        "year": 1974,
+        "moods": [
+          "josh",
+          "soch"
+        ]
+      },
+      "containerId": "18136987990677099",
+      "format": "reel",
+      "mediaId": "17971487621994182",
+      "permalink": "https://www.instagram.com/reel/DfIFmkSCP0l/",
+      "publishedAt": "2026-10-30T17:30:01+0000",
+      "slot": "2026-10-30@23:00"
+    },
+    {
+      "id": "2026-10-25-1",
+      "date": "2026-10-25",
+      "createdAt": "2026-10-25T12:31:08.138Z",
+      "status": "published",
+      "category": "love",
+      "categoryName": "Love aur Relationships",
+      "topic": "Insaan ko nahi, balki us waqt ke sukoon ko miss karna",
+      "realLife": "Purane waqt ko yaad karte hue yeh samajh aana ki gusse ke baad ab bas us waqt mile sukoon ki kami hai.",
+      "audienceConnect": "Reader ko lagega ki aksar hum kisi insaan ke bajaye us waqt ki apni khushi ko dhoondhte hain.",
+      "title": "Woh Beet Chuka Waqt",
+      "hook": "Kabhi kabhi hum kisi insaan ko nahi, us waqt ke apne sukoon ko miss karte hain.",
+      "poem": [
+        "Ab gussa nahi hai dil mein,",
+        "na koi shikayat bachi hai.",
+        "Dono apni jagah sahi hain,",
+        "baat bas itni si hai.",
+        "Mujhe tumhari yaad nahi aati,",
+        "bas woh shaam yaad aati hai,",
+        "jab chai thandi ho jaati thi,",
+        "aur waqt ka pata nahi chalta tha."
+      ],
+      "bhavarth": "",
+      "caption": "Waqt ke saath rishte badal jaate hain aur log bhi. Par kabhi kabhi hum kisi insaan ke paas waapas nahi jaana chahte, bas us waqt jo dil ko sukoon milta tha uski kami mehsoos hoti hai ☕. Purani baaton ko yaad karke kya aapko bhi wahi sukoon yaad aata hai? 🍂",
+      "hashtags": [
+        "#yaadein",
+        "#sukoon",
+        "#rishte",
+        "#ehsaas",
+        "#zindagi"
+      ],
+      "scene": "two_cups",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-25/2026-10-25-1/slide-1.jpg",
+        "output/2026-10-25/2026-10-25-1/slide-2.jpg"
+      ],
+      "mood": "udaas",
+      "song": {
+        "id": "waqt-ne-kiya",
+        "title": "Waqt Ne Kiya Kya Haseen Sitam",
+        "film": "Kaagaz Ke Phool",
+        "year": 1959,
+        "moods": [
+          "udaas",
+          "pyaar"
+        ]
+      },
+      "containerId": "18137203642677099",
+      "format": "reel",
+      "mediaId": "18102309137559749",
+      "permalink": "https://www.instagram.com/reel/DfKIGEFG8EN/",
+      "publishedAt": "2026-10-31T12:30:01+0000",
+      "slot": "2026-10-31@18:00"
+    },
+    {
+      "id": "2026-10-25-2",
+      "date": "2026-10-25",
+      "createdAt": "2026-10-25T13:30:59.069Z",
+      "status": "draft",
+      "category": "healing",
+      "categoryName": "Self-Respect aur Healing",
+      "topic": "Bina kisi safayi ya jawab ke rishte ko wahi chhod kar aage badhna",
+      "realLife": "Jab hum kisi se aakhri jawab ya maafi ka intezar karte hain, aur phir samajh aata hai ki khamoshi hi aakhri jawab tha.",
+      "audienceConnect": "Reader ko lagga ki har adhure sawaal ka jawab dhoondhna zaroori nahi, kabhi kabhi aage badhna hi sachha sukoon hai.",
+      "title": "Bina Jawab Ke Aage Badhna",
+      "hook": "Jab samajh aaya ki unki khamoshi hi sabse bada jawab thi...",
+      "poem": [
+        "Phone par ek adhura message tha,",
+        "jiska jawab kabhi aaya nahi.",
+        "Kai raatein sawaal kiye dil se,",
+        "par unka koi hisaab aaya nahi.",
+        "Ab samjha ki unki khamoshi bhi,",
+        "ek saaf aur aakhri jawab thi.",
+        "Bina kisi maafi ke aage badhna,",
+        "khud ko wapas paane ki shuruat thi."
+      ],
+      "bhavarth": "",
+      "caption": "Kabhi kabhi hum aakhri maafi ya safayi ke intezar mein apna aaj kharab kar dete hain. 🕊️ Par sach toh yeh hai ki kisi ka na bolna bhi ek saaf jawab hi hota hai. 🌅 Apne sukoon ka haq kisi aur ko mat do. Kya aapne bhi kisi adhure sawaal ko peeche chhodna seekh liya hai?",
+      "hashtags": [
+        "#khamoshi",
+        "#sukoon",
+        "#zindagi",
+        "#aagebadhna",
+        "#hinglishpoetry"
+      ],
+      "scene": "new_leaves",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-25/2026-10-25-2/slide-1.jpg",
+        "output/2026-10-25/2026-10-25-2/slide-2.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "main-zindagi-ka",
+        "title": "Main Zindagi Ka Saath Nibhata Chala Gaya",
+        "film": "Hum Dono",
+        "year": 1961,
+        "moods": [
+          "soch",
+          "josh"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-25-3",
+      "date": "2026-10-25",
+      "createdAt": "2026-10-25T17:32:09.932Z",
+      "status": "draft",
+      "category": "friendship",
+      "categoryName": "Friendship aur Loneliness",
+      "topic": "Un logon ko bina kisi shikayat ke sweekar karna jo ab pehle jaise nahi rahe",
+      "realLife": "Waqt ke saath doston ka badal jaana aur yeh samajhna ki har rishta hamesha ek jaisa nahi rehta.",
+      "audienceConnect": "Jab hum kisi purane dost se milte hain aur ehsaas hota hai ki dono ab alag raahon par hain.",
+      "title": "Badalte Rishte",
+      "hook": "Log nahi badalte, bas unka hamare saath ka lagav dheere dheere kam ho jaata hai.",
+      "poem": [
+        "Mez par chai ki do pyaaliyan hain,",
+        "saamne wahi purana daur hai.",
+        "Baatein ab bhi ho rahi hain,",
+        "magar bolne wala koi aur hai.",
+        "Ret ki tarah fisal gaya lagav,",
+        "purana dost ab ek naya chehra hai."
+      ],
+      "bhavarth": "Rahim kehte hain ki pehle jaisa prem aur lagaav ab nahi raha, yeh rishta haath mein pakdi ret ki tarah aahista-aahista kam hota jaata hai.",
+      "caption": "Kabhi-kabhi rishte bina kisi jhagde ke bhi badal jaate hain. Pehle jaisa lagaav aur apnapan aahista-aahista kam hone lagta hai, jaise haath se ret fisalti hai. ☕🍂 Kya aapke saath bhi aisa hua hai ki koi purana dost ab bilkul anjaan lagne laga ho? 🤝",
+      "hashtags": [
+        "#Dosti",
+        "#Rishte",
+        "#Zindagi",
+        "#Yaadein",
+        "#Soch"
+      ],
+      "scene": "two_cups",
+      "couplet": {
+        "id": "rahim-dohe#234",
+        "number": 234,
+        "lines": [
+          "वहै प्रीति नहिं रीति वह, नहीं पाछिलो हेत।",
+          "घटत-घटत रहिमन घटै, ज्यों कर लीन्हे रेत॥२३४॥"
+        ],
+        "poet": "रहीम",
+        "poetRoman": "Rahim",
+        "work": "रहीम-कवितावली",
+        "workRoman": "Rahim-Kavitavali",
+        "editor": "Surendranath Tiwari (sampadak)",
+        "year": 1926,
+        "form": "दोहा",
+        "rights": "Public domain: Abdul Rahim Khan-e-Khana (1556–1627) ki rachna; 1926 edition. Sampadak ke footnotes use nahi kiye gaye.",
+        "url": "https://hi.wikisource.org/wiki/%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87",
+        "permalink": "https://hi.wikisource.org/w/index.php?title=%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87&oldid=654060",
+        "revid": 654060
+      },
+      "slides": [
+        "output/2026-10-25/2026-10-25-3/slide-1.jpg",
+        "output/2026-10-25/2026-10-25-3/slide-2.jpg",
+        "output/2026-10-25/2026-10-25-3/slide-3.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "behti-hawa-sa",
+        "title": "Behti Hawa Sa Tha Woh",
+        "film": "3 Idiots",
+        "year": 2009,
+        "moods": [
+          "dosti",
+          "soch"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-26-1",
+      "date": "2026-10-26",
+      "createdAt": "2026-10-26T12:31:53.590Z",
+      "status": "draft",
+      "category": "family",
+      "categoryName": "Family aur Parents",
+      "topic": "Parents ke sacrifices jo khud zimmedari uthane ke baad samajh aate hain",
+      "realLife": "Pehli baar jab mahine ke aakhiri dinon mein ghar ke kharche sambhalne padte hain, tab parents ka chupchap sab sehna samajh aata hai.",
+      "audienceConnect": "Reader ko lagega ki bade hone par unhe bhi apne parents ki thakaan aur tyaag ka ehsaas hua hai.",
+      "title": "Unka Bina Kahe Tyaag",
+      "hook": "Ghar ki zimmedari jab khud par aayi, tab samajh aaya unka bina kahe sab sah jaana.",
+      "poem": [
+        "Pehle lagta tha papa sakht hain,",
+        "Ab pata chala woh bas chinta thi.",
+        "Maa ne apni khwahishein chhipayin,",
+        "Taaki humari muskaan bachi rahe.",
+        "Jab ghar ke kharche khud uthaye,",
+        "Tab unki thakaan samajh aayi."
+      ],
+      "bhavarth": "Rahim kehte hain ki ped apne phal khud nahi khate aur talab apna paani khud nahi peeta. Isi tarah sajjan log apna dhan aur sansadhan doosron ke bhale ke liye hi ikattha karte hain.",
+      "caption": "Jab hum chhote the toh lagta tha ki ghar chalana kitna aasaan hai. Lekin jab khud par zimmedariyan aayin, tab samajh aaya ki humari chhoti khushiyon ke peeche unke kitne samjhote the. 🏡 Unka har kadam humari hifazat ke liye tha. 👨‍👩‍👦 Kya aapne bhi bade hokar unke is tyaag ko mehsoos kiya hai? 🕊️",
+      "hashtags": [
+        "#parivaar",
+        "#zimmedari",
+        "#matapita",
+        "#yaadein",
+        "#rishte"
+      ],
+      "scene": "kitchen_lamp",
+      "couplet": {
+        "id": "rahim-dohe#86",
+        "number": 86,
+        "lines": [
+          "तरुवर फल नहिं खात हैं, सरवर पियहिं न पान।",
+          "कहि रहीम पर काज हित, सम्पति सँचाहिं सुजान॥८६॥"
+        ],
+        "poet": "रहीम",
+        "poetRoman": "Rahim",
+        "work": "रहीम-कवितावली",
+        "workRoman": "Rahim-Kavitavali",
+        "editor": "Surendranath Tiwari (sampadak)",
+        "year": 1926,
+        "form": "दोहा",
+        "rights": "Public domain: Abdul Rahim Khan-e-Khana (1556–1627) ki rachna; 1926 edition. Sampadak ke footnotes use nahi kiye gaye.",
+        "url": "https://hi.wikisource.org/wiki/%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87",
+        "permalink": "https://hi.wikisource.org/w/index.php?title=%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87&oldid=654060",
+        "revid": 654060
+      },
+      "slides": [
+        "output/2026-10-26/2026-10-26-1/slide-1.jpg",
+        "output/2026-10-26/2026-10-26-1/slide-2.jpg",
+        "output/2026-10-26/2026-10-26-1/slide-3.jpg"
+      ],
+      "mood": "ghar",
+      "song": {
+        "id": "tu-kitni-achhi",
+        "title": "Tu Kitni Achhi Hai",
+        "film": "Raja Aur Runk",
+        "year": 1968,
+        "moods": [
+          "ghar"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-26-2",
+      "date": "2026-10-26",
+      "createdAt": "2026-10-26T13:31:03.539Z",
+      "status": "draft",
+      "category": "past",
+      "categoryName": "Past aur Memories",
+      "topic": "Ateet ke kuch aise faisle jin par aaj bhi dil mein ek pachtawa rehta hai",
+      "realLife": "Aage badhne ke baad bhi kabhi kisi late night purani chitthiyon ya photo ke beech woh ek faisla yaad aa jaata hai jo shayad alag liya ja sakta tha.",
+      "audienceConnect": "Har kisi ki zindagi mein ek aisa mod hota hai jahan se raasta badal gaya, aur aaj bhi dil poochhta hai ki agar tab doosra raasta chuna hota toh kya hota.",
+      "title": "Ateet Ke Faisle",
+      "hook": "Zindagi aage badh gayi, par woh ek faisla aaj bhi dil ke kisi kone mein thehra hua hai...",
+      "poem": [
+        "Ek purani photo ke peeche,",
+        "ek purani tareekh likhi thi.",
+        "Waqt toh aage nikal gaya,",
+        "par woh faisla wahi ruk gaya.",
+        "Aage badhne ki koshish ki,",
+        "par woh mod wahi chhoot gaya.",
+        "Aaj sab theek hai zindagi mein,",
+        "phir bhi ek sawaal poochhta hai dil,",
+        "agar tab thoda ruk gaye hote?"
+      ],
+      "bhavarth": "Agar hone ya kismat par insaan ka bas hota, toh na Shri Ram hiran ke peeche jaate aur na Sita ka haran hota. Honi ko koi nahi taal sakta.",
+      "caption": "Zindagi mein kuch faisle hum us waqt ki samajh se lete hain, par unka bojh dil par reh jaata hai. Ateet ko badla nahi ja sakta, isliye khud ko maaf karna zaroori hai 🍂📷. Kya aapke paas bhi koi aisa faisla hai jise waqt bhi mita nahi paaya? 🕊️",
+      "hashtags": [
+        "#ateetkeyaadein",
+        "#faisle",
+        "#pachtawa",
+        "#zindagikaisafar",
+        "#pageofthesoul"
+      ],
+      "scene": "old_letters",
+      "couplet": {
+        "id": "rahim-dohe#227",
+        "number": 227,
+        "lines": [
+          "राम न जाते हरिन सँग, सीय न रावन साथ।",
+          "जो रहीम भावी कतहुँ, होति आपने हाथ॥२२७॥"
+        ],
+        "poet": "रहीम",
+        "poetRoman": "Rahim",
+        "work": "रहीम-कवितावली",
+        "workRoman": "Rahim-Kavitavali",
+        "editor": "Surendranath Tiwari (sampadak)",
+        "year": 1926,
+        "form": "दोहा",
+        "rights": "Public domain: Abdul Rahim Khan-e-Khana (1556–1627) ki rachna; 1926 edition. Sampadak ke footnotes use nahi kiye gaye.",
+        "url": "https://hi.wikisource.org/wiki/%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87",
+        "permalink": "https://hi.wikisource.org/w/index.php?title=%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87&oldid=654060",
+        "revid": 654060
+      },
+      "slides": [
+        "output/2026-10-26/2026-10-26-2/slide-1.jpg",
+        "output/2026-10-26/2026-10-26-2/slide-2.jpg",
+        "output/2026-10-26/2026-10-26-2/slide-3.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "dil-dhoondta-hai",
+        "title": "Dil Dhoondta Hai",
+        "film": "Mausam",
+        "year": 1975,
+        "moods": [
+          "udaas",
+          "soch"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-26-3",
+      "date": "2026-10-26",
+      "createdAt": "2026-10-26T17:31:07.828Z",
+      "status": "draft",
+      "category": "work",
+      "categoryName": "Work, Career aur Ambition",
+      "topic": "hamesha mazboot aur samajhdar dikhne ka dabav",
+      "realLife": "office mein sabke saamne muskurate rehna aur andar se thak jana.",
+      "audienceConnect": "jab aapko lagta hai ki aapke rone par bhi kisi ko farq nahi padega.",
+      "title": "Andar Ki Thakaan",
+      "hook": "Har waqt mazboot dikhne ki zidd mein, hum khud ko hi khote jaate hain.",
+      "poem": [
+        "Raat ke nau baje hain mez par,",
+        "phone ki roshni mein aankhein thaki hain.",
+        "Sabko lagta hai main sab sambhal lunga,",
+        "par yeh bojh ab aur uthaya nahi jata.",
+        "Kisi se keh bhi nahi paate dard apna,",
+        "kyunki sabko lagta hai hum tutenge nahi."
+      ],
+      "bhavarth": "",
+      "caption": "Jab hum sabke liye dhaal ban jaate hain, toh bhool jaate hain ki hum bhi insaan hain. Har waqt mazboot rehna koi taaqat nahi, ek khamosh saza ban jaati hai. Kya aapne bhi kabhi apne aansuon ko duniya se chhupaya hai? 🌙🪞☕",
+      "hashtags": [
+        "#zindagi",
+        "#khamoshi",
+        "#thakaan",
+        "#sukoon"
+      ],
+      "scene": "office_night",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-26/2026-10-26-3/slide-1.jpg",
+        "output/2026-10-26/2026-10-26-3/slide-2.jpg"
+      ],
+      "mood": "udaas",
+      "song": {
+        "id": "tum-itna-jo",
+        "title": "Tum Itna Jo Muskura Rahe Ho",
+        "film": "Arth",
+        "year": 1982,
+        "moods": [
+          "udaas"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-27-1",
+      "date": "2026-10-27",
+      "createdAt": "2026-10-27T12:31:00.680Z",
+      "status": "published",
+      "category": "life",
+      "categoryName": "Life aur Philosophy",
+      "topic": "Umar ke saath samajh aana ki asli sukoon andar ki shanti mein hai",
+      "realLife": "Der raat kaam se laut-te waqt sadak par chalna aur yeh mehsoos karna ki duniya ki daud se zyada zaroori khud ka sukoon hai.",
+      "audienceConnect": "Reader ko mehsoos hoga ki har daud ke baad aakhir mein dil bas ek shaam ka sukoon maangta hai.",
+      "title": "Sukoon Ki Talaash",
+      "hook": "Umar badli toh samajh aaya, khushi shor mein nahi balki shaant raaton mein milti hai.",
+      "poem": [
+        "Pehle har cheez paane ki zidd thi,",
+        "ab jo paas hai, usme sabr hai.",
+        "Duniya ki daud se door nikal kar,",
+        "kisi shaam chai ka ek ghoont,",
+        "purani balkani ki thandi hawa,",
+        "aur khud se thodi si guftagu...",
+        "Kamyabi ka sach ab samajh aaya,",
+        "sukoon se badi koi daulat nahi."
+      ],
+      "bhavarth": "Jaise hiran apni hi naabhi ki khushboo ko poore jangal mein dhoondhta hai, waise hi insaan ke apne andar hi ishwar ka vaas hai, par duniya use bahar dhoondhti hai.",
+      "caption": "Umar aur tajurbe ke saath yeh baat samajh aati hai ki har daud jeetna zaroori nahi hota. Asli kaamyaabi kisi akele lamhe mein khud ke saath shaanti se baith paana hai. ☕🕊️ Kya aapne bhi yeh badlaav apne andar mehsoos kiya hai?",
+      "hashtags": [
+        "#sukoon",
+        "#zindagi",
+        "#vichaar",
+        "#hinglishpoetry",
+        "#alfaaz"
+      ],
+      "scene": "autumn_road",
+      "couplet": {
+        "id": "kabir-kk#100",
+        "number": 100,
+        "lines": [
+          "कस्तूरी कुडल बसे मृग ढूँढ़ बन माहिं।",
+          "ऐसे घट में पीव है दुनियाँ जानै नाहिं॥१००॥"
+        ],
+        "poet": "कबीर",
+        "poetRoman": "Kabir",
+        "work": "कविता-कौमुदी, भाग १",
+        "workRoman": "Kavita-Kaumudi, Bhag 1",
+        "editor": "Ramnaresh Tripathi (sampadak)",
+        "year": 1918,
+        "form": "साखी",
+        "rights": "Public domain: Kabir ki rachna (15vi sadi); sankalan 1918 mein chhapa, sampadak Ramnaresh Tripathi (d. 1962) — India mein 2023 se public domain.",
+        "url": "https://hi.wikisource.org/wiki/%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE-%E0%A4%95%E0%A5%8C%E0%A4%AE%E0%A5%81%E0%A4%A6%E0%A5%80_%E0%A5%A7%2F%E0%A5%A9_%E0%A4%95%E0%A4%AC%E0%A5%80%E0%A4%B0_%E0%A4%B8%E0%A4%BE%E0%A4%B9%E0%A4%AC",
+        "permalink": "https://hi.wikisource.org/w/index.php?title=%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE-%E0%A4%95%E0%A5%8C%E0%A4%AE%E0%A5%81%E0%A4%A6%E0%A5%80_%E0%A5%A7%2F%E0%A5%A9_%E0%A4%95%E0%A4%AC%E0%A5%80%E0%A4%B0_%E0%A4%B8%E0%A4%BE%E0%A4%B9%E0%A4%AC&oldid=637069",
+        "revid": 637069
+      },
+      "slides": [
+        "output/2026-10-27/2026-10-27-1/slide-1.jpg",
+        "output/2026-10-27/2026-10-27-1/slide-2.jpg",
+        "output/2026-10-27/2026-10-27-1/slide-3.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "zindagi-ke-safar",
+        "title": "Zindagi Ke Safar Mein Guzar Jaate Hain",
+        "film": "Aap Ki Kasam",
+        "year": 1974,
+        "moods": [
+          "soch",
+          "udaas"
+        ]
+      },
+      "containerId": "18136342423677099",
+      "format": "carousel",
+      "mediaId": "18342164257257859",
+      "permalink": "https://www.instagram.com/p/DfCfgGjESoL/",
+      "publishedAt": "2026-10-28T13:30:00+0000",
+      "slot": "2026-10-28@19:00"
+    },
+    {
+      "id": "2026-10-27-2",
+      "date": "2026-10-27",
+      "createdAt": "2026-10-27T13:30:52.641Z",
+      "status": "published",
+      "category": "love",
+      "categoryName": "Love aur Relationships",
+      "topic": "Unspoken feelings aur adhuri baatein jo hothon par hi ruk jaati hain",
+      "realLife": "Jab kisi apne ke samne hone par bhi dil ki asli baat zubaan tak nahi aa paati aur waqt nikal jata hai.",
+      "audienceConnect": "Aapko bhi yaad aayega woh shakhs jise aap bohot kuch kehna chahte the par keh nahi paaye.",
+      "title": "Adhuri Baatein",
+      "hook": "Sote jaagte bas unhi ki yaad ka silsila rehta hai...",
+      "poem": [
+        "Chai ki pyaali abhi tak waisi hai,",
+        "Bas saamne baithne wala ab nahi hai.",
+        "Kuch lafz the jo kehna chahte the,",
+        "Waqt badla toh woh bhi kahin kho gaye.",
+        "Ab toh bas yaadon ka pehra rehta hai."
+      ],
+      "bhavarth": "Sote waqt sapne mein unse milan hota hai aur jaagne par man mein bas wahi rehte hain; unki yaad mein aankhein bhari rehti hain aur woh kabhi door nahi hote.",
+      "caption": "Jab koi apna door chala jaata hai, toh unki har nishani ghar mein waise hi reh jaati hai. Sote jaagte bas unhi ka khayal dil ko ghere rehta hai. Kya aapke saath bhi kabhi aisa hua hai ki kisi ki yaad ne aapko raat bhar sone na diya ho? ☕️ 🌙",
+      "hashtags": [
+        "#adhuribaatein",
+        "#yaadein",
+        "#khamoshi",
+        "#safar"
+      ],
+      "scene": "two_cups",
+      "couplet": {
+        "id": "kabir-kk#39",
+        "number": 39,
+        "lines": [
+          "सोओं तो सुपने मिलै जागौं तो मन माहिँ।",
+          "लोचन राता सुधि हरी बिछुरत कबहूँ नाहिँ॥३९॥"
+        ],
+        "poet": "कबीर",
+        "poetRoman": "Kabir",
+        "work": "कविता-कौमुदी, भाग १",
+        "workRoman": "Kavita-Kaumudi, Bhag 1",
+        "editor": "Ramnaresh Tripathi (sampadak)",
+        "year": 1918,
+        "form": "साखी",
+        "rights": "Public domain: Kabir ki rachna (15vi sadi); sankalan 1918 mein chhapa, sampadak Ramnaresh Tripathi (d. 1962) — India mein 2023 se public domain.",
+        "url": "https://hi.wikisource.org/wiki/%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE-%E0%A4%95%E0%A5%8C%E0%A4%AE%E0%A5%81%E0%A4%A6%E0%A5%80_%E0%A5%A7%2F%E0%A5%A9_%E0%A4%95%E0%A4%AC%E0%A5%80%E0%A4%B0_%E0%A4%B8%E0%A4%BE%E0%A4%B9%E0%A4%AC",
+        "permalink": "https://hi.wikisource.org/w/index.php?title=%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE-%E0%A4%95%E0%A5%8C%E0%A4%AE%E0%A5%81%E0%A4%A6%E0%A5%80_%E0%A5%A7%2F%E0%A5%A9_%E0%A4%95%E0%A4%AC%E0%A5%80%E0%A4%B0_%E0%A4%B8%E0%A4%BE%E0%A4%B9%E0%A4%AC&oldid=637069",
+        "revid": 637069
+      },
+      "slides": [
+        "output/2026-10-27/2026-10-27-2/slide-1.jpg",
+        "output/2026-10-27/2026-10-27-2/slide-2.jpg",
+        "output/2026-10-27/2026-10-27-2/slide-3.jpg"
+      ],
+      "mood": "udaas",
+      "song": {
+        "id": "agar-tum-saath-ho",
+        "title": "Agar Tum Saath Ho",
+        "film": "Tamasha",
+        "year": 2015,
+        "moods": [
+          "udaas",
+          "pyaar"
+        ]
+      },
+      "containerId": "18136651321677099",
+      "format": "carousel",
+      "mediaId": "17914926039521265",
+      "permalink": "https://www.instagram.com/p/DfFETMlEdff/",
+      "publishedAt": "2026-10-29T13:30:00+0000",
+      "slot": "2026-10-29@19:00"
+    },
+    {
+      "id": "2026-10-27-3",
+      "date": "2026-10-27",
+      "createdAt": "2026-10-27T17:30:43.434Z",
+      "status": "draft",
+      "category": "healing",
+      "categoryName": "Self-Respect aur Healing",
+      "topic": "Sabko khush karne ki koshish mein khud ko bhool jaana aur boundaries samajhna",
+      "realLife": "Har kisi ke haan mein haan milaane ki aadat aur aakhir mein akele aur thake hue mehsoos karne ki sacchai.",
+      "audienceConnect": "Reader ko yaad aayega kaise usne dusron ke liye apna sukoon aur pasand peeche chhod diya tha.",
+      "title": "Khud Ki Talaash",
+      "hook": "Sabko khush karte-karte, hum kahin khud se hi door ho gaye hain.",
+      "poem": [
+        "Har kisi ki haan mein haan milayi,",
+        "Apni har pasand peeche chhupayi.",
+        "Dusron ke liye waqt nikaala,",
+        "Par khud ke liye fursat na aayi.",
+        "Aaj aayine mein khud ko jo dekha,",
+        "Laga sabko sambhalte hum thak gaye.",
+        "Ab thoda khud ka bhi hona hai,",
+        "Yeh faisla ab humein hi lena hai."
+      ],
+      "bhavarth": "",
+      "caption": "Har insaan ko khush rakhna humari zimmedari nahi hai. Jab hum sabko sambhalne ki koshish karte hain, toh apna sukoon kho dete hain. Hadd tay karna koi matlabi pan nahi hai. 🕊️🌿 Kya aapne bhi kabhi sabko khush rakhne ke chakkar mein khud ko bhula diya tha? 💭",
+      "hashtags": [
+        "#KhudSePehle",
+        "#Sukoon",
+        "#Apnapan",
+        "#Zindagi",
+        "#HinglishPoetry"
+      ],
+      "scene": "new_leaves",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-27/2026-10-27-3/slide-1.jpg",
+        "output/2026-10-27/2026-10-27-3/slide-2.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "kabira",
+        "title": "Kabira",
+        "film": "Yeh Jawaani Hai Deewani",
+        "year": 2013,
+        "moods": [
+          "soch",
+          "pyaar"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-28-1",
+      "date": "2026-10-28",
+      "createdAt": "2026-10-28T12:31:08.543Z",
+      "status": "draft",
+      "category": "friendship",
+      "categoryName": "Friendship aur Loneliness",
+      "topic": "Bheed ke beech mein bhi khud ko akela paana",
+      "realLife": "Doston ya logon ke saath baithe hone par bhi andar ek aisi khamoshi rehna jise koi mehsoos nahi kar paata.",
+      "audienceConnect": "Yeh line har us insaan ko chhuegi jo sabke beech muskuraakar bhi andar se akela rehta hai.",
+      "title": "Bheed Mein Khamoshi",
+      "hook": "Sab aas-paas the, sab hans rahe the, bas ek main tha jo wahan hokar bhi nahi tha.",
+      "poem": [
+        "Sabhi baithe the ek hi mez par,",
+        "Baatein thi, chai ki chuskiyan thi.",
+        "Sabke paas kehne ko bahut kuch tha,",
+        "Bas meri hi awaaz kahin gum thi.",
+        "Unki hansi mein shamil toh tha main,",
+        "Par andar ek ajeeb sa sannaata tha.",
+        "Kitna ajeeb lagta hai yeh daur,",
+        "Jahan bheed mein bhi dil tanha tha."
+      ],
+      "bhavarth": "",
+      "caption": "Kabhi kabhi hum hazaron logon ke beech hote hain ☕, par andar se lagta hai ki koi humein sach mein sun nahi raha. Yeh akelapan kisi se shikayat ka nahi, bas ek khamoshi hai jo andar basi rehti hai 🌙. Kya aapne bhi kabhi bheed ke beech khud ko akela mehsoos kiya hai?",
+      "hashtags": [
+        "#akelapan",
+        "#bheedmeinkhamoshi",
+        "#hinglishpoetry",
+        "#jazbaat",
+        "#pageofthesoul"
+      ],
+      "scene": "two_cups",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-28/2026-10-28-1/slide-1.jpg",
+        "output/2026-10-28/2026-10-28-1/slide-2.jpg"
+      ],
+      "mood": "udaas",
+      "song": {
+        "id": "tanhayee",
+        "title": "Tanhayee",
+        "film": "Dil Chahta Hai",
+        "year": 2001,
+        "moods": [
+          "udaas",
+          "dosti"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-28-2",
+      "date": "2026-10-28",
+      "createdAt": "2026-10-28T13:31:24.663Z",
+      "status": "published",
+      "category": "family",
+      "categoryName": "Family aur Parents",
+      "topic": "Gharwalon ko chinta se bachane ke liye apni har pareshani chhupana",
+      "realLife": "Mummy ka phone aane par har baar 'main bilkul theek hoon' keh dena, chahe din kitna bhi mushkil raha ho.",
+      "audienceConnect": "Har woh insaan isse judega jo gharwalon ko pareshan kiye bina apni zimmedariyan utha raha hai.",
+      "title": "Sab Theek Hai",
+      "hook": "Mummy ke ek sawaal par har baar muskurakar 'main theek hoon' keh dena...",
+      "poem": [
+        "Mummy ka phone aata hai,",
+        "poochhti hain khana khaya kya.",
+        "Din bhar ki thakan chhupa kar,",
+        "keh deta hoon sab theek hai.",
+        "Papa ke saamne kamzori",
+        "kabhi dikhai nahi jaati,",
+        "unki ummeedon ka bojh",
+        "muskurakar uthana padta hai."
+      ],
+      "bhavarth": "",
+      "caption": "Bade hone ke baad hum aksar gharwalon se apni takleefein chhupane lagte hain. Hum nahi chahte ki hamari wajah se unki neend kharab ho. 🏡🤍 Lekin kya unhe sach mein hamari khamoshi ke peeche ka dard nahi dikhta? 💭",
+      "hashtags": [
+        "#GharKiBaat",
+        "#MaaBaap",
+        "#Zimmedari",
+        "#DilKiBaat",
+        "#Zindagi"
+      ],
+      "scene": "doorway_light",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-28/2026-10-28-2/slide-1.jpg",
+        "output/2026-10-28/2026-10-28-2/slide-2.jpg"
+      ],
+      "mood": "ghar",
+      "song": {
+        "id": "maa",
+        "title": "Maa",
+        "film": "Taare Zameen Par",
+        "year": 2007,
+        "moods": [
+          "ghar"
+        ]
+      },
+      "containerId": "18136921168677099",
+      "format": "carousel",
+      "mediaId": "17928128217440616",
+      "permalink": "https://www.instagram.com/p/DfHpBjelQpN/",
+      "publishedAt": "2026-10-30T13:30:00+0000",
+      "slot": "2026-10-30@19:00"
+    },
+    {
+      "id": "2026-10-28-3",
+      "date": "2026-10-28",
+      "createdAt": "2026-10-28T17:31:53.616Z",
+      "status": "draft",
+      "category": "past",
+      "categoryName": "Past aur Memories",
+      "topic": "Ateet ki yaadon ko muskura kar swikaar karna aur aaj mein aage badhna",
+      "realLife": "Purani yaadon ko yaad karke ab dard nahi hota, balki wahan se mili seekh ka ehsaas hota hai.",
+      "audienceConnect": "Har koi waqt ke saath samajhta hai ki past ko chhod kar hi present mein sukoon milta hai.",
+      "title": "Beeta Waqt Aur Aaj",
+      "hook": "Kuch yaadein ab takleef nahi detin, bas muskura kar aage badhne ka raasta dikhati hain.",
+      "poem": [
+        "Khidki par rakhi chai thandi ho gayi,",
+        "Dhalati shaam ne purana panna khol diya.",
+        "Pehle in yaadon se dil bhar aata tha,",
+        "Aaj sirf ek halki muskaan aati hai.",
+        "Waqt ne sikhaya ki har ek mod,",
+        "Manzil tak pahunchne ke liye nahi hota.",
+        "Kuch safar bas seekh dene aate hain.",
+        "Ateet se ab koi gila nahi mujhe,",
+        "Maine aaj ke sukoon ko chun liya hai."
+      ],
+      "bhavarth": "",
+      "caption": "Ateet ki yaadon ko pakad kar rakhne se bas bojh badhta hai ☕. Jab hum purani baaton ko ek achhi seekh maan kar aage badhte hain, tabhi sachha sukoon milta hai 🕊️. Zindagi ka har panna aage badhne ke liye hi palata hai 🌅. Kya aapne bhi apne ateet ke sath sukoon pa liya hai?",
+      "hashtags": [
+        "#yaadein",
+        "#zindagi",
+        "#sukoon",
+        "#ateet",
+        "#alfaaz"
+      ],
+      "scene": "dusk_window",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-28/2026-10-28-3/slide-1.jpg",
+        "output/2026-10-28/2026-10-28-3/slide-2.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "aanewala-pal",
+        "title": "Aanewala Pal Janewala Hai",
+        "film": "Gol Maal",
+        "year": 1979,
+        "moods": [
+          "soch",
+          "pyaar"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-29-1",
+      "date": "2026-10-29",
+      "createdAt": "2026-10-29T12:31:40.393Z",
+      "status": "draft",
+      "category": "work",
+      "categoryName": "Work, Career aur Ambition",
+      "topic": "Office mein din-raat mehnat karne ke baad bhi mehnat ki qadar na hona",
+      "realLife": "Raat tak office mein baith kar kaam karna aur saari mehnat ke baad bhi credit na milna.",
+      "audienceConnect": "Har woh insaan jo roz apna sab kuch deta hai par ignore hota hai, isse jude ga.",
+      "title": "Mehnat Aur Khamoshi",
+      "hook": "Raat ke nau baje tak office mein baithne wala jaanta hai ki mehnat ka credit hamesha kaam ko nahi milta.",
+      "poem": [
+        "Raat ke nau baje hain",
+        "Office ki lights dhalne lagi hain",
+        "Desk par rakhi chai thandi ho gayi",
+        "Har file mein poori jaan laga di",
+        "Par jab tareef ki baari aayi",
+        "Toh naam kisi aur ka guunja",
+        "Humne muskura kar laptop band kiya",
+        "Ghar laut-te waqt bas itna socha",
+        "Kya humari mehnat ki koi qadar nahi?"
+      ],
+      "bhavarth": "",
+      "caption": "Office ki late shaam aur thandi chai aksar un logon ki mehnat ki gawah hoti hai jinhe koi credit nahi milta. 🏢 Sahi waqt par bolna aur apni mehnat ka haq maangna bhi utna hi zaroori hai jitna kaam karna. ☕ Kya aapne bhi kabhi mehnat karke khamoshi se ghar lautna chuna hai? 💭",
+      "hashtags": [
+        "#officezindagi",
+        "#mehnat",
+        "#corporatelife",
+        "#hinglishthoughts",
+        "#zindagikisachai"
+      ],
+      "scene": "office_night",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-29/2026-10-29-1/slide-1.jpg",
+        "output/2026-10-29/2026-10-29-1/slide-2.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "zindagi-kaisi-hai",
+        "title": "Zindagi Kaisi Hai Paheli",
+        "film": "Anand",
+        "year": 1971,
+        "moods": [
+          "soch"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-29-2",
+      "date": "2026-10-29",
+      "createdAt": "2026-10-29T13:30:58.589Z",
+      "status": "draft",
+      "category": "life",
+      "categoryName": "Life aur Philosophy",
+      "topic": "Har situation ko control karne ki zidd chhod kar shanti se jeena",
+      "realLife": "Pehle har choti baat par pareshan hona aur sab badalna chahna, par ab samajh aaya ki kuch cheezein waqt par chhod dena hi sahi hai.",
+      "audienceConnect": "Reader ko mehsoos hoga ki har ladai jeetna zaroori nahi hota, apna sukoon zaroori hai.",
+      "title": "Jeetna Aur Chhod Dena",
+      "hook": "Pehle har baat par behas zaroori lagti thi, ab samajh aaya ki sukoon se badhkar kuch nahi hota.",
+      "poem": [
+        "Pehle har baat par behas hoti thi,",
+        "har sach ko saabit karna tha.",
+        "Ab chup rehna seekh liya hai,",
+        "kyunki har jagah jeetna",
+        "zaroori nahi hota.",
+        "Kuch raaste waqt par chhod diye,",
+        "tab jaakar thoda sukoon mila."
+      ],
+      "bhavarth": "",
+      "caption": "Umar ke saath insaan ye samajh jaata hai ki har sawal ka jawab dena zaroori nahi hota 🍂. Kuch baatein aur halat waqt ke bharose chhod dene mein hi samajhdari hai 🕊️. Kya aapne bhi har baat par ladna chhod kar apna sukoon chuna hai?",
+      "hashtags": [
+        "#zindagikeanubhav",
+        "#sukoon",
+        "#maturity",
+        "#alfaaz",
+        "#soch"
+      ],
+      "scene": "autumn_road",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-29/2026-10-29-2/slide-1.jpg",
+        "output/2026-10-29/2026-10-29-2/slide-2.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "musafir-hoon",
+        "title": "Musafir Hoon Yaaron",
+        "film": "Parichay",
+        "year": 1972,
+        "moods": [
+          "soch",
+          "dosti"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-29-3",
+      "date": "2026-10-29",
+      "createdAt": "2026-10-29T17:31:00.368Z",
+      "status": "draft",
+      "category": "love",
+      "categoryName": "Love aur Relationships",
+      "topic": "Rishte mein bina kisi jhagde ke aayi quiet distance aur khamoshi",
+      "realLife": "Jab do logon ke beech koi ladai nahi hoti, par waqt ke saath baatein kam hoti chali jaati hain aur rishta chupchap doosri taraf nikal jaata hai.",
+      "audienceConnect": "Har us insaan ke liye jisne kisi apne ko dhiere-dhiere door hote dekha hai.",
+      "title": "Khamosh Dooriyaan",
+      "hook": "Bina kisi jhagde ke bhi kuch rishte kitne khamoshi se doosri taraf nikal jaate hain.",
+      "poem": [
+        "Koi shikayat nahi thi humein,",
+        "na hi koi bada jhagda hua.",
+        "Bas roz ki baatein chhote jawabon",
+        "mein badalti chali gayi.",
+        "Phone par naam wahi raha,",
+        "par sunne wala badal gaya.",
+        "Kabhi-kabhi dooriyaan shor se nahi,",
+        "dheere se khamoshi se aati hain."
+      ],
+      "bhavarth": "Rahim kehte hain ki pyaar ke raste par chalna aag par chalne jitna kathin hai. Prem ke is safar ko har koi aakhir tak nahi nibha paata.",
+      "caption": "Har rishta kisi jhagde se nahi toot-ta 🌙. Kuch rishte bas shaant ho jaate hain, jahan baatein kam aur khamoshi gehri ho jaati hai ☕. Na koi galat hota hai, na sahi, bas raste badal jaate hain. Kya aapne bhi kabhi kisi rishte ko aise khamosh hote dekha hai? 🕊️",
+      "hashtags": [
+        "#rishtechínhkhamoshi",
+        "#pyaar",
+        "#khamoshi",
+        "#zindagi",
+        "#alfaaz"
+      ],
+      "scene": "two_cups",
+      "couplet": {
+        "id": "rahim-dohe#48",
+        "number": 48,
+        "lines": [
+          "चढ़िबो मैन-तुरंग पर, चलिबो पावक माँहिं।",
+          "प्रेम-पंथ ऐसो कठिन, सब कोउ निबहत नाहि॥४८॥"
+        ],
+        "poet": "रहीम",
+        "poetRoman": "Rahim",
+        "work": "रहीम-कवितावली",
+        "workRoman": "Rahim-Kavitavali",
+        "editor": "Surendranath Tiwari (sampadak)",
+        "year": 1926,
+        "form": "दोहा",
+        "rights": "Public domain: Abdul Rahim Khan-e-Khana (1556–1627) ki rachna; 1926 edition. Sampadak ke footnotes use nahi kiye gaye.",
+        "url": "https://hi.wikisource.org/wiki/%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87",
+        "permalink": "https://hi.wikisource.org/w/index.php?title=%E0%A4%B0%E0%A4%B9%E0%A5%80%E0%A4%AE-%E0%A4%95%E0%A4%B5%E0%A4%BF%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%B2%E0%A5%80%2F%E0%A4%A6%E0%A5%8B%E0%A4%B9%E0%A5%87&oldid=654060",
+        "revid": 654060
+      },
+      "slides": [
+        "output/2026-10-29/2026-10-29-3/slide-1.jpg",
+        "output/2026-10-29/2026-10-29-3/slide-2.jpg",
+        "output/2026-10-29/2026-10-29-3/slide-3.jpg"
+      ],
+      "mood": "udaas",
+      "song": {
+        "id": "phir-le-aaya-dil",
+        "title": "Phir Le Aaya Dil",
+        "film": "Barfi!",
+        "year": 2012,
+        "moods": [
+          "udaas",
+          "pyaar"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-30-1",
+      "date": "2026-10-30",
+      "createdAt": "2026-10-30T12:31:59.292Z",
+      "status": "draft",
+      "category": "healing",
+      "categoryName": "Self-Respect aur Healing",
+      "topic": "Apni purani galtiyon ko maaf karke swayam ko apnana",
+      "realLife": "Bite hue waqt mein ki gayi galtiyon par baar baar pachtana aur khud ko saza dena chhod kar aage badhna.",
+      "audienceConnect": "Har koi zindagi ke kisi mod par galat faisle leta hai, lekin khud ko maaf karna hi healing hai.",
+      "title": "Khud Ko Maaf Karo",
+      "hook": "Purani galtiyon ki saza khud ko kab tak dete rahoge?",
+      "poem": [
+        "Waqt ke us mod par",
+        "faisla shayad galat tha,",
+        "tab ki samajh ke mutabik",
+        "tune wahi theek samjha tha.",
+        "Ab roz pachtane se",
+        "beeta kal nahi badlega,",
+        "aaj apna haath tham le,",
+        "bojh halka ho jayega."
+      ],
+      "bhavarth": "",
+      "caption": "Hum doosron ko toh aasani se maaf kar dete hain, par khud ki purani galtiyon ko pakad kar baithe rehte hain. Zindagi aage badhne ka naam hai, pachtawe mein jeene ka nahi. 🌅🕊️ Kya aapne aaj khud ko un purani khataon ke liye maaf kiya?",
+      "hashtags": [
+        "#khudsekahani",
+        "#pachtawa",
+        "#aagebadho",
+        "#sukoon",
+        "#apnapan"
+      ],
+      "scene": "sunrise_path",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-30/2026-10-30-1/slide-1.jpg",
+        "output/2026-10-30/2026-10-30-1/slide-2.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "ae-zindagi",
+        "title": "Ae Zindagi Gale Laga Le",
+        "film": "Sadma",
+        "year": 1983,
+        "moods": [
+          "soch",
+          "josh"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-30-2",
+      "date": "2026-10-30",
+      "createdAt": "2026-10-30T13:31:16.717Z",
+      "status": "draft",
+      "category": "friendship",
+      "categoryName": "Friendship aur Loneliness",
+      "topic": "Purani dosti ka dheere-dheere anjaane faasle banana",
+      "realLife": "Jab school ya college ke yaar ab bas dooriyon mein simat jaate hain",
+      "audienceConnect": "Har koi samajhta hai us dost ko khona jiske bina ek din nahi chalta tha",
+      "title": "Woh Purane Yaar",
+      "hook": "Purani yaadon mein bas tasveerein reh gayi hain, baatein nahi.",
+      "poem": [
+        "Ab woh lambi raaton ki baatein kahan,",
+        "Chai ki tapri par ab akelapan lage,",
+        "Phone mein bas bacha hai ek naam,",
+        "Nahi aata ab koi naya paigham,",
+        "Raste alag hue, faasle badh gaye,",
+        "Jaane kab apne hi ajnabee ho gaye."
+      ],
+      "bhavarth": "",
+      "caption": "Waqt ke saath raste badal jaate hain, aur jo dost kabhi roz mila karte the, woh bas phone ki gallery tak simat jaate hain. Yaadein toh aaj bhi wahi hain, lekin ab koi purani aawaaz sunne ko nahi milti. 🍂☕ Kya aapke paas bhi koi aisa dost hai, jisse baat kiye bina zamana beet gaya?",
+      "hashtags": [
+        "#dosti",
+        "#yaadein",
+        "#puranedost",
+        "#yaariyaan",
+        "#dilkibaat"
+      ],
+      "scene": "two_cups",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-30/2026-10-30-2/slide-1.jpg",
+        "output/2026-10-30/2026-10-30-2/slide-2.jpg"
+      ],
+      "mood": "udaas",
+      "song": {
+        "id": "kahin-door",
+        "title": "Kahin Door Jab Din Dhal Jaaye",
+        "film": "Anand",
+        "year": 1971,
+        "moods": [
+          "udaas",
+          "soch"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-30-3",
+      "date": "2026-10-30",
+      "createdAt": "2026-10-30T17:30:46.170Z",
+      "status": "published",
+      "category": "family",
+      "categoryName": "Family aur Parents",
+      "topic": "Gharwalon ke saamne apni uljhan chhupa kar sab theek dikhane ki majboori.",
+      "realLife": "Ghar par baat karte waqt apni pareshaniyan chhupa kar sirf muskura dena aur bolna ki sab badhiya hai.",
+      "audienceConnect": "Har woh insaan isse judega jo apno ko chinta se bachane ke liye apni baatein dil mein hi rakh leta hai.",
+      "title": "Sab Theek Hai",
+      "hook": "Gharwalon ke saamne haan bolne ke peeche kitne sawal chhupe hote hain, yeh koi nahi jaanta.",
+      "poem": [
+        "Phone par jab ammi poochhti hain,",
+        "khaana waqt par khaya na?",
+        "toh main muskura kar bol deta hoon,",
+        "haan bilkul, sab theek hai.",
+        "dil mein hazaron uljhanein hain,",
+        "par unki fikr se badi nahi,",
+        "kuch khamoshiyan hi achhi hain,",
+        "jo rishton ko tootne nahi deti."
+      ],
+      "bhavarth": "",
+      "caption": "Kabhi kabhi apno ke samne sach bolne se zyada zaroori unki muskaan ko bachana hota hai. Hum apni pareshaniyan chhipa kar bas yeh jatate hain ki sab theek hai, taaki woh chain ki neend so sakein. 🏡🌙 Kya aapne bhi kabhi ghar par sab theek hone ka jhooth bola hai? 🤍",
+      "hashtags": [
+        "#apne",
+        "#rishte",
+        "#ghar",
+        "#yaadein",
+        "#khamoshiyan"
+      ],
+      "scene": "doorway_light",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-30/2026-10-30-3/slide-1.jpg",
+        "output/2026-10-30/2026-10-30-3/slide-2.jpg"
+      ],
+      "mood": "ghar",
+      "song": {
+        "id": "luka-chuppi",
+        "title": "Luka Chuppi",
+        "film": "Rang De Basanti",
+        "year": 2006,
+        "moods": [
+          "ghar",
+          "udaas"
+        ]
+      },
+      "containerId": "18137213839677099",
+      "format": "carousel",
+      "mediaId": "17910970602348307",
+      "permalink": "https://www.instagram.com/p/DfKN0zgFlES/",
+      "publishedAt": "2026-10-31T13:30:00+0000",
+      "slot": "2026-10-31@19:00"
+    },
+    {
+      "id": "2026-10-31-1",
+      "date": "2026-10-31",
+      "createdAt": "2026-10-31T12:32:32.364Z",
+      "status": "draft",
+      "category": "past",
+      "categoryName": "Past aur Memories",
+      "topic": "Bachpan ke befikr din aur waqt ke saath badalti hui zindagi ki zimmedariyan",
+      "realLife": "Purani albam dekhte hue yeh mehsoos hona ki pehle chhoti baaton mein bhi kitni khushi milti thi, jo ab bhaagdawd mein kahin kho gayi hai.",
+      "audienceConnect": "Har koi kabhi na kabhi apne masoom ateet ko aaj ki uljhanon mein dhoondhta hai.",
+      "title": "Woh Befikr Din",
+      "hook": "Kabhi sochta hoon, hum kab itne bade ho gaye ki muskurane ke liye bhi wajah dhoondhni padti hai.",
+      "poem": [
+        "Purani photo mein dekha khud ko,",
+        "Ek baccha jo befikr hansta tha.",
+        "Na kal ki koi chinta thi tab,",
+        "Na kagaz ke tukdon ka hisaab.",
+        "Shaam hote hi doston ke saath,",
+        "Har chhoti baat par muskurana.",
+        "Ab shaam bhi dhal jaati hai,",
+        "Kaam ke kagazon ke beech.",
+        "Kaash laut aayein woh din,",
+        "Jahan jeena kitna aasan tha."
+      ],
+      "bhavarth": "",
+      "caption": "Waqt ke saath hum bade toh ho gaye, par dil ka ek kona aaj bhi un befikr dinon mein hi atka hai. 🍂 Pehle har chhoti baat par khushi milti thi, ab muskurane ke liye wajah dhoondhni padti hai. 📷 Kya aapko bhi kabhi apne bachpan ke woh din yaad aate hain?",
+      "hashtags": [
+        "#bachpankiyaadein",
+        "#puranedin",
+        "#yaadein",
+        "#zindagikisachai",
+        "#yaadonkasafar"
+      ],
+      "scene": "old_letters",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-31/2026-10-31-1/slide-1.jpg",
+        "output/2026-10-31/2026-10-31-1/slide-2.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "behti-hawa-sa",
+        "title": "Behti Hawa Sa Tha Woh",
+        "film": "3 Idiots",
+        "year": 2009,
+        "moods": [
+          "dosti",
+          "soch"
+        ]
+      }
+    },
+    {
+      "id": "2026-10-31-2",
+      "date": "2026-10-31",
+      "createdAt": "2026-10-31T13:33:22.112Z",
+      "status": "draft",
+      "category": "work",
+      "categoryName": "Work, Career aur Ambition",
+      "topic": "Financial responsibilities aur apne sapne",
+      "realLife": "Ghar ki zimmedariyon ke bojh tale dab kar apne bachpan ke sapne peeche chhod dena.",
+      "audienceConnect": "Jo log ghar chalaane ke chakkar mein apne dil ki khwahishein bhool gaye hain.",
+      "title": "Sapne aur Zimmedari",
+      "hook": "Zimmedariyon ke bojh tale dab gaye woh sapne, jo kabhi khuli aankhon se dekhe the.",
+      "poem": [
+        "Kagaz par hisaab likhte hain,",
+        "Apne armaan mitate hain.",
+        "Ghar ke kharch aur karz ke beech,",
+        "Kahin woh bachpan kho gaya hai.",
+        "Ab toh bas subah hoti hai,",
+        "Raat ko thakaan utarti hai.",
+        "Woh purana sheher kahin chhoot gaya,",
+        "Jahan udne ke liye pankh kaafi the."
+      ],
+      "bhavarth": "",
+      "caption": "Zimmedariyan aksar humein waqt se pehle bada kar deti hain, aur sapne kahin peeche chhoot jaate hain. 🏡 Jab ghar ke hisaab badhne lagte hain, toh khwahishein chupchap ek kone mein so jaati hain. 🍂 Kya aapko bhi yaad hai aapka woh aakhri sapna jo zimmedariyon mein chhoot gaya?",
+      "hashtags": [
+        "#zindagi",
+        "#zimmedariyan",
+        "#sapne",
+        "#dilkibaat",
+        "#yaadein"
+      ],
+      "scene": "office_night",
+      "couplet": null,
+      "slides": [
+        "output/2026-10-31/2026-10-31-2/slide-1.jpg",
+        "output/2026-10-31/2026-10-31-2/slide-2.jpg"
+      ],
+      "mood": "soch",
+      "song": {
+        "id": "phir-se-ud-chala",
+        "title": "Phir Se Ud Chala",
+        "film": "Rockstar",
+        "year": 2011,
+        "moods": [
+          "josh",
+          "soch"
+        ]
+      }
+    }
+  ],
+  "slots": {
+    "2026-10-24@18:15": {
+      "status": "published",
+      "post": "2026-10-23-4",
+      "permalink": "https://www.instagram.com/p/De4JZE4CUMt/",
+      "publishedAt": "2026-10-24T12:36:07+0000",
+      "note": "published 18:06 IST by the Mac catch-up run (slot was 18:00 then)",
+      "updatedAt": "2026-10-24T12:49:25.861Z"
+    },
+    "2026-10-24@23:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-24T17:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-24T17:30:12.326Z",
+      "post": "2026-10-24-3",
+      "permalink": "https://www.instagram.com/p/De4ondeGpK2/",
+      "publishedAt": "2026-10-24T17:30:00+0000",
+      "lastError": ""
+    },
+    "2026-10-24@18:00": {
+      "status": "missed",
+      "scheduledFor": "2026-10-24T12:30:00.000Z",
+      "updatedAt": "2026-10-24T17:32:59.180Z"
+    },
+    "2026-10-24@19:00": {
+      "status": "missed",
+      "scheduledFor": "2026-10-24T13:30:00.000Z",
+      "updatedAt": "2026-10-24T17:32:59.185Z"
+    },
+    "2026-10-25@18:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-25T12:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-25T12:30:06.359Z",
+      "post": "2026-10-24-6",
+      "format": "reel",
+      "permalink": "https://www.instagram.com/reel/De6rZsIn-jf/",
+      "publishedAt": "2026-10-25T12:30:01+0000",
+      "lastError": ""
+    },
+    "2026-10-25@19:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-25T13:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-25T13:30:16.551Z",
+      "post": "2026-10-24-9",
+      "format": "carousel",
+      "permalink": "https://www.instagram.com/p/De6xFPHG6Xi/",
+      "publishedAt": "2026-10-25T13:30:00+0000",
+      "lastError": ""
+    },
+    "2026-10-25@23:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-25T17:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-25T17:30:05.700Z",
+      "post": "2026-10-24-7",
+      "format": "reel",
+      "permalink": "https://www.instagram.com/reel/De7Mp0kgTCn/",
+      "publishedAt": "2026-10-25T17:30:00+0000",
+      "lastError": ""
+    },
+    "2026-10-26@18:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-26T12:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-26T12:30:07.450Z",
+      "post": "2026-10-24-8",
+      "format": "reel",
+      "permalink": "https://www.instagram.com/reel/De9SEy4jhVQ/",
+      "publishedAt": "2026-10-26T12:30:01+0000",
+      "lastError": ""
+    },
+    "2026-10-26@19:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-26T13:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-26T13:30:13.819Z",
+      "post": "2026-10-24-11",
+      "format": "carousel",
+      "permalink": "https://www.instagram.com/p/De9V3XDoKef/",
+      "publishedAt": "2026-10-26T13:30:00+0000",
+      "lastError": ""
+    },
+    "2026-10-26@23:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-26T17:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-26T17:30:06.043Z",
+      "post": "2026-10-24-10",
+      "format": "reel",
+      "permalink": "https://www.instagram.com/reel/De9yazIEVfj/",
+      "publishedAt": "2026-10-26T17:30:01+0000",
+      "lastError": ""
+    },
+    "2026-10-27@18:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-27T12:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-27T12:30:06.692Z",
+      "post": "2026-10-24-12",
+      "format": "reel",
+      "permalink": "https://www.instagram.com/reel/De_04-Wic8V/",
+      "publishedAt": "2026-10-27T12:30:01+0000",
+      "lastError": ""
+    },
+    "2026-10-27@19:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-27T13:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-27T13:30:18.681Z",
+      "post": "2026-10-24-14",
+      "format": "carousel",
+      "permalink": "https://www.instagram.com/p/De_71aUG-Qa/",
+      "publishedAt": "2026-10-27T13:30:00+0000",
+      "lastError": ""
+    },
+    "2026-10-27@23:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-27T17:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-27T17:30:06.106Z",
+      "post": "2026-10-24-13",
+      "format": "reel",
+      "permalink": "https://www.instagram.com/reel/DfAYPrrCXTy/",
+      "publishedAt": "2026-10-27T17:30:00+0000",
+      "lastError": ""
+    },
+    "2026-10-28@18:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-28T12:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-28T12:30:07.604Z",
+      "post": "2026-10-24-15",
+      "format": "reel",
+      "permalink": "https://www.instagram.com/reel/DfCZs38lQnq/",
+      "publishedAt": "2026-10-28T12:30:01+0000",
+      "lastError": ""
+    },
+    "2026-10-28@19:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-28T13:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-28T13:30:16.318Z",
+      "post": "2026-10-27-1",
+      "format": "carousel",
+      "permalink": "https://www.instagram.com/p/DfCfgGjESoL/",
+      "publishedAt": "2026-10-28T13:30:00+0000",
+      "lastError": ""
+    },
+    "2026-10-28@23:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-28T17:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-28T17:30:06.642Z",
+      "post": "2026-10-24-16",
+      "format": "reel",
+      "permalink": "https://www.instagram.com/reel/DfC8BNKjhXt/",
+      "publishedAt": "2026-10-28T17:30:01+0000",
+      "lastError": ""
+    },
+    "2026-10-29@18:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-29T12:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-29T12:30:08.119Z",
+      "post": "2026-10-24-17",
+      "format": "reel",
+      "permalink": "https://www.instagram.com/reel/DfE-fbNm0I4/",
+      "publishedAt": "2026-10-29T12:30:01+0000",
+      "lastError": ""
+    },
+    "2026-10-29@19:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-29T13:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-29T13:30:26.375Z",
+      "post": "2026-10-27-2",
+      "format": "carousel",
+      "permalink": "https://www.instagram.com/p/DfFETMlEdff/",
+      "publishedAt": "2026-10-29T13:30:00+0000",
+      "lastError": ""
+    },
+    "2026-10-29@23:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-29T17:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-29T17:30:06.207Z",
+      "post": "2026-10-24-18",
+      "format": "reel",
+      "permalink": "https://www.instagram.com/reel/DfFgzs2jgt5/",
+      "publishedAt": "2026-10-29T17:30:01+0000",
+      "lastError": ""
+    },
+    "2026-10-30@18:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-30T12:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-30T12:30:08.522Z",
+      "post": "2026-10-24-19",
+      "format": "reel",
+      "permalink": "https://www.instagram.com/reel/DfHjRiZgo6V/",
+      "publishedAt": "2026-10-30T12:30:01+0000",
+      "lastError": ""
+    },
+    "2026-10-30@19:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-30T13:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-30T13:30:13.856Z",
+      "post": "2026-10-28-2",
+      "format": "carousel",
+      "permalink": "https://www.instagram.com/p/DfHpBjelQpN/",
+      "publishedAt": "2026-10-30T13:30:00+0000",
+      "lastError": ""
+    },
+    "2026-10-30@23:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-30T17:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-30T17:30:08.038Z",
+      "post": "2026-10-24-20",
+      "format": "reel",
+      "permalink": "https://www.instagram.com/reel/DfIFmkSCP0l/",
+      "publishedAt": "2026-10-30T17:30:01+0000",
+      "lastError": ""
+    },
+    "2026-10-31@18:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-31T12:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-31T12:30:08.117Z",
+      "post": "2026-10-25-1",
+      "format": "reel",
+      "permalink": "https://www.instagram.com/reel/DfKIGEFG8EN/",
+      "publishedAt": "2026-10-31T12:30:01+0000",
+      "lastError": ""
+    },
+    "2026-10-31@19:00": {
+      "status": "published",
+      "scheduledFor": "2026-10-31T13:30:00.000Z",
+      "attempts": 1,
+      "updatedAt": "2026-10-31T13:30:14.851Z",
+      "post": "2026-10-30-3",
+      "format": "carousel",
+      "permalink": "https://www.instagram.com/p/DfKN0zgFlES/",
+      "publishedAt": "2026-10-31T13:30:00+0000",
+      "lastError": ""
+    }
+  }
+}
