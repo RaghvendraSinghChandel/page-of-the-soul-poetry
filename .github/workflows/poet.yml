@@ -4,21 +4,17 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "tick = publish whatever slot is due now (18:00 Reel / 19:00 post / 23:00 Reel, IST); generate = write drafts now; publish-now = publish the oldest draft immediately; refresh-token = renew the Instagram token now; check = verify settings and the Instagram account (publishes nothing)"
+        description: "tick = publish the daily 21:30 IST Reel if it is due (max one post a day); generate = write drafts now; publish-now = publish the oldest draft immediately; refresh-token = renew the Instagram token now; check = verify settings and the Instagram account (publishes nothing)"
         type: choice
         options: [tick, generate, publish-now, refresh-token, check]
         default: tick
   schedule:
     # All times UTC (IST = UTC + 5:30). The primary trigger is cron-job.org (npm run cron:setup), which starts
     # runs within seconds; GitHub's own schedule is often late by up to hours, so these are only a fallback.
-    # A run starts early, gets the carousel ready, then publishes exactly at 18:00, 19:00 and 23:00 IST.
-    # Every run is idempotent (state/history.json records each slot), so extra triggers never double-post.
-    - cron: "5 12 * * *"    # 17:35 IST  fallback for the 18:00 Reel
-    - cron: "40 12 * * *"   # 18:10 IST  fallback for the 18:00 Reel
-    - cron: "5 13 * * *"    # 18:35 IST  fallback for the 19:00 post
-    - cron: "40 13 * * *"   # 19:10 IST  fallback for the 19:00 post
-    - cron: "5 17 * * *"    # 22:35 IST  fallback for the 23:00 Reel
-    - cron: "40 17 * * *"   # 23:10 IST  fallback for the 23:00 Reel
+    # A run starts early, gets the Reel ready, then publishes exactly at 21:30 IST: one post a day.
+    # Every run is idempotent (state/history.json records each slot and refuses a 2nd post the same day).
+    - cron: "35 15 * * *"   # 21:05 IST  fallback for the 21:30 Reel
+    - cron: "10 16 * * *"   # 21:40 IST  fallback for the 21:30 Reel
 
 permissions:
   contents: write   # save history, drafts and the encrypted token to the poet-state branch
@@ -53,7 +49,7 @@ jobs:
       INSTAGRAM_API_HOST: graph.instagram.com
       GRAPH_API_VERSION: ${{ vars.GRAPH_API_VERSION || 'v23.0' }}
       MEDIA_HOST: facebook
-      BOT_CONTACT: ${{ vars.BOT_CONTACT || 'page_of_the__soul poetry page (non-commercial, ~3 requests/day)' }}
+      BOT_CONTACT: ${{ vars.BOT_CONTACT || 'page_of_the__soul poetry page (non-commercial, ~1 request/day)' }}
       INSTAGRAM_USER_ID_POETRY: ${{ secrets.INSTAGRAM_USER_ID_POETRY }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}

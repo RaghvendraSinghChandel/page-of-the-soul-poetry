@@ -2,15 +2,17 @@ import { loadConfig, secretValues, validateConfig } from "./config.js";
 import { createInstagram } from "./instagramPublisher.js";
 import fs from "node:fs";
 
-import { generate, historyFor, publishNext, rerenderDrafts, tick } from "./job.js";
+import { generate, historyFor, publishNext, publishedOn, rerenderDrafts, tick } from "./job.js";
 import { createLogger, registerSecrets } from "./logger.js";
 import { daysLeft, refreshToken, tokenState, warnTokenExpiry } from "./token.js";
+import { localDate } from "./util.js";
 
 // Commands:
 //   generate [--count N]   draft N posts (default POSTS_PER_RUN) into output/<date>/
-//   tick [--check]         what the schedule runs: publish today's due slot (18:15 / 23:00) on time;
+//   tick [--check]         what the schedule runs: publish today's 21:30 IST Reel on time (max one post a day);
 //                          --check only reports whether anything is due (work=true|false)
-//   publish-next           publish the oldest draft now (only when PUBLISH_TO_INSTAGRAM=true)
+//   publish-next [--force] publish the oldest draft now (only when PUBLISH_TO_INSTAGRAM=true); refused if
+//                          a post already went out today, unless --force
 //   check-config           settings and, if credentials are set, the Instagram account (never publishes)
 //   rerender               re-render unpublished drafts (after a brand or design change)
 //   refresh-token [--out FILE] [--max-age-days N]
@@ -87,6 +89,11 @@ async function main() {
 
   if (command === "publish-next") {
     warnTokenExpiry(config, logger);
+    const today = publishedOn(historyFor(config), localDate(new Date(), config.timezone), config.timezone);
+    if (today && !args.includes("--force")) {
+      logger.warn("A post already went out today (max one a day); not publishing. Use --force to override.", { post: today.id });
+      return 0;
+    }
     await publishNext({ config, logger });
     return 0;
   }

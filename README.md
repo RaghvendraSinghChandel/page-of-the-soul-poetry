@@ -1,15 +1,14 @@
 # page_of_the__soul — Hinglish poetry automation
 
-Instagram page **page_of_the__soul** ke liye har din **3 posts** apne aap jaati hain. Har post mein ek nayi Hinglish kavita hoti hai, kabhi-kabhi Kabir ya Rahim ke verified dohe ke saath:
+Instagram page **page_of_the__soul** ke liye har din **sirf 1 post (Reel)** apne aap jaati hai. Har post mein ek nayi Hinglish kavita hoti hai, kabhi-kabhi Kabir ya Rahim ke verified dohe ke saath:
 
 | Waqt (IST) | Kya jaata hai | Kaun banata hai |
 |---|---|---|
-| **18:00** | 🎬 **Reel**: aapki awaaz mein kavita, asli photos, cinematic effects, halki dhun | Reel **Mac** pehle se banata hai, **GitHub** post karta hai |
-| **19:00** | 🖼️ **Carousel post**: 2–3 slides (cover, bhavarth, kavita) | **GitHub** |
-| **23:00** | 🎬 **Reel** | Mac banata hai, GitHub post karta hai |
+| **21:30** | 🎬 **Reel**: aapki awaaz mein kavita, asli photos, cinematic effects, halki dhun | Reel **Mac** pehle se banata hai, **GitHub** post karta hai |
 
-- Agar kisi Reel slot tak Reel taiyaar nahi hai (jaise Mac kai din band raha), toh us waqt **carousel** chala jaata hai. Koi slot khaali nahi jaata.
-- Har post **theek time par** jaati hai: post pehle se taiyaar rehti hai, aur publish ka button theek 18:00:00 / 19:00:00 / 23:00:00 par dabta hai.
+- Agar 21:30 tak Reel taiyaar nahi hai (jaise Mac kai din band raha), toh us waqt **carousel** chala jaata hai. Din khaali nahi jaata.
+- **Din mein 1 se zyada post kabhi nahi:** agar us din pehle hi koi post ja chuki hai, toh slot `skipped` ho jaata hai. `publish-next` bhi mana kar deta hai (jab tak `--force` na do).
+- Har post **theek time par** jaati hai: post pehle se taiyaar rehti hai, aur publish ka button theek 21:30:00 par dabta hai.
 
 ---
 
@@ -18,7 +17,7 @@ Instagram page **page_of_the__soul** ke liye har din **3 posts** apne aap jaati 
 ```mermaid
 flowchart LR
   subgraph GH["GitHub (cloud, hamesha on)"]
-    CRON["cron-job.org<br/>17:40 · 18:40 · 22:40<br/>(+ backups)"] --> WF["GitHub Actions<br/>.github/workflows/poet.yml"]
+    CRON["cron-job.org<br/>21:10<br/>(+ 21:35, 22:00 backups)"] --> WF["GitHub Actions<br/>.github/workflows/poet.yml"]
     WF -->|naye drafts likhta hai| STATE[("poet-state branch<br/>history.json · drafts ki slides<br/>encrypted token")]
     STATE --> WF
     VOICE[("poet-voice branch<br/>voice/&lt;post&gt;/reel.mp4")] --> WF
@@ -51,7 +50,7 @@ Yahi flow shabdon mein:
    - Reel slot par `poet-voice` mein taiyaar Reel dhoondhta hai;
    - Instagram par container banata hai aur theek slot time par publish karta hai;
    - phir history update karke `poet-state` par save kar deta hai.
-4. **Mac band ho toh?** GitHub ko Mac ki zaroorat sirf Reel banane ke liye hai. Pehle se bani ~10 Reels din mein 2 ke hisaab se ~5 din chalti hain. Uske baad Reel slots par carousel jaata hai.
+4. **Mac band ho toh?** GitHub ko Mac ki zaroorat sirf Reel banane ke liye hai. Pehle se bani ~10 Reels din mein 1 ke hisaab se ~10 din chalti hain. Uske baad 21:30 par carousel jaata hai.
 
 ---
 
@@ -59,22 +58,22 @@ Yahi flow shabdon mein:
 
 Ye sab **GitHub Actions** par chalta hai, Mac ki zaroorat nahi:
 
-1. **17:40 IST:** cron-job.org GitHub ko `workflow_dispatch` bhejta hai (`mode=tick`). Saath mein 18:05 aur 18:30 par backup triggers bhi aate hain.
+1. **21:10 IST:** cron-job.org GitHub ko `workflow_dispatch` bhejta hai (`mode=tick`). Saath mein 21:35 aur 22:00 par backup triggers bhi aate hain.
 2. **Workflow ke shuru ke steps** (`.github/workflows/poet.yml`):
    - code checkout aur `npm ci`;
    - `poet-state` branch se `history.json` aur drafts ki slides laana;
    - Instagram token decrypt karna (`token.enc` ko `TOKEN_STATE_KEY` se);
    - `node src/cli.js tick --check`: kya koi slot is waqt due hai? Nahi, toh run 20 second mein khatam.
 3. **`node src/cli.js tick`** → `src/job.js → tick()`:
-   - `src/slots.js` batata hai ki 18:00 ka slot "run" mein hai, aur iska format `reel` hai.
+   - `src/slots.js` batata hai ki 21:30 ka slot "run" mein hai, aur iska format `reel` hai.
    - `publishNext({ format: "reel" })`: drafts mein se **sabse purana voiced draft** dhoondhta hai. Iske liye `src/mediaHost.js → createVoiceReels().find()` `poet-voice` branch par `voice/<id>/meta.json` padhta hai, aur check karta hai ki kavita ka text-hash meta se milta hai.
    - Instagram API (`src/instagramPublisher.js → createReel`): `media_type=REELS` aur `video_url=https://raw.githubusercontent.com/<repo>/<commit>/voice/<id>/reel.mp4`. Instagram video wahin se khud download karta hai.
    - `waitForContainer`: Instagram video process karta hai (~1 minute) → `FINISHED`.
-   - **Theek 18:00:00 tak intezaar**, phir `media_publish`. Post live.
+   - **Theek 21:30:00 tak intezaar**, phir `media_publish`. Post live.
    - `history.json` mein post `published` (format `reel`, permalink) aur slot `published` likha jaata hai.
 4. **Phir:** queue 15 se kam ho toh naye drafts likhe jaate hain. Hafte mein ek baar Instagram token renew hota hai. Aakhir mein state `poet-state` par save hoti hai.
 5. **Agar koi Reel taiyaar nahi:** usi slot par sabse purane draft ka carousel jaata hai.
-6. **Agar run fail ho jaaye:** 18:05 / 18:30 ke backup runs dobara koshish karte hain. Ek slot kabhi do baar post nahi hota, kyunki har slot ka status history mein darj hota hai.
+6. **Agar run fail ho jaaye:** 21:35 / 22:00 ke backup runs dobara koshish karte hain. Ek slot kabhi do baar post nahi hota, kyunki har slot ka status history mein darj hota hai.
 
 ---
 
@@ -111,7 +110,7 @@ Ye sab **GitHub Actions** par chalta hai, Mac ki zaroorat nahi:
 |---|---|
 | `cli.js` | Command line entry: `tick`, `generate`, `publish-next`, `rerender`, `refresh-token`, `check-config`, `history`. |
 | `config.js` | Saari settings `.env` / environment se. Sirf `_POETRY` wale Instagram credentials padhta hai, Daily Fact Check wale kabhi nahi. |
-| `slots.js` | Roz ke slots (18:00 Reel, 19:00 carousel, 23:00 Reel), aur kaun sa slot kab "run / wait / missed / done" hai. |
+| `slots.js` | Roz ka ek slot (21:30 Reel), aur kab "run / wait / missed / done" hai. Din mein 1 post ki limit `job.js` (`publishedOn`) mein hai. |
 | `job.js` | Dil ka hissa. `generate()` drafts likhta hai. `publishNext()` Reel ya carousel post karta hai, theek time par. `tick()` slots chalata hai aur queue 15 tak bharta hai. |
 | `writer.js` | Gemini ke liye prompt aur jaanch: Hinglish only, 4–10 lines, chhota caption (25–60 shabd, 2–4 emojis, sawaal par khatam), verified doha id, repetition check, editor pass. |
 | `gemini.js` | Gemini API client (free tier), retries aur fallback models. |
@@ -126,7 +125,7 @@ Ye sab **GitHub Actions** par chalta hai, Mac ki zaroorat nahi:
 | `token.js` | 60 din wale Instagram token ko har hafte renew karta hai. |
 | `logger.js` | Logs (`logs/app.log`). Tokens aur keys apne aap chhupa deta hai. |
 | `util.js` | Chhote helpers: time zone, retries, similarity. |
-| `voice.js` | Reel ki **script**: kis slide par kya, kis raftaar aur thehrav se bola jaaye. Hinglish → Devanagari (Gemini). Kaun se drafts carousel ke liye rakhe jaayein (lagbhag har teesra). |
+| `voice.js` | Reel ki **script**: kis slide par kya, kis raftaar aur thehrav se bola jaaye. Hinglish → Devanagari (Gemini). Mac ab har draft ki Reel banata hai (carousel slot nahi raha). |
 | `cinema.js` | **Cinematic Reel renderer** (ffmpeg): photos par Ken Burns zoom, film grade, vignette, grain, fade, awaaz ke saath aate text cards, end card. |
 | `footage.js` | Unsplash se scene aur mood ke hisaab se portrait photos, recently use ki hui photos dobara nahi. |
 | `bed.js` | Halki "focus" dhun jo code khud banata hai (kalimba, narm pad, paani ki awaaz). Koi license ka jhanjhat nahi. |

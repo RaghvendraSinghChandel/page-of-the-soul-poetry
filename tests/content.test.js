@@ -6,7 +6,7 @@ import test from "node:test";
 
 import { loadConfig } from "../src/config.js";
 import { createHistory } from "../src/history.js";
-import { fullCaption, publishNext, tick } from "../src/job.js";
+import { fullCaption, publishNext, publishedOn, tick } from "../src/job.js";
 import { reelArgs, slideDurations } from "../src/reel.js";
 import { SONGS, songLine } from "../src/songs.js";
 import { buildVoiceScript, keptForCarousel, voiceTextHash } from "../src/voice.js";
@@ -139,18 +139,17 @@ test("token refresh rewrites only the poetry token line of .env and records the 
 test("slots open 20 minutes early, stay open 2 hours, and are done once published", () => {
   const plan = (iso, state = {}) =>
     planSlots({ now: new Date(iso), timeZone: "Asia/Kolkata", prepareAheadMinutes: 20, runGraceMinutes: 120, maxAttempts: 3, getState: key => state[key] }).map(s => `${s.time}:${s.action}`);
-  assert.deepEqual(plan("2026-10-25T12:05:00Z"), ["18:00:wait", "19:00:wait", "23:00:wait"]); // 17:35 IST
-  assert.deepEqual(plan("2026-10-25T12:15:00Z"), ["18:00:run", "19:00:wait", "23:00:wait"]); // 17:45 IST
-  assert.deepEqual(plan("2026-10-25T13:15:00Z", { "2026-10-25@18:00": { status: "published" } }), ["18:00:done", "19:00:run", "23:00:wait"]); // 18:45 IST
-  assert.deepEqual(plan("2026-10-25T17:15:00Z", { "2026-10-25@19:00": { status: "published" } }), ["18:00:missed", "19:00:done", "23:00:run"]); // 22:45 IST
+  assert.deepEqual(plan("2026-10-25T15:35:00Z"), ["21:30:wait"]); // 21:05 IST
+  assert.deepEqual(plan("2026-10-25T15:45:00Z"), ["21:30:run"]); // 21:15 IST
+  assert.deepEqual(plan("2026-10-25T16:30:00Z", { "2026-10-25@21:30": { status: "published" } }), ["21:30:done"]); // 22:00 IST
+  assert.deepEqual(plan("2026-10-25T18:05:00Z"), ["21:30:missed"]); // 23:35 IST
 });
 
 test("tick publishes the due slot exactly at its time, once, and drafts the next posts when none are left", async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "echoes-"));
   const history = createHistory({ stateDir: dir });
   history.add({ id: "d1", status: "draft", caption: "Pehli post?", hashtags: [], couplet: null, slides: ["a.jpg"] });
-  history.updateSlot("2026-10-25@18:00", { status: "published" }); // the earlier Reel slot is done
-  const at = Date.parse("2026-10-25T13:30:00Z"); // 19:00 IST (carousel slot)
+  const at = Date.parse("2026-10-25T16:00:00Z"); // 21:30 IST (the daily Reel slot; no Reel ready → carousel)
   let clock = at - 10 * 60000;
   const slept = [];
   const instagram = {
@@ -160,7 +159,7 @@ test("tick publishes the due slot exactly at its time, once, and drafts the next
     createCarousel: async () => "parent",
     waitForContainer: async () => "FINISHED",
     publishContainer: async () => (assert.ok(clock >= at, "published before the slot time"), "media-1"),
-    mediaInfo: async () => ({ permalink: "https://instagram.com/p/x", timestamp: "2026-10-25T12:30:01Z" }),
+    mediaInfo: async () => ({ permalink: "https://instagram.com/p/x", timestamp: "2026-10-25T16:00:01Z" }),
   };
   const deps = {
     history,
@@ -177,16 +176,30 @@ test("tick publishes the due slot exactly at its time, once, and drafts the next
     const drafted = [];
     const generateStub = { browser: { close: async () => {} }, gemini: { json: async () => (drafted.push(1), Promise.reject(new Error("no gemini in tests"))) } };
     const { ran } = await tick({ config, logger: silentLogger, now: () => new Date(clock), deps: { ...deps, ...generateStub } });
-    assert.deepEqual(ran, [{ key: "2026-10-25@19:00", status: "published" }]);
+    assert.deepEqual(ran, [{ key: "2026-10-25@21:30", status: "published" }]);
     assert.equal(slept[0], 10 * 60000);
-    assert.equal(history.slot("2026-10-25@19:00").post, "d1");
-    assert.equal(history.load()[0].slot, "2026-10-25@19:00");
+    assert.equal(history.slot("2026-10-25@21:30").post, "d1");
+    assert.equal(history.load()[0].slot, "2026-10-25@21:30");
     assert.ok(drafted.length > 0, "tried to draft the next posts");
     const again = await tick({ config, logger: silentLogger, now: () => new Date(clock), deps });
     assert.deepEqual(again.ran, []);
   } finally {
     Date.now = realNow;
   }
+});
+
+test("never more than one post a day: the 21:30 slot is skipped when a post already went out today", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "echoes-"));
+  const history = createHistory({ stateDir: dir });
+  history.add({ id: "earlier", status: "published", publishedAt: "2026-10-25T07:00:00Z", caption: "x", hashtags: [], slides: [] }); // 12:30 IST
+  history.add({ id: "d1", status: "draft", caption: "y", hashtags: [], couplet: null, slides: ["a.jpg"] });
+  const config = loadConfig({ GEMINI_API_KEY: "x", PUBLISH_TO_INSTAGRAM: "true", REELS_ENABLED: "false", INSTAGRAM_USER_ID_POETRY: "1", INSTAGRAM_ACCESS_TOKEN_POETRY: "t", STATE_DIR: dir });
+  const instagram = new Proxy({}, { get: () => async () => assert.fail("must not call Instagram") });
+  const { ran } = await tick({ config, logger: silentLogger, now: () => new Date("2026-10-25T15:45:00Z"), deps: { history, instagram } });
+  assert.deepEqual(ran, [{ key: "2026-10-25@21:30", status: "skipped" }]);
+  assert.equal(history.load().find(p => p.id === "d1").status, "draft");
+  // a post from the previous day does not block today's Reel
+  assert.equal(publishedOn(history, "2026-10-26", "Asia/Kolkata"), undefined);
 });
 
 test("Reel slots post a Mac-voiced draft as a Reel, the post slot a carousel, and a Reel slot without a voice Reel falls back to a carousel", async () => {

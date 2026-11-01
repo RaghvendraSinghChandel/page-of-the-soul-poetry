@@ -3,12 +3,9 @@ import { localDate, zonedTimeToUtc } from "./util.js";
 // The daily publishing slots, as wall-clock times in config.timezone (Asia/Kolkata by default).
 // A run starts a few minutes early, gets the carousel ready, then publishes exactly at the slot time.
 
-// format: "reel" = a draft the Mac has voiced, as a Reel (a carousel if none is ready); "carousel" = a post.
-export const SLOTS = [
-  { name: "evening-reel", time: "18:00", format: "reel" },
-  { name: "evening", time: "19:00", format: "carousel" },
-  { name: "night-reel", time: "23:00", format: "reel" },
-];
+// One post a day: a Reel at 21:30 IST (a draft the Mac has voiced; a carousel only if no Reel is ready).
+// tick() also refuses to publish a second post on a day that already has one (see publishedOn in job.js).
+export const SLOTS = [{ name: "night-reel", time: "21:30", format: "reel" }];
 
 /** Slot instances for the local date of `now`: { ...slot, date, key, at }. */
 export function slotsForDay(now, timeZone, date = localDate(now, timeZone)) {

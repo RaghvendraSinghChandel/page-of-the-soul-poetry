@@ -19,17 +19,11 @@ const dryRun = process.argv.includes("--dry-run");
 
 // IST trigger times: each main run starts ~20 min before its slot (setup, and a fresh draft if none is waiting),
 // gets the post ready, then publishes exactly on time; the backups catch a failed or dropped run.
-// 18:00 Reel (voice) · 19:00 post (carousel) · 23:00 Reel (voice)
+// One Reel a day at 21:30 (voice). The old 18:00 / 19:00 / 23:00 jobs are deleted by step 2 below.
 const TRIGGERS = [
-  { title: "18:00 Reel – main", hour: 17, minute: 40 },
-  { title: "18:00 Reel – backup", hour: 18, minute: 5 },
-  { title: "18:00 Reel – backup 2", hour: 18, minute: 30 },
-  { title: "19:00 post – main", hour: 18, minute: 40 },
-  { title: "19:00 post – backup", hour: 19, minute: 5 },
-  { title: "19:00 post – backup 2", hour: 19, minute: 30 },
-  { title: "23:00 Reel – main", hour: 22, minute: 40 },
-  { title: "23:00 Reel – backup", hour: 23, minute: 5 },
-  { title: "23:00 Reel – backup 2", hour: 23, minute: 30 },
+  { title: "21:30 Reel – main", hour: 21, minute: 10 },
+  { title: "21:30 Reel – backup", hour: 21, minute: 35 },
+  { title: "21:30 Reel – backup 2", hour: 22, minute: 0 },
 ];
 
 const apiKey = process.env.CRONJOB_ORG_API_KEY;

@@ -20,7 +20,7 @@ import { writePost } from "./writer.js";
 //           post.md under output/<date>/<post-id>/ and records them in state/history.json and posts_log.csv.
 // publishNext: when PUBLISH_TO_INSTAGRAM=true, publishes the oldest draft as an Instagram carousel and,
 //           right after it, its Reel in the owner's voice, if the Mac has made one (scripts/voice-worker.mjs).
-// tick: what the schedule runs; publishes one draft per daily slot (18:15 and 23:00), exactly on time.
+// tick: what the schedule runs; publishes one Reel a day at 21:30 IST, exactly on time, never more than one post a day.
 
 const FORM_ROMAN = { "साखी": "sakhi", "दोहा": "doha", "सोरठा": "sortha" };
 
@@ -348,7 +348,7 @@ export async function tick({ config, logger, now = () => new Date(), checkOnly =
   // Keep DRAFT_BUFFER drafts waiting (POSTS_PER_RUN at a time): the Mac voices them ahead, so Reels keep
   // going out on days it is off, and a slow Gemini or a source outage never delays a slot.
   const waiting = history.load().filter(p => p.status === "draft").length;
-  if (ran.length && waiting < config.draftBuffer) {
+  if (ran.some(r => r.status !== "skipped") && waiting < config.draftBuffer) {
     try {
       await generate({ config, logger, count: Math.min(config.postsPerRun, config.draftBuffer - waiting), deps: { ...deps, history } });
     } catch (error) {
@@ -358,8 +358,19 @@ export async function tick({ config, logger, now = () => new Date(), checkOnly =
   return { ran, missed };
 }
 
+/** The post already published on local date `date` (YYYY-MM-DD), if any: the page posts at most once a day. */
+export function publishedOn(history, date, timeZone) {
+  return history.load().find(p => p.status === "published" && p.publishedAt && localDate(new Date(p.publishedAt), timeZone) === date);
+}
+
 async function runSlot(slot, { config, logger, history, deps }) {
   const log = logger.child({ slot: slot.key, format: slot.format });
+  const already = publishedOn(history, slot.date, config.timezone);
+  if (already) {
+    history.updateSlot(slot.key, { status: "skipped", scheduledFor: slot.at.toISOString(), lastError: `already posted today (${already.id})` });
+    log.warn("A post already went out today; skipping this slot (max one post a day)", { post: already.id, permalink: already.permalink });
+    return "skipped";
+  }
   history.updateSlot(slot.key, { status: "running", scheduledFor: slot.at.toISOString(), attempts: (history.slot(slot.key)?.attempts || 0) + 1 });
   try {
     if (!config.publishEnabled) {

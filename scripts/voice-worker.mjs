@@ -15,7 +15,7 @@ import { createGemini } from "../src/gemini.js";
 import { createLogger, registerSecrets } from "../src/logger.js";
 import { FADE, renderReel } from "../src/reel.js";
 import { buildOutroSlide, launchBrowser, overlayPage, renderJpeg, renderPng } from "../src/render.js";
-import { buildVoiceScript, keptForCarousel, toDevanagari, voiceTextHash } from "../src/voice.js";
+import { buildVoiceScript, toDevanagari, voiceTextHash } from "../src/voice.js";
 
 // Mac voice worker (launchd, every 30 minutes and at login; npm run voice):
 // keeps a voice Reel ready for each of the next DRAFT_BUFFER drafts, so Reels keep going out on days the
@@ -209,7 +209,7 @@ async function main() {
       return false;
     }
   };
-  const todo = queue.filter(p => !ready(p.id) && !keptForCarousel(p));
+  const todo = queue.filter(p => !ready(p.id));
   logger.info("Voice queue", { drafts: queue.length, ready: queue.length - todo.length, todo: todo.map(p => p.id), pruned });
   if (pruned && !todo.length) await pushVoices(voiceDir, `Prune ${pruned} published Reel(s)`);
   if (!todo.length) return;

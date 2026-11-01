@@ -12,8 +12,8 @@ import { JobError } from "./util.js";
 // The Mac turns the post's Roman Hinglish into Devanagari first (Gemini), so the voice model says it right.
 
 /**
- * About one draft in three is kept for the 19:00 carousel slot, so the Mac does not spend time voicing it.
- * Fixed per post id, so the choice never changes while the post waits in the queue.
+ * About one draft in three is preferred for a manual carousel (publish-next). The daily slot is a Reel, so the
+ * Mac voices every draft. Fixed per post id, so the choice never changes while the post waits in the queue.
  */
 export const keptForCarousel = post => parseInt(crypto.createHash("sha1").update(post.id).digest("hex").slice(0, 8), 16) % 3 === 0;
 
